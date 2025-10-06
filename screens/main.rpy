@@ -94,19 +94,19 @@ screen mod_main():
             add renpy.display.im.FactorScale('mod/images/logo.png', mod.getScaleFactor()*.95) yalign .5
 
         hbox:
-            align (0.0, 0.0)
+            align (0.5, 1.0)
             spacing 2
+            button: # Panel
+                style_suffix 'titleBarButton'
+                text If(mod.Settings.showWatchPanel, '\ue8f4', '\ue8f5') style_suffix 'icon_button_text' yalign .5
+                hovered mod.Tooltip("{mod_notl}Toggle watchpanel{/mod_notl}") unhovered mod.Tooltip()
+                action ToggleField(mod.Settings, 'showWatchPanel', True, False)
             button: # Close
                 style_suffix 'dialogCloseButton'
                 yoffset 0
                 hovered mod.Tooltip('{mod_notl}Close mod{/mod_notl}') unhovered mod.Tooltip()
                 text 'x' size mod.scalePxInt(24) yalign .5 color mod.Theme.colors.errorBg
                 action Hide('mod_main')
-            button: # Panel
-                style_suffix 'titleBarButton'
-                text If(mod.Settings.showWatchPanel, '\ue8f4', '\ue8f5') style_suffix 'icon_button_text' yalign .5
-                hovered mod.Tooltip("{mod_notl}Toggle watchpanel{/mod_notl}") unhovered mod.Tooltip()
-                action ToggleField(mod.Settings, 'showWatchPanel', True, False)
 
         vbox:
             xfill True
