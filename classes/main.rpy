@@ -189,4 +189,4 @@ init 999 python:
     mod.LabelMon.onLabelCalled.append(mod.onLabelCalled)
         
     if mod.Settings.skipSplashscreen:
-            renpy.config.label_overrides['splashscreen'] = 'mod_splashscreen'
+    	renpy.config.label_overrides['splashscreen'] = 'mod_splashscreen'

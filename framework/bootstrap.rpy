@@ -26,9 +26,6 @@ init -1000 python in MF2:
         if archivePath: 
             if hasattr(renpy.store, modName) and isinstance(getattr(renpy.store, modName), renpy.python.StoreModule):
                 getattr(renpy.store, modName).archivePath = archivePath
-        else: 
-            import hashlib, random, string
-            renpy.game.script.digest = hashlib.md5(''.join(random.choice(string.ascii_letters + string.digits) for i in range(20)).encode())
         
         filesToLoad = []
         def addFilesToLoad(files):
