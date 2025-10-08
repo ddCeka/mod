@@ -132,8 +132,6 @@ init python:
 
 ## addon begin here
 init 99:
-    define gui.file_slot_cols = 3
-    define gui.file_slot_rows = 2
     default preferences.gl_powersave = False
     define config.console = True
     define config.hw_video = True
@@ -231,11 +229,6 @@ init 99:
 init 99 python:
     if not persistent.mod_textbox:
         persistent.modtextbox_opacity = 0.0
-
-## Just an indicator to show installed or not. Safe to remove
-## init 10:
-##     python:
-##         gui.about += ("\n\naddon extra on Android\n\n")
 
 ## Keyboard input android sometimes messed up
 init -2 python:
