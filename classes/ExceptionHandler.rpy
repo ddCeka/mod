@@ -13,7 +13,7 @@ init 999 python in mod:
                 
                 try:
                     f = renpy.os.open(traceback_fn, renpy.os.O_WRONLY | renpy.os.O_APPEND)
-                    renpy.os.write(f, 'info URM {}'.format(version)) 
+                    renpy.os.write(f, 'URM {}'.format(version)) 
                     renpy.os.close(f)
                 except Exception as e:
                     print('info: Failed to write to traceback file: {}'.format(e))

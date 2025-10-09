@@ -25,7 +25,6 @@ screen URM_gamesaves():
                     text mod.Gamesaves.pageName yalign .5 substitute False style_suffix 'label_text'
                     null width mod.scalePxInt(10)
                     textbutton "\ue9a2" style_suffix "icon_button" xalign 1.0 hovered mod.Tooltip("{urm_notl}Rename page{/urm_notl}") unhovered mod.Tooltip() action Show('URM_gamesaves_pagename')
-
                 # PAGES
                 hbox xalign 1.0:
                     textbutton "\ue5dc" style_suffix 'icon_button' sensitive (mod.Gamesaves.page != 1) action SetField(mod.Gamesaves, 'page', 1) yalign .5 hovered mod.Tooltip('Go to first page') unhovered mod.Tooltip()
@@ -53,7 +52,6 @@ screen URM_gamesaves():
                 for position in range(1,10):
                     use URM_gamesaves_button('{}-{}'.format(mod.Gamesaves.page, position))
 
-
 screen URM_gamesaves_button(slot):
     default thumbnailScale = 22.8
 
@@ -75,12 +73,10 @@ screen URM_gamesaves_button(slot):
             hbox spacing 2:
                 textbutton "\ue2c7" style_suffix "icon_button" hovered mod.Tooltip('{urm_notl}Load game{/urm_notl}') unhovered mod.Tooltip() action If(renpy.can_load(slot), Function(mod.Gamesaves.load, slot), None)
                 textbutton "\ue161" style_suffix "icon_button" hovered mod.Tooltip('{urm_notl}Save game{/urm_notl}') unhovered mod.Tooltip() action Function(mod.Gamesaves.save, slot)
-
             hbox xalign 1.0 spacing 2:
                 textbutton "\ue89f" style_suffix "icon_button" hovered mod.Tooltip('{urm_notl}Move save{/urm_notl}') unhovered mod.Tooltip() action If(renpy.can_load(slot), Function(mod.Gamesaves.move, slot), None)
                 textbutton "\ue173" style_suffix "icon_button" hovered mod.Tooltip('{urm_notl}Copy save{/urm_notl}') unhovered mod.Tooltip() action If(renpy.can_load(slot), Function(mod.Gamesaves.copy, slot), None)
                 textbutton "\ue872" style_suffix "icon_button" hovered mod.Tooltip('{urm_notl}Delete save{/urm_notl}') unhovered mod.Tooltip() action If(renpy.can_load(slot), Function(mod.Gamesaves.delete, slot), None)
-
 
 screen URM_gamesaves_selectslot(defaultPage, defaultPosition, callback, confirmButtonText='{urm_notl}OK{/urm_notl}'):
     layer 'Overlay'
@@ -111,14 +107,12 @@ screen URM_gamesaves_selectslot(defaultPage, defaultPosition, callback, confirmB
             key_events True
             action inputs.position.Enable()
             input value inputs.position allow '123456789' length 1
-
         hbox:
             yoffset mod.scalePxInt(15)
             align (1.0,1.0)
             textbutton confirmButtonText style_suffix "buttonPrimary" action inputs.onSubmit
             null width mod.scalePxInt(10)
             textbutton "{urm_notl}Cancel{/urm_notl}" action Hide('URM_gamesaves_selectslot')
-
 
 screen URM_gamesaves_pagenumber():
     layer 'Overlay'
@@ -133,14 +127,12 @@ screen URM_gamesaves_pagenumber():
             key_events True
             action pageInput.Enable()
             input value pageInput allow '0123456789'
-
         hbox:
             yoffset mod.scalePxInt(15)
             align (1.0,1.0)
             textbutton '{urm_notl}Open{/urm_notl}' style_suffix "buttonPrimary" action pageInput.onEnter
             null width mod.scalePxInt(10)
             textbutton "{urm_notl}Cancel{/urm_notl}" action Hide('URM_gamesaves_pagenumber')
-
 
 screen URM_gamesaves_pagename():
     layer 'Overlay'
@@ -176,7 +168,6 @@ screen URM_gamesaves_savename(callback):
             key_events True
             action inputSaveName.Enable()
             input value inputSaveName length 150
-
         hbox:
             yoffset mod.scalePxInt(15)
             align (1.0,1.0)

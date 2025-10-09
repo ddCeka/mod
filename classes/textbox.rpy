@@ -28,7 +28,6 @@ init 3 python in mod:
             renpy.call_in_new_context('URM_textboxCustomizer', charVarName=charVarName)
             if callable(afterCloseAction): afterCloseAction()
             
-            
             raise renpy.game.RestartContext(None) 
         
         def closeCustomizer(self, save=False):
@@ -77,7 +76,7 @@ init 3 python in mod:
                 try:
                     return ScaleImage(img, TextBox.textHeight, TextBox.textHeight)
                 except Exception as e:
-                    print('0: Failed to get side image "{}" with error: {}'.format(self._m1_textbox__imageTag, e))
+                    print('info: Failed to get side image "{}" with error: {}'.format(self._m1_textbox__imageTag, e))
         
         @property
         def whatXPadding(self):
@@ -156,7 +155,6 @@ init 3 python in mod:
         def _m1_textbox__createWhoArgs(self, args):
             args = self._m1_textbox__stripUnwantedStyleArgs(args)
             
-            
             if self.Settings.customSayScreen or self.Settings.whoFont != None: args['font'] = self.whoFont
             if self.Settings.whoColor != None: args['color'] = self.Settings.whoColor
             if self.Settings.whoOutlinesEnabled:
@@ -176,7 +174,6 @@ init 3 python in mod:
         def _m1_textbox__createWhatArgs(self, args):
             args = self._m1_textbox__stripUnwantedStyleArgs(args)
             
-            
             args['style'] = 'URMSay_text'
             if self.Settings.customSayScreen or self.Settings.whatFont != None: args['font'] = self.whatFont
             if self.Settings.whatColorFromCharacter and 'color' in self.whoArgs:
@@ -192,7 +189,6 @@ init 3 python in mod:
             args['size'] = scalePxInt(self.Settings.whatSize or TextBoxSettings.defaultValues['whatSize'])
             args['textalign'] = self.Settings.whatAlign
             args['xalign'] = self.Settings.whatAlign
-            
             
             prefixedArgs = {}
             for key,val in args.items():
@@ -266,9 +262,7 @@ init 3 python in mod:
 
     class TextBoxSettings(NonPicklable):
         defaultValues = {
-            
             'customSayScreen': True, 
-            
             'whoShown': True,
             'whoColor': None,
             'whoOutlinesEnabled': True,
@@ -288,10 +282,8 @@ init 3 python in mod:
             'whoBackgroundGradient': False,
             'whoBackgroundCharacterColor': False,
             'whoFont': None,
-            
             'sideImageShown': True,
             'sideImagePos': 'left',
-            
             'whatColor': None,
             'whatColorFromCharacter': False,
             'whatOutlinesEnabled': True,
@@ -361,7 +353,6 @@ init 3 python in mod:
                         if hasattr(renpy.store, charVarName) and getattr(renpy.store, charVarName) == char:
                             return self.store[charVarName]
                 
-                
                 if 'None' in self.store:
                     return self.store['None']
         
@@ -393,7 +384,6 @@ init 3 python in mod:
                     return self.tempValues[name]
             elif self.values and name in self.values:
                 return self.values[name]
-            
             
             if name in TextBoxSettings.defaultValues:
                 return TextBoxSettings.defaultValues[name]

@@ -52,7 +52,6 @@ init 3 python in mod:
                         else:
                             renpy.notify('Game saved')
         
-        
         def delete(self, slot):
             if renpy.can_load(slot):
                 Confirm('Are you sure you want to delete this save?', renpy.store.Function(renpy.unlink_save, slot), title='Delete save')()

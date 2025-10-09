@@ -16,14 +16,14 @@ init -999 python in mod:
             self._m1_10theme__theme = ThemeProvider.defaultTheme.copy()
             self._m1_10theme__isDark = None
             self.colors = ThemeColors(self, {
-                'warningBg': '#fff4ce',
+                'warningBg': '#FFF4CE',
                 'warningText': '#797673',
-                'severeWarningBg': '#fed9cc',
-                'severeWarningText': '#d83b01',
-                'errorBg': '#fde7e9',
-                'errorText': '#a80000',
-                'successBg': '#dff6dd',
-                'successText': '#107c10',
+                'severeWarningBg': '#FED9CC',
+                'severeWarningText': '#D83B01',
+                'errorBg': '#FDE7E9',
+                'errorText': '#A80000',
+                'successBg': '#DFF6DD',
+                'successText': '#107C10',
             })
         
         def __getattr__(self, key):
@@ -50,7 +50,7 @@ init -999 python in mod:
         
         def setTheme(self, theme):
             if not isinstance(theme, dict):
-                raise Exception('0: supplied theme is not a dict')
+                raise Exception('info: supplied theme is not a dict')
             elif not self.isCurrentTheme(theme):
                 self._m1_10theme__theme.update(theme)
                 self._m1_10theme__isDark = None
@@ -123,7 +123,6 @@ init -999 python in mod:
                 'dialogBg': 'backgroundTranslucent25',
                 'dialogTitleBar': 'primaryTranslucent25',
                 'dialogBorder': 'textTranslucent180',
-                
                 'buttonBg': 'background',
                 'buttonBgHover': 'backgroundLighter',
                 'buttonBgDisabled': 'backgroundDarker',
@@ -131,14 +130,12 @@ init -999 python in mod:
                 'buttonBorderDisabled': 'textTranslucent100',
                 'buttonText': 'text',
                 'buttonTextDisabled': 'textTranslucent100',
-                
                 'buttonPrimaryBg': 'primary',
                 'buttonPrimaryBgHover': 'primaryLighter',
                 'buttonPrimaryBgDisabled': 'primaryDarker',
                 'buttonPrimaryBorder': 'primary',
                 'buttonPrimaryText': 'background',
                 'buttonPrimaryTextDisabled': 'backgroundTranslucent100',
-                
                 'buttonSecondaryBg': 'secondary',
                 'buttonSecondaryBgHover': 'secondaryLighter',
                 'buttonSecondaryBgDisabled': 'secondaryDarker',
@@ -146,7 +143,6 @@ init -999 python in mod:
                 'buttonSecondaryBorderDisabled': 'textTranslucent100',
                 'buttonSecondaryText': 'text',
                 'buttonSecondaryTextDisabled': 'textTranslucent100',
-                
                 'buttonCancelBg': 'errorBg',
                 'buttonCancelBgHover': 'errorBgLighter',
                 'buttonCancelBgDisabled': 'errorBgDarker',
@@ -154,7 +150,6 @@ init -999 python in mod:
                 'buttonCancelBorderDisabled': 'errorTextTranslucent100',
                 'buttonCancelText': 'errorText',
                 'buttonCancelTextDisabled': 'errorTextTranslucent100',
-                
                 'buttonSuccessBg': 'successBg',
                 'buttonSuccessBgHover': 'successBgLighter',
                 'buttonSuccessBgDisabled': 'successBgDarker',
@@ -162,7 +157,6 @@ init -999 python in mod:
                 'buttonSuccessBorderDisabled': 'successTextTranslucent100',
                 'buttonSuccessText': 'successText',
                 'buttonSuccessTextDisabled': 'successTextTranslucent100',
-                
                 'scrollBg': 'secondary',
                 'scrollThumb': 'primary',
                 'scrollThumbHover': 'primaryLighter',

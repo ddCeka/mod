@@ -20,7 +20,6 @@ screen URM_labels():
                 textbutton "\ue16c" style_suffix "icon_button" action If(mod.LabelsStore.store.unsaved, mod.Confirm('This will clear the list below, are you sure?', Function(mod.LabelsStore.clear)), Function(mod.LabelsStore.clear))
             else:
                 text "Load a file or add labels using the search option"
-
         hbox:
             xalign 1.0
             if mod.Settings.labelsView == 'list':
@@ -38,7 +37,6 @@ screen URM_labels():
             python:
                 if len(mod.LabelsStore.store) != labelListPages.itemCount:
                     SetField(labelListPages, 'itemCount', len(mod.LabelsStore.store))()
-
             # PAGES
             fixed ysize mod.scalePxInt(50):
                 hbox xalign .5 yoffset 4 spacing 2:
@@ -140,8 +138,6 @@ screen URM_labels():
                 # Fill up till we have 4 columns (this is needed since Ren'Py 7.5)
                 for i in range(len(list(mod.LabelsStore.store.items())[labelThumbPages.pageStartIndex:labelThumbPages.pageEndIndex]) % 4):
                     null
-            
-
     else:
         vbox:
             yoffset mod.scaleY(1.5)
@@ -166,7 +162,6 @@ screen URM_replay(labelName):
             null height mod.scalePxInt(10)
             hbox xalign .5:
                 use mod_messagebar('error', errorMessage)
-
         hbox:
             yoffset mod.scalePxInt(15) xalign .5
             if renpy.has_label(labelName):
@@ -191,7 +186,6 @@ screen URM_jump(labelName):
             text '(Only use this option if you know what you\'re doing. Your game will continue from the label you\'re jumping to)' color '#AAA' style_suffix 'text_small' xalign .5
         else:
             text '{urm_notl}The selected label does not exist{/urm_notl}'
-
         hbox:
             yoffset mod.scalePxInt(15) xalign .5
             if renpy.has_label(labelName):
@@ -224,10 +218,8 @@ screen URM_replay_jump(jumpTo, choiceName=None, dialogTitle='{urm_notl}Next labe
 
             if errorMessage != None:
                 use mod_messagebar('error', errorMessage)
-
             vbox:
                 text 'Playing the label will {b}not{/b} affect your current gameplay (it starts in replay mode)\nand you will return here after ending the replay (press Alt+M)' text_align .5
-
             hbox: # Buttons
                 xalign 0.5
                 spacing mod.scalePxInt(20)

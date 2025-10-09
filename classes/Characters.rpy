@@ -31,7 +31,7 @@ init 3 python in mod:
         
         def match(self, query):
             """ Check if this character matches `query` """
-            if not isinstance(query, basestring): raise Exception('Characterquery should be a string, got {}'.format(type(query)))
+            if not isinstance(query, basestring): raise Exception('Character query should be a string, got {}'.format(type(query)))
             query = query.lower()
             return (query in self.name.lower() or query in self.displayName.lower() or query in self.varName.lower())
         

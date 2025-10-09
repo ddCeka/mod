@@ -25,7 +25,7 @@ init 3 python in mod:
             'watchPanelVars': 1,
             'showChoicesNotification': True,
             'showPathsNotification': True,
-            'stopSkippingOnPathDetection': False,
+            'stopSkippingOnPathDetection': True,
             'showReplayNotification': True,
             'currentScreen': 'search',
             'searchType': 'variable names',
@@ -85,7 +85,6 @@ init 3 python in mod:
                 except Exception as e:
                     print('info: Failed to create dir "{}". {}'.format(self.saveDir, e))
                     SettingsClass._m1_settings__saveDir = None
-            
             
             if self.saveDir:
                 try:
@@ -191,7 +190,6 @@ init 3 python in mod:
                         jsonStr = zf.read('json')
                         SettingsClass._m1_settings__id = zf.read('id')
                         urmVersion = zf.read('urmVersion')
-                    
                     
                     SettingsClass._m1_settings__globalSettings = json.loads(jsonStr)
                 except Exception as e:

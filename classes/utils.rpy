@@ -38,7 +38,6 @@ init 2 python in mod:
             except Exception as e:
                 print('info: Sorting failed with error: {}'.format(e))
 
-
     class ColorPicker(NonPicklable):
         def __init__(self, defaultColor=None):
             if isinstance(defaultColor, basestring) and defaultColor.startswith('#'):
@@ -90,7 +89,6 @@ init 2 python in mod:
         @a.setter
         def a(self, val):
             self.rgba = (self.r, self.g, self.b, val or 1.0)
-
 
     def ScaleImage(img, maxWidth, maxHeight, scaleSmallestDiff=False):
         if isinstance(img, basestring):

@@ -40,7 +40,6 @@ init 3 python in mod:
             results = []
             self.searchQuery = str(self.queryInput)
             
-            
             if renpy.variant('touch'): self.queryInput.Disable()()
             
             if Settings.searchRecursive and len(self.results) > 0: 
@@ -53,7 +52,6 @@ init 3 python in mod:
                 else:
                     varCollection = renpy.store.__dict__
                 self.searchRecursive = False
-            
             
             if self.searchType == 'variable names' or self.searchType == 'labels': 
                 for varName in varCollection:

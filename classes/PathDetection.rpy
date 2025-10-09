@@ -35,10 +35,8 @@ init 2 python in mod:
                 current = renpy.game.script.lookup(renpy.game.context().current)
                 forceableNode = True 
                 
-                
                 if not self.nodeIsBlocking(current):
                     return None
-                
                 
                 next = self.nextNode(current)
                 for i in range(self.lookAheadLimit): 
@@ -52,7 +50,6 @@ init 2 python in mod:
                             break
                         elif isinstance(next, renpy.ast.Jump) or isinstance(next, renpy.ast.Call):
                             forceableNode = False 
-                        
                         
                         next = self.nextNode(next)
                     else:

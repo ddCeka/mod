@@ -288,7 +288,6 @@ init 3 python in mod:
                 gameDirMtime = renpy.os.path.getmtime(self.gameDirPath) if renpy.os.path.isfile(self.gameDirPath) else 0
                 saveDirMtime = renpy.os.path.getmtime(self.saveDirPath) if renpy.os.path.isfile(self.saveDirPath or '') else 0
                 
-                
                 selectedFile = None
                 if gameDirMtime >= saveDirMtime and gameDirMtime > 0:  
                     selectedFile = self.gameDirPath
@@ -320,7 +319,6 @@ init 3 python in mod:
                     print('info: Failed to save file "{}" with error: {}'.format(self.gameDirPath, e))
                     return False
                 
-                
                 if self.saveDirPath:
                     try:
                         shutil.copy(self.gameDirPath, self.saveDirPath)
@@ -351,7 +349,6 @@ init 3 python in mod:
             import json, zipfile
             self._m1_URMFiles__stores = {}
             selectedFile = self.lastModifiedPath
-            
             
             if selectedFile:
                 try:

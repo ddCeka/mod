@@ -6,7 +6,6 @@ init 52 python in mod:
     _constant = True 
 
     version = '1.1'
-    
     Settings = SettingsClass()
     States = StatesClass()
     URMFiles = URMFilesClass()
@@ -140,7 +139,6 @@ init 52 python in mod:
                 if self.screenErrorVariable:
                     self._m1_main__currentScreen = renpy.current_screen()
                 
-                
                 replayScope = {}
                 for k, v in renpy.store.__dict__.items():
                     if not k.startswith('_') and k != 'suppress_overlay':
@@ -161,7 +159,6 @@ init 52 python in mod:
                     self.finishAction()
                 
                 renpy.restart_interaction()
-
 
 init 1999 python in _console:
     console = DebugConsole()

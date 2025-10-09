@@ -51,7 +51,6 @@ screen mod_Dialog(title=None, closeAction=None, xsize=None, modal=False, icon=No
             if dialogBackground:
                 background dialogBackground
             vbox: # Do not use `has vbox` here, for older Ren'Py versions
-
                 frame:
                     background None
                     ysize mod.scalePxInt(40)
@@ -61,7 +60,6 @@ screen mod_Dialog(title=None, closeAction=None, xsize=None, modal=False, icon=No
                             text icon style_suffix 'mod_dialogIcon' yalign .5
                         if title:
                             label title yalign .5
-
                 hbox:
                     style_suffix 'dialogButtons'
 
@@ -78,15 +76,12 @@ screen mod_Dialog(title=None, closeAction=None, xsize=None, modal=False, icon=No
                         else:
                             background None
                             text 'x' size mod.scalePxInt(24) yalign .5 color '#fff0'
-                        
-
                 button:
                     key_events True # We need this to still trigger key events defined inside of this button
                     action NullAction() # Prevent clicking through
                     style_suffix 'dialogContent'
                     has vbox
                     transclude
-
 
 # ==============
 # CONFIRM SCREEN
