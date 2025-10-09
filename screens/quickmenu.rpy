@@ -1,12 +1,12 @@
 
-transform mod_quickmenu_hover:
+transform URM_quickmenu_hover:
     on show:
         linear .2 alpha 1.0
     on hide:
         linear .2 alpha 0.0
 
-screen mod_quickmenu:
-    layer 'mod_Overlay'
+screen URM_quickmenu:
+    layer 'Overlay'
     style_prefix 'mod'
     default hovered = False
 
@@ -15,17 +15,17 @@ screen mod_quickmenu:
             mousearea:
                 xalign mod.Settings.quickmenuAlignX
                 yalign mod.Settings.quickmenuAlignY
-                xysize mod.getScreenSize('mod_quickmenu_contentWrapper')
+                xysize mod.getScreenSize('URM_quickmenu_contentWrapper')
                 hovered SetScreenVariable('hovered', True)
                 unhovered SetScreenVariable('hovered', False)
 
         showif not mod.Settings.quickmenuAutoHide or hovered:
-            use mod_quickmenu_contentWrapper
+            use URM_quickmenu_contentWrapper
 
-screen mod_quickmenu_contentWrapper:
+screen URM_quickmenu_contentWrapper:
     hbox:
         style_prefix 'quick'
-        at mod_quickmenu_hover
+        at URM_quickmenu_hover
         spacing mod.scalePxInt(4)
         xalign mod.Settings.quickmenuAlignX
         yalign mod.Settings.quickmenuAlignY
@@ -33,35 +33,35 @@ screen mod_quickmenu_contentWrapper:
         if mod.Settings.quickmenuVertical:
             vbox:
                 spacing mod.scalePxInt(4)
-                use mod_quickmenu_content
+                use URM_quickmenu_content
         else:
-            use mod_quickmenu_content
+            use URM_quickmenu_content
 
-screen mod_quickmenu_content:
+screen URM_quickmenu_content:
     if mod.Settings.quickmenuBtnBack:
-        use mod_quickmenu_button('\ue045', '{mod_notl}Back{/mod_notl}', Rollback())
+        use URM_quickmenu_button('\ue045', '{urm_notl}Back{/urm_notl}', Rollback())
     if mod.Settings.quickmenuBtnSkip:
-        use mod_quickmenu_button('\ue044', '{mod_notl}Skip{/mod_notl}', Skip(), Skip(True))
+        use URM_quickmenu_button('\ue044', '{urm_notl}Skip{/urm_notl}', Skip(), Skip(True))
     if mod.Settings.quickmenuBtnAuto:
-        use mod_quickmenu_button('\ue01f', '{mod_notl}Auto{/mod_notl}', Preference("auto-forward", "toggle"))
+        use URM_quickmenu_button('\ue01f', '{urm_notl}Auto{/urm_notl}', Preference("auto-forward", "toggle"))
     if mod.Settings.quickmenuBtnQuicksave:
-        use mod_quickmenu_button('\ue161', '{mod_notl}Q.Save{/mod_notl}', QuickSave())
+        use URM_quickmenu_button('\ue161', '{urm_notl}Q.Save{/urm_notl}', QuickSave())
     if mod.Settings.quickmenuBtnSave:
-        use mod_quickmenu_button('\ueb60', '{mod_notl}Save{/mod_notl}', ShowMenu('save'))
+        use URM_quickmenu_button('\ueb60', '{urm_notl}Save{/urm_notl}', ShowMenu('save'))
     if mod.Settings.quickmenuBtnQuickload:
-        use mod_quickmenu_button('\ue2c7', '{mod_notl}Q.Load{/mod_notl}', QuickLoad())
+        use URM_quickmenu_button('\ue2c7', '{urm_notl}Q.Load{/urm_notl}', QuickLoad())
     if mod.Settings.quickmenuBtnLoad:
-        use mod_quickmenu_button('\uf1c7', '{mod_notl}Load{/mod_notl}', ShowMenu('load'))
+        use URM_quickmenu_button('\uf1c7', '{urm_notl}Load{/urm_notl}', ShowMenu('load'))
     if mod.Settings.quickmenuBtnMenu:
-        use mod_quickmenu_button('\ue8b8', '{mod_notl}Prefs{/mod_notl}', ShowMenu('preferences'))
-    if mod.Settings.quickmenuBtnAddon:
-        use mod_quickmenu_button('\ueb8b', '{mod_notl}Addon{/mod_notl}', ShowMenu('addon'))
-    if mod.Settings.quickmenuBtnMod:
-        use mod_quickmenu_button('\ue3c9', '{mod_notl}Mod{/mod_notl}', mod.Open())
+        use URM_quickmenu_button('\ue8b8', '{urm_notl}Prefs{/urm_notl}', ShowMenu('preferences'))
+    if mod.Settings.quickmenuBtnMods:
+        use URM_quickmenu_button('\ueb8b', '{urm_notl}Mods{/urm_notl}', ShowMenu('mods'))
+    if mod.Settings.quickmenuBtnUrm:
+        use URM_quickmenu_button('\ue3c9', '{urm_notl}URM{/urm_notl}', mod.Open())
     if mod.Settings.quickmenuBtnExit:
-        use mod_quickmenu_button('\ueb4f', '{mod_notl}Exit{/mod_notl}', Quit())
+        use URM_quickmenu_button('\ueb4f', '{urm_notl}Exit{/urm_notl}', Quit())
 
-screen mod_quickmenu_button(icon, txt, action, alternate=None):
+screen URM_quickmenu_button(icon, txt, action, alternate=None):
     if mod.Settings.quickmenuStyle == 'buttons':
         use mod_iconButton(icon, txt, action, alternate=alternate)
     elif mod.Settings.quickmenuStyle == 'iconbuttons':

@@ -11,11 +11,11 @@ init 3 python in mod:
             self._m1_textbox__imageTag = None
             self.previewCharacterVarName = None
             self.Settings = TextBoxSettings()
-            self.demoCharacter = renpy.character.ADVCharacter('mod', image='mod', color='#D4ADFC')
+            self.demoCharacter = renpy.character.ADVCharacter('mod', image='Logo', color='#D4ADFC')
         
         @property
         def enabled(self):
-            return renpy.has_screen('mod_say') and bool(Settings.textboxesEnabled or (self.Settings and self.Settings.tempValues != None))
+            return renpy.has_screen('URM_say') and bool(Settings.textboxesEnabled or (self.Settings and self.Settings.tempValues != None))
         
         @enabled.setter
         def enabled(self, val):
@@ -25,7 +25,7 @@ init 3 python in mod:
             self.Settings = TextBoxSettings(charVarName)
             self.previewCharacter = charVarName
             if callable(beforeOpenAction): beforeOpenAction()
-            renpy.call_in_new_context('mod_textboxCustomizer', charVarName=charVarName)
+            renpy.call_in_new_context('URM_textboxCustomizer', charVarName=charVarName)
             if callable(afterCloseAction): afterCloseAction()
             
             
@@ -36,7 +36,7 @@ init 3 python in mod:
                 self.Settings.commitTemp(self.previewCharacterVarName)
             else:
                 self.Settings.dismissTemp()
-            renpy.jump('mod_textboxCustomizer_return')
+            renpy.jump('URM_textboxCustomizer_return')
         
         @property
         def previewCharacter(self):
@@ -68,8 +68,8 @@ init 3 python in mod:
         def sideImage(self):
             if not self._m1_textbox__imageTag: return None
             
-            if self._m1_textbox__imageTag == 'mod':
-                img = 'mod/images/logo.png'
+            if self._m1_textbox__imageTag == 'Logo':
+                img = 'mods/images/logo.png'
             else:
                 img = renpy.get_registered_image('{} {}'.format(renpy.config.side_image_prefix_tag, self._m1_textbox__imageTag))
             
@@ -77,7 +77,7 @@ init 3 python in mod:
                 try:
                     return ScaleImage(img, TextBox.textHeight, TextBox.textHeight)
                 except Exception as e:
-                    print(': Failed to get side image "{}" with error: {}'.format(self._m1_textbox__imageTag, e))
+                    print('0: Failed to get side image "{}" with error: {}'.format(self._m1_textbox__imageTag, e))
         
         @property
         def whatXPadding(self):
@@ -103,7 +103,7 @@ init 3 python in mod:
                     color = self.Settings.whoBackground
                 
                 if self.Settings.whoBackgroundGradient:
-                    return renpy.display.layout.AlphaMask(renpy.display.imagelike.Solid(color), renpy.display.imagelike.Frame('mod/images/textboxGradientCentered.png'))
+                    return renpy.display.layout.AlphaMask(renpy.display.imagelike.Solid(color), renpy.display.imagelike.Frame('mods/images/textboxGradientCentered.'))
                 else:
                     return renpy.display.imagelike.Solid(color)
         
@@ -126,7 +126,7 @@ init 3 python in mod:
                     color = self.Settings.whatBackground
                 
                 if self.Settings.whatBackgroundGradient:
-                    return renpy.display.layout.AlphaMask(renpy.display.imagelike.Solid(color), renpy.display.imagelike.Frame('mod/images/textboxGradient.png'))
+                    return renpy.display.layout.AlphaMask(renpy.display.imagelike.Solid(color), renpy.display.imagelike.Frame('mods/images/textboxGradient.'))
                 else:
                     return renpy.display.imagelike.Solid(color)
         
@@ -177,7 +177,7 @@ init 3 python in mod:
             args = self._m1_textbox__stripUnwantedStyleArgs(args)
             
             
-            args['style'] = 'modSay_text'
+            args['style'] = 'URMSay_text'
             if self.Settings.customSayScreen or self.Settings.whatFont != None: args['font'] = self.whatFont
             if self.Settings.whatColorFromCharacter and 'color' in self.whoArgs:
                 args['color'] = self._m1_textbox__appendColorAlpha(self.whoArgs['color'], self.Settings.whatColor or '#fff')
@@ -233,10 +233,10 @@ init 3 python in mod:
                 args, kwargs = self._m1_textbox__originalSayArgCallback(who, *args, **kwargs)
             
             if self.enabled:
-                if not renpy.get_screen('mod_textboxCustomizer'): 
+                if not renpy.get_screen('URM_textboxCustomizer'): 
                     self.Settings = TextBoxSettings(who)
                 if self.Settings.customSayScreen:
-                    kwargs['screen'] = 'mod_say' 
+                    kwargs['screen'] = 'URM_say' 
                 self._m1_textbox__imageTag = who.image_tag if hasattr(who, 'image_tag') else None
                 self.whoArgs = self._m1_textbox__createWhoArgs(who.who_args if hasattr(who, 'who_args') else {})
                 self.whatArgs = self._m1_textbox__createWhatArgs(who.what_args if hasattr(who, 'what_args') else {})
@@ -266,7 +266,9 @@ init 3 python in mod:
 
     class TextBoxSettings(NonPicklable):
         defaultValues = {
-            'customSayScreen': True,
+            
+            'customSayScreen': True, 
+            
             'whoShown': True,
             'whoColor': None,
             'whoOutlinesEnabled': True,
@@ -286,8 +288,10 @@ init 3 python in mod:
             'whoBackgroundGradient': False,
             'whoBackgroundCharacterColor': False,
             'whoFont': None,
+            
             'sideImageShown': True,
             'sideImagePos': 'left',
+            
             'whatColor': None,
             'whatColorFromCharacter': False,
             'whatOutlinesEnabled': True,
@@ -310,11 +314,11 @@ init 3 python in mod:
         }
         fontOptions = OrderedDict([
             ('DejaVu Sans', 'DejaVuSans.ttf'),
-            ('Roboto', 'mod/framework/Roboto-Regular.ttf'),
-            ('Roboto Mono', 'mod/RobotoMono.ttf'),
-            ('Dancing Script', 'mod/DancingScript.ttf'),
-            ('Caveat', 'mod/Caveat.ttf'),
-            ('Comfortaa', 'mod/Comfortaa.ttf'),
+            ('Roboto', 'mods/framework/Roboto-Regular.ttf'),
+            ('Roboto Mono', 'mods/RobotoMono.ttf'),
+            ('Dancing Script', 'mods/DancingScript.ttf'),
+            ('Caveat', 'mods/Caveat.ttf'),
+            ('Comfortaa', 'mods/Comfortaa.ttf'),
         ])
         
         _m1_textbox__tempValues = None
@@ -330,11 +334,11 @@ init 3 python in mod:
         
         @property
         def store(self):
-            if modFiles.file['textboxCustomizations'] == None: modFiles.file.addStore('textboxCustomizations')
-            return modFiles.file['textboxCustomizations']
+            if URMFiles.file['textboxCustomizations'] == None: URMFiles.file.addStore('textboxCustomizations')
+            return URMFiles.file['textboxCustomizations']
         
         def clear(self):
-            modFiles.file.clearStore('textboxCustomizations')
+            URMFiles.file.clearStore('textboxCustomizations')
         
         def remove(self, charVarName):
             if charVarName in self.store:
@@ -409,5 +413,4 @@ init 3 python in mod:
 
 init 999 python in mod:
     _constant = True
-
     TextBox.attach()

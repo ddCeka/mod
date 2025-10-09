@@ -2,7 +2,7 @@
 # =====================
 # VARIABLES MAIN SCREEN
 # =====================
-screen mod_variables():
+screen URM_variables():
     style_prefix "mod"
     default movingVarName = None
     default colWidth = [mod.scaleX(20), mod.scaleX(20), mod.scaleX(7), mod.scaleX(7), mod.scaleX(7), mod.scaleX(7)]
@@ -25,15 +25,15 @@ screen mod_variables():
             has hbox
             spacing 2
             
-            textbutton '{mod_notl}Variables{/mod_notl}' action SetLocalVariable('expandObjectVars', [])
+            textbutton '{urm_notl}Variables{/urm_notl}' action SetLocalVariable('expandObjectVars', [])
             for i,var in enumerate(expandObjectVars):
                 text '\ue5cc' style_suffix 'icon' yalign .5
                 textbutton mod.scaleText(var.namePath[-1], 10) substitute False sensitive (i < len(expandObjectVars)-1) action SetLocalVariable('expandObjectVars', expandObjectVars[:i+1])
 
         null height mod.scalePxInt(10)
-        frame style_suffix "separator" ysize mod.scalePxInt(2)
+        frame style_suffix "seperator" ysize mod.scalePxInt(2)
 
-        use mod_objectVar(expandObjectVars)
+        use URM_objectVar(expandObjectVars)
 
     else:
         python:
@@ -44,7 +44,7 @@ screen mod_variables():
             xfill True
             hbox:
                 spacing mod.scalePxInt(5)
-                if mod.modFiles.file.filename or len(mod.VarsStore.store) > 0:
+                if mod.URMFiles.file.filename or len(mod.VarsStore.store) > 0:
                     text "Remembered variables: "+str(len(mod.VarsStore.store)) yalign 0.5
                     textbutton "\ue16c" style_suffix "icon_button" hovered mod.Tooltip('Clear variables list') unhovered mod.Tooltip() action If(mod.VarsStore.store.unsaved, mod.Confirm('This will clear the list below, are you sure?', Function(mod.VarsStore.clear), title='Clear list'), Function(mod.VarsStore.clear))
                 else:
@@ -52,56 +52,56 @@ screen mod_variables():
 
             hbox:
                 xalign 1.0
-                textbutton '\ue03c' style_suffix 'icon_button' hovered mod.Tooltip('{mod_notl}Create variable{/mod_notl}') unhovered mod.Tooltip() action Show('mod_createVar')
+                textbutton '\ue03c' style_suffix 'icon_button' hovered mod.Tooltip('{urm_notl}Create variable{/urm_notl}') unhovered mod.Tooltip() action Show('URM_createVar')
                 null width mod.scalePxInt(10)
         null height mod.scalePxInt(10)
-        frame style_suffix "separator" ysize mod.scalePxInt(2)
+        frame style_suffix "seperator" ysize mod.scalePxInt(2)
 
         if len(mod.VarsStore.store) > 0:
             # PAGES
             fixed ysize mod.scalePxInt(50):
                 hbox xalign .5 yoffset 4 spacing 2:
-                    use mod_pages(varPages)
+                    use URM_pages(varPages)
 
-            use mod_tableRow(): # Headers
+            use URM_tableRow(): # Headers
                 hbox xsize colWidth[0]:
                     hbox:
-                        label "{mod_notl}Name{/mod_notl}"
+                        label "{urm_notl}Name{/urm_notl}"
                         if nameSorted == 'asc':
-                            textbutton '{size=-6}\ue316{/size}' yoffset mod.scalePxInt(-4) style_suffix 'icon_textbutton' hovered mod.Tooltip('{mod_notl}Sort descending{/mod_notl}') unhovered mod.Tooltip() action [Function(mod.VarsStore.sort, reverse=True),SetLocalVariable('nameSorted', 'desc')]
+                            textbutton '{size=-6}\ue316{/size}' yoffset mod.scalePxInt(-4) style_suffix 'icon_textbutton' hovered mod.Tooltip('{urm_notl}Sort descending{/urm_notl}') unhovered mod.Tooltip() action [Function(mod.VarsStore.sort, reverse=True),SetLocalVariable('nameSorted', 'desc')]
                         else:
-                            textbutton If(nameSorted,'{size=-6}\ue313{/size}','{size=-6}\ue5d7{/size}') yoffset mod.scalePxInt(-4) style_suffix 'icon_textbutton' hovered mod.Tooltip('{mod_notl}Sort ascending{/mod_notl}') unhovered mod.Tooltip() action [Function(mod.VarsStore.sort),SetLocalVariable('nameSorted', 'asc')]
-                label "{mod_notl}Value{/mod_notl}" xsize colWidth[1]
+                            textbutton If(nameSorted,'{size=-6}\ue313{/size}','{size=-6}\ue5d7{/size}') yoffset mod.scalePxInt(-4) style_suffix 'icon_textbutton' hovered mod.Tooltip('{urm_notl}Sort ascending{/urm_notl}') unhovered mod.Tooltip() action [Function(mod.VarsStore.sort),SetLocalVariable('nameSorted', 'asc')]
+                label "{urm_notl}Value{/urm_notl}" xsize colWidth[1]
                 hbox xsize colWidth[2]:
                     hbox:
-                        label "{mod_notl}Watch{/mod_notl}"
+                        label "{urm_notl}Watch{/urm_notl}"
                         textbutton '{size=-6}\uf1c0{/size}' yoffset mod.scalePxInt(-8) style_suffix 'icon_textbutton' action mod.Confirm('Add this variable to the watchpanel\nSo you can easily view and edit it during playing', title='Watch variable')
                 hbox xsize colWidth[3]:
                     hbox:
                         if not mod.StoreMonitor.isSupported:
-                            label "{mod_notl}Freeze{/mod_notl}" text_color '#ff0000'
-                            textbutton '{size=-6}\uf1c0{/size}' yoffset mod.scalePxInt(-8) style_suffix 'icon_textbutton' action mod.Confirm('A frozen variable cannot change until you unfreeze it\nYou can only change it through mod\n{color=#ff0000}{b}This feature is not supported on the Ren\'Py version used for this game{/b}{/color}', title='Freeze variable')
+                            label "{urm_notl}Freeze{/urm_notl}" text_color '#ff0000'
+                            textbutton '{size=-6}\uf1c0{/size}' yoffset mod.scalePxInt(-8) style_suffix 'icon_textbutton' action mod.Confirm('A frozen variable cannot change until you unfreeze it\nYou can only change it through URM\n{color=#ff0000}{b}This feature is not supported on the Ren\'Py version used for this game{/b}{/color}', title='Freeze variable')
                         elif mod.StoreMonitor.isAttached:
-                            label "{mod_notl}Freeze{/mod_notl}"
-                            textbutton '{size=-6}\uf1c0{/size}' yoffset mod.scalePxInt(-8) style_suffix 'icon_textbutton' action mod.Confirm('A frozen variable cannot change until you unfreeze it\nYou can only change it through mod\n{alpha=.8}{size=-5}Use with care. Freezing important variables could break stuff{/size}{/alpha}', title='Freeze variable')
+                            label "{urm_notl}Freeze{/urm_notl}"
+                            textbutton '{size=-6}\uf1c0{/size}' yoffset mod.scalePxInt(-8) style_suffix 'icon_textbutton' action mod.Confirm('A frozen variable cannot change until you unfreeze it\nYou can only change it through URM\n{alpha=.8}{size=-5}Use with care. Freezing important variables could break stuff{/size}{/alpha}', title='Freeze variable')
                         else:
-                            label "{mod_notl}Freeze{/mod_notl}" text_color '#ff0000'
-                            textbutton '{size=-6}\uf1c0{/size}' yoffset mod.scalePxInt(-8) style_suffix 'icon_textbutton' action mod.Confirm('A frozen variable cannot change until you unfreeze it\nYou can only change it through mod\n{color=#ff0000}{b}mod failed to initialize this feature{/b}{/color}', title='Freeze variable')
+                            label "{urm_notl}Freeze{/urm_notl}" text_color '#ff0000'
+                            textbutton '{size=-6}\uf1c0{/size}' yoffset mod.scalePxInt(-8) style_suffix 'icon_textbutton' action mod.Confirm('A frozen variable cannot change until you unfreeze it\nYou can only change it through URM\n{color=#ff0000}{b}URM failed to initialize this feature{/b}{/color}', title='Freeze variable')
                 hbox xsize colWidth[4]:
                     hbox:
                         if not mod.StoreMonitor.isSupported:
-                            label "{mod_notl}Monitor{/mod_notl}" text_color '#ff0000'
+                            label "{urm_notl}Monitor{/urm_notl}" text_color '#ff0000'
                             textbutton '{size=-6}\uf1c0{/size}' yoffset mod.scalePxInt(-8) style_suffix 'icon_textbutton' action mod.Confirm('You\'ll receive a notification when this variable changes\n{color=#ff0000}{b}This feature is not supported on the Ren\'Py version used for this game{/b}{/color}', title='Monitor variable')
                         elif mod.StoreMonitor.isAttached:
-                            label "{mod_notl}Monitor{/mod_notl}"
+                            label "{urm_notl}Monitor{/urm_notl}"
                             textbutton '{size=-6}\uf1c0{/size}' yoffset mod.scalePxInt(-8) style_suffix 'icon_textbutton' action mod.Confirm('You\'ll receive a notification when this variable changes', title='Monitor variable')
                         else:
-                            label "{mod_notl}Monitor{/mod_notl}" text_color '#ff0000'
-                            textbutton '{size=-6}\uf1c0{/size}' yoffset mod.scalePxInt(-8) style_suffix 'icon_textbutton' action mod.Confirm('You\'ll receive a notification when this variable changes\n{color=#ff0000}{b}mod failed to initialize this feature{/b}{/color}', title='Monitor variable')
+                            label "{urm_notl}Monitor{/urm_notl}" text_color '#ff0000'
+                            textbutton '{size=-6}\uf1c0{/size}' yoffset mod.scalePxInt(-8) style_suffix 'icon_textbutton' action mod.Confirm('You\'ll receive a notification when this variable changes\n{color=#ff0000}{b}URM failed to initialize this feature{/b}{/color}', title='Monitor variable')
                 hbox xsize colWidth[5]:
                     hbox:
-                        label "{mod_notl}Ignore{/mod_notl}"
-                        textbutton '{size=-6}\uf1c0{/size}' yoffset mod.scalePxInt(-8) style_suffix 'icon_textbutton' action mod.Confirm('Ignore this variable in path detection {font=mod/framework/MaterialIcons-Regular.ttf}\ueb80{/font} and/or codeview {font=mod/framework/MaterialIcons-Regular.ttf}\ue4f3{/font}', title='Ignore variable')
+                        label "{urm_notl}Ignore{/urm_notl}"
+                        textbutton '{size=-6}\uf1c0{/size}' yoffset mod.scalePxInt(-8) style_suffix 'icon_textbutton' action mod.Confirm('Ignore this variable in path detection {font=mods/framework/MaterialIcons-Regular.ttf}\ueb80{/font} and/or codeview {font=mods/framework/MaterialIcons-Regular.ttf}\ue4f3{/font}', title='Ignore variable')
 
             viewport:
                 xfill True
@@ -111,9 +111,9 @@ screen mod_variables():
                 scrollbars "vertical"
 
                 # Results
-                use mod_table():
+                use URM_table():
                     for i,(varName,props) in enumerate(list(mod.VarsStore.store.items())[varPages.pageStartIndex:varPages.pageEndIndex]):
-                        use mod_tableRow(i, True):
+                        use URM_tableRow(i, True):
                             hbox xsize colWidth[0] yalign .5:
                                 if 'name' in props:
                                     text mod.scaleText(props['name'], 20) substitute False
@@ -127,25 +127,25 @@ screen mod_variables():
                                     else:
                                         textbutton mod.Var(varName).getButtonValue(23) substitute False action SetLocalVariable('expandObjectVars', [mod.Var(varName)])
                                 else:
-                                    textbutton mod.Var(varName).getButtonValue(19) action Show('mod_modify_value', var=mod.Var(varName)) substitute False
+                                    textbutton mod.Var(varName).getButtonValue(19) action Show('URM_modify_value', var=mod.Var(varName)) substitute False
 
                             hbox xsize colWidth[2]: # Watch
                                 if mod.VarsStore.isWatched(varName):
-                                    use mod_iconButton('\ue8f4', '{mod_notl}Yes{/mod_notl}', action=Function(mod.VarsStore.unwatch, varName))
+                                    use mod_iconButton('\ue8f4', '{urm_notl}Yes{/urm_notl}', action=Function(mod.VarsStore.unwatch, varName))
                                 else:
-                                    use mod_iconButton('\ue8f5', '{mod_notl}No{/mod_notl}', action=Show('mod_remember_var', varName=varName, rememberType='watchVar', defaultName=If('name' in props, props['name'], varName)))
+                                    use mod_iconButton('\ue8f5', '{urm_notl}No{/urm_notl}', action=Show('URM_remember_var', varName=varName, rememberType='watchVar', defaultName=If('name' in props, props['name'], varName)))
 
                             hbox xsize colWidth[3]: # Freeze
                                 if mod.VarsStore.isFrozen(varName):
-                                    use mod_iconButton('\ueb3b', '{mod_notl}Yes{/mod_notl}', action=Function(mod.VarsStore.unfreeze, varName), sensitive=If(mod.VarsStore.isFreezable(varName), None, False))
+                                    use mod_iconButton('\ueb3b', '{urm_notl}Yes{/urm_notl}', action=Function(mod.VarsStore.unfreeze, varName), sensitive=If(mod.VarsStore.isFreezable(varName), None, False))
                                 else:
-                                    use mod_iconButton('\ue798', '{mod_notl}No{/mod_notl}', action=Function(mod.VarsStore.freeze, varName), sensitive=If(mod.VarsStore.isFreezable(varName), None, False))
+                                    use mod_iconButton('\ue798', '{urm_notl}No{/urm_notl}', action=Function(mod.VarsStore.freeze, varName), sensitive=If(mod.VarsStore.isFreezable(varName), None, False))
 
                             hbox xsize colWidth[4]: # Monitor
                                 if mod.VarsStore.isMonitored(varName):
-                                    use mod_iconButton('\ue7f4', '{mod_notl}Yes{/mod_notl}', action=Function(mod.VarsStore.unmonitor, varName), sensitive=If(mod.VarsStore.isMonitorable(varName), None, False))
+                                    use mod_iconButton('\ue7f4', '{urm_notl}Yes{/urm_notl}', action=Function(mod.VarsStore.unmonitor, varName), sensitive=If(mod.VarsStore.isMonitorable(varName), None, False))
                                 else:
-                                    use mod_iconButton('\ue7f6', '{mod_notl}No{/mod_notl}', action=Function(mod.VarsStore.monitor, varName), sensitive=If(mod.VarsStore.isMonitorable(varName), None, False))
+                                    use mod_iconButton('\ue7f6', '{urm_notl}No{/urm_notl}', action=Function(mod.VarsStore.monitor, varName), sensitive=If(mod.VarsStore.isMonitorable(varName), None, False))
 
                             hbox xsize colWidth[5]: # Ignore
                                 hbox spacing 2:
@@ -159,27 +159,27 @@ screen mod_variables():
                                         use mod_iconButton('\ue86f', action=Function(mod.VarsStore.ignore, varName, 'code'))
 
                             hbox spacing 2:
-                                use mod_iconButton('\ue3c9', '{mod_notl}Edit{/mod_notl}', action=Show('mod_remember_var', varName=varName, defaultName=If('name' in props, props['name'], varName)))
-                                use mod_iconButton('\ue872', '{mod_notl}Remove{/mod_notl}', action=mod.Confirm('Are you sure you want to remove this variable?', Function(mod.VarsStore.forget, varName), title='Remove variable'))
+                                use mod_iconButton('\ue3c9', '{urm_notl}Edit{/urm_notl}', action=Show('URM_remember_var', varName=varName, defaultName=If('name' in props, props['name'], varName)))
+                                use mod_iconButton('\ue872', '{urm_notl}Remove{/urm_notl}', action=mod.Confirm('Are you sure you want to remove this variable?', Function(mod.VarsStore.forget, varName), title='Remove variable'))
                                 if movingVarName:
                                     if movingVarName == varName:
-                                        use mod_iconButton('\uf230', '{mod_notl}Cancel{/mod_notl}', action=SetLocalVariable('movingVarName', None))
+                                        use mod_iconButton('\uf230', '{urm_notl}Cancel{/urm_notl}', action=SetLocalVariable('movingVarName', None))
                                     else:
-                                        use mod_iconButton('\ue55c', '{mod_notl}Before this{/mod_notl}', action=[Function(mod.VarsStore.changePos, movingVarName, varName),SetLocalVariable('movingVarName', None)])
+                                        use mod_iconButton('\ue55c', '{urm_notl}Before this{/urm_notl}', action=[Function(mod.VarsStore.changePos, movingVarName, varName),SetLocalVariable('movingVarName', None)])
                                 else:
-                                    use mod_iconButton('\ue89f', '{mod_notl}Move{/mod_notl}', action=SetLocalVariable('movingVarName', varName))
+                                    use mod_iconButton('\ue89f', '{urm_notl}Move{/urm_notl}', action=SetLocalVariable('movingVarName', varName))
 
         else:
             vbox:
                 yoffset mod.scaleY(1.5)
                 xalign 0.5
-                label "{mod_notl}There are no remembered variables{/mod_notl}" xalign 0.5
+                label "{urm_notl}There are no remembered variables{/urm_notl}" xalign 0.5
 
 # ===================
 # MODIFY VALUE SCREEN
 # ===================
-screen mod_modify_value(var, allowRemember=False):
-    layer 'mod_Overlay'
+screen URM_modify_value(var, allowRemember=False):
+    layer 'Overlay'
     style_prefix "mod"
 
     default newValue = var.value
@@ -189,23 +189,23 @@ screen mod_modify_value(var, allowRemember=False):
         autoFocus=True,
         editable=var.isEditable,
         updateScreenVariable='newValue',
-        onEnter=mod.SetVarValue(var, onSuccess=Hide('mod_modify_value'), screenErrorVariable='errorMessage', newValue=modGetScreenVariable('newValue')),
+        onEnter=mod.SetVarValue(var, onSuccess=Hide('URM_modify_value'), screenErrorVariable='errorMessage', newValue=URMGetScreenVariable('newValue')),
     )
 
     on "show" action [mod.Search.queryInput.Disable(),valueInput.Enable()]
 
-    use mod_Dialog(title=If(var.isEditable,'{mod_notl}Modify variable{/mod_notl}','{mod_notl}View variable{/mod_notl}'), closeAction=Hide('mod_modify_value'), modal=True, icon='\ue3c9'):
+    use mod_Dialog(title=If(var.isEditable,'{urm_notl}Modify variable{/urm_notl}','{urm_notl}View variable{/urm_notl}'), closeAction=Hide('URM_modify_value'), modal=True, icon='\ue3c9'):
             vbox xminimum mod.scalePxInt(450) # To force a minimum width on the dialog
             label "[var.nameShortened]"
             null height mod.scalePxInt(10)
 
-            text "{mod_notl}Value type: [var.varType]{/mod_notl}"
+            text "{urm_notl}Value type: [var.varType]{/urm_notl}"
             if var.isExpandable:
                 textbutton var.getButtonValue(23) substitute False action [SetField(mod.Search, 'expandObjectVars', [var]),mod.Open('search')]
             elif var.varType in ['string', 'int', 'float', 'boolean']:
-                text "{mod_notl}Value: {/mod_notl}" yalign .5
+                text "{urm_notl}Value: {/urm_notl}" yalign .5
                 if var.varType == 'boolean':
-                    textbutton "{mod_notl}[newValue]{/mod_notl}" sensitive var.isEditable action ToggleScreenVariable('newValue', True, False)
+                    textbutton "{urm_notl}[newValue]{/urm_notl}" sensitive var.isEditable action ToggleScreenVariable('newValue', True, False)
                 elif var.varType in ['string', 'int', 'float']:
                     vpgrid:
                         cols 1
@@ -231,14 +231,14 @@ screen mod_modify_value(var, allowRemember=False):
 
                     # Remember
                     if mod.VarsStore.has(var.name):
-                        use mod_iconButton('\ue4f8', '{mod_notl}Forget{/mod_notl}', Function(mod.VarsStore.forget, var.name))
+                        use mod_iconButton('\ue4f8', '{urm_notl}Forget{/urm_notl}', Function(mod.VarsStore.forget, var.name))
                     else:
-                        use mod_iconButton('\ue862', '{mod_notl}Remember{/mod_notl}', Show('mod_remember_var', varName=var.name))
+                        use mod_iconButton('\ue862', '{urm_notl}Remember{/urm_notl}', Show('URM_remember_var', varName=var.name))
                     # Watch
                     if mod.VarsStore.isWatched(var.name):
-                        use mod_iconButton('\ue8f5', '{mod_notl}Unwatch{/mod_notl}', Function(mod.VarsStore.unwatch, var.name))
+                        use mod_iconButton('\ue8f5', '{urm_notl}Unwatch{/urm_notl}', Function(mod.VarsStore.unwatch, var.name))
                     else:
-                        use mod_iconButton('\ue8f4', '{mod_notl}Watch{/mod_notl}', Show('mod_remember_var', varName=var.name, rememberType='watchVar'))
+                        use mod_iconButton('\ue8f4', '{urm_notl}Watch{/urm_notl}', Show('URM_remember_var', varName=var.name, rememberType='watchVar'))
 
             hbox:
                 yoffset mod.scalePxInt(15)
@@ -247,17 +247,17 @@ screen mod_modify_value(var, allowRemember=False):
 
                 if var.isEditable:
                     if var.varType != 'unsupported' and var.varType in ['string', 'boolean', 'int', 'float']:
-                        textbutton "{mod_notl}Change{/mod_notl}" style_suffix "buttonPrimary" action valueInput.onEnter
-                    textbutton "{mod_notl}Delete{/mod_notl}" style_suffix 'buttonCancel' align(0.0, 1.0) action [mod.Confirm('I hope you know what you\'re doing, are you sure you want to continue?', Function(var.delete), title='{mod_notl}Deleting a variable{/mod_notl}'),Hide('mod_modify_value')]
-                    textbutton "{mod_notl}Cancel{/mod_notl}" action Hide('mod_modify_value')
+                        textbutton "{urm_notl}Change{/urm_notl}" style_suffix "buttonPrimary" action valueInput.onEnter
+                    textbutton "{urm_notl}Delete{/urm_notl}" style_suffix 'buttonCancel' align(0.0, 1.0) action [mod.Confirm('I hope you know what you\'re doing, are you sure you want to continue?', Function(var.delete), title='{urm_notl}Deleting a variable{/urm_notl}'),Hide('URM_modify_value')]
+                    textbutton "{urm_notl}Cancel{/urm_notl}" action Hide('URM_modify_value')
                 else:
-                    textbutton "{mod_notl}Close{/mod_notl}" action Hide('mod_modify_value')
+                    textbutton "{urm_notl}Close{/urm_notl}" action Hide('URM_modify_value')
 
 # ==================
 # ADD LIST/DICT ITEM
 # ==================
-screen mod_add_item(parentVar):
-    layer 'mod_Overlay'
+screen URM_add_item(parentVar):
+    layer 'Overlay'
     style_prefix "mod"
     
     default itemVal = ''
@@ -269,10 +269,10 @@ screen mod_add_item(parentVar):
         focusFirst=True,
         onSubmit=mod.SetVarValue(
             var=parentVar,
-            onSuccess=Hide('mod_add_item'),
+            onSuccess=Hide('URM_add_item'),
             screenErrorVariable='errorMessage',
-            newValue=modGetScreenVariable('itemVal'),
-            overruleVarType=modGetScreenVariable('valueTypes', modGetScreenVariable('valueTypeIndex')),
+            newValue=URMGetScreenVariable('itemVal'),
+            overruleVarType=URMGetScreenVariable('valueTypes', URMGetScreenVariable('valueTypeIndex')),
             operator=If(parentVar.varType=='list', 'append', '='),
             varChildKey=If(parentVar.varType=='dict', mod.GetScreenInput('itemKey', 'inputs'), None),
         ),
@@ -285,10 +285,10 @@ screen mod_add_item(parentVar):
     key 'K_TAB' action inputs.NextInput()
     key 'shift_K_TAB' action inputs.PreviousInput()
 
-    use mod_Dialog(title='{mod_notl}Add item{/mod_notl}', closeAction=Hide('mod_add_item'), modal=True, icon='\ue146'):
+    use mod_Dialog(title='{urm_notl}Add item{/urm_notl}', closeAction=Hide('URM_add_item'), modal=True, icon='\ue146'):
         label '[parentVar.name]'
         if parentVar.varType=='dict':
-            text "{mod_notl}Key:{/mod_notl}"
+            text "{urm_notl}Key:{/urm_notl}"
             button:
                 xminimum mod.scalePxInt(450)
                 key_events True
@@ -297,10 +297,10 @@ screen mod_add_item(parentVar):
             null height mod.scalePxInt(10)
 
         hbox:
-            text "{mod_notl}Value type:{/mod_notl} " yalign .5
+            text "{urm_notl}Value type:{/urm_notl} " yalign .5
             textbutton valueTypes[valueTypeIndex] action SetScreenVariable('valueTypeIndex', (valueTypeIndex+1) % len(valueTypes))
 
-        text "{mod_notl}Value:{/mod_notl}"
+        text "{urm_notl}Value:{/urm_notl}"
         if valueTypes[valueTypeIndex] == 'boolean':
             textbutton "[itemVal]" action ToggleScreenVariable('itemVal', True, False)
         else:
@@ -316,15 +316,15 @@ screen mod_add_item(parentVar):
         hbox:
             yoffset mod.scalePxInt(15)
             align (1.0,1.0)
-            textbutton "{mod_notl}Add{/mod_notl}" sensitive bool(str(inputs.itemKey)) style_suffix "buttonPrimary" action inputs.onSubmit
+            textbutton "{urm_notl}Add{/urm_notl}" sensitive bool(str(inputs.itemKey)) style_suffix "buttonPrimary" action inputs.onSubmit
             null width mod.scalePxInt(10)
-            textbutton "{mod_notl}Cancel{/mod_notl}" action Hide('mod_add_item')
+            textbutton "{urm_notl}Cancel{/urm_notl}" action Hide('URM_add_item')
 
 # ============
 # REMEMBER VAR
 # ============
-screen mod_remember_var(varName, rememberType='var', defaultName=None):
-    layer 'mod_Overlay'
+screen URM_remember_var(varName, rememberType='var', defaultName=None):
+    layer 'Overlay'
     style_prefix "mod"
     
     if rememberType == 'label':
@@ -334,12 +334,12 @@ screen mod_remember_var(varName, rememberType='var', defaultName=None):
     else:
         default submitAction = Function(mod.VarsStore.remember, varName, mod.GetScreenInput('displayNameInput'))
 
-    default displayNameInput = mod.Input(text=If(defaultName, defaultName, varName), autoFocus=True, onEnter=[submitAction,Hide('mod_remember_var')])
+    default displayNameInput = mod.Input(text=If(defaultName, defaultName, varName), autoFocus=True, onEnter=[submitAction,Hide('URM_remember_var')])
 
     on 'show' action [mod.Search.queryInput.Disable(),displayNameInput.Enable()]
 
-    use mod_Dialog(title=If(rememberType=='label', '{mod_notl}Remember label{/mod_notl}', If(rememberType=='watchVar', '{mod_notl}Watch variable{/mod_notl}', '{mod_notl}Remember variable{/mod_notl}')), closeAction=Hide('mod_remember_var'), modal=True, icon=If(rememberType=='watchVar', '\ue8f4', '\ue862')):
-        text "{mod_notl}Enter a name:{/mod_notl}"
+    use mod_Dialog(title=If(rememberType=='label', '{urm_notl}Remember label{/urm_notl}', If(rememberType=='watchVar', '{urm_notl}Watch variable{/urm_notl}', '{urm_notl}Remember variable{/urm_notl}')), closeAction=Hide('URM_remember_var'), modal=True, icon=If(rememberType=='watchVar', '\ue8f4', '\ue862')):
+        text "{urm_notl}Enter a name:{/urm_notl}"
         button:
             xminimum mod.scalePxInt(450)
             key_events True
@@ -356,27 +356,27 @@ screen mod_remember_var(varName, rememberType='var', defaultName=None):
                 use mod_iconButton('\ueb8b', action=mod.Confirm('Add this variable to the watchpanel\nSo you can easily view and edit it during playing', title='Watch variable'))
             else:
                 use mod_iconButton('\ueb8b', action=mod.Confirm('Add this variable to the variables tab\nSo you can easily find, edit and save them', title='Remember variable'))
-            textbutton "{mod_notl}Save{/mod_notl}" style_suffix "buttonPrimary" action [submitAction,Hide('mod_remember_var')]
-            textbutton "{mod_notl}Cancel{/mod_notl}" action Hide('mod_remember_var')
+            textbutton "{urm_notl}Save{/urm_notl}" style_suffix "buttonPrimary" action [submitAction,Hide('URM_remember_var')]
+            textbutton "{urm_notl}Cancel{/urm_notl}" action Hide('URM_remember_var')
 
 # ===========
 # SAVE SCREEN
 # ===========
-screen mod_save_file():
-    layer 'mod_Overlay'
+screen URM_save_file():
+    layer 'Overlay'
     style_prefix "mod"
     
     default filenameInput = mod.Input(
-        text=If(mod.modFiles.file.filename, mod.modFiles.file.filename and mod.modFiles.file.filename[:-4], mod.modFiles.stripSpecialChars(config.name)),
+        text=If(mod.URMFiles.file.filename, mod.URMFiles.file.filename and mod.URMFiles.file.filename[:-4], mod.URMFiles.stripSpecialChars(config.name)),
         autoFocus=True,
-        onEnter=mod.modFiles.Save(mod.GetScreenInput('filenameInput'), Hide('mod_save_file'), 'errorMessage')
+        onEnter=mod.URMFiles.Save(mod.GetScreenInput('filenameInput'), Hide('URM_save_file'), 'errorMessage')
     )
     default errorMessage = None
 
     on 'show' action [mod.Search.queryInput.Disable(),filenameInput.Enable()]
 
-    use mod_Dialog(title='Save file', closeAction=Hide('mod_save_file'), modal=True, icon='\ue161'):
-        text "{mod_notl}Enter a filename:{/mod_notl}"
+    use mod_Dialog(title='Save file', closeAction=Hide('URM_save_file'), modal=True, icon='\ue161'):
+        text "{urm_notl}Enter a filename:{/urm_notl}"
         button:
             xminimum mod.scalePxInt(450)
             key_events True
@@ -390,27 +390,27 @@ screen mod_save_file():
             yoffset mod.scalePxInt(15)
             align (1.0,1.0)
             spacing mod.scalePxInt(10)
-            textbutton "\ueb8b" style_suffix "icon_button" yalign .5 action mod.Confirm(""".mod files can be shared with anyone and are saved in two locations:\n\n{}\n{}""".format(mod.modFiles.gameDir, mod.modFiles.saveDir or '<Secondary location unavailable in this game>'), title='mod files', promptSubstitution=False)
-            textbutton "{mod_notl}Save{/mod_notl}" style_suffix "buttonPrimary" action filenameInput.onEnter
-            textbutton "{mod_notl}Cancel{/mod_notl}" action Hide('mod_save_file')
+            textbutton "\ueb8b" style_suffix "icon_button" yalign .5 action mod.Confirm(""".URM files can be shared with anyone and are saved in two locations:\n\n{}\n{}""".format(mod.URMFiles.gameDir, mod.URMFiles.saveDir or '<Secondary location unavailable in this game>'), title='URM files', promptSubstitution=False)
+            textbutton "{urm_notl}Save{/urm_notl}" style_suffix "buttonPrimary" action filenameInput.onEnter
+            textbutton "{urm_notl}Cancel{/urm_notl}" action Hide('URM_save_file')
 
 # ===========
 # LOAD SCREEN
 # ===========
-screen mod_load_file():
-    layer 'mod_Overlay'
+screen URM_load_file():
+    layer 'Overlay'
     style_prefix "mod"
     default errorMessage = None
 
-    use mod_Dialog(title='{mod_notl}Open file{/mod_notl}', closeAction=Hide('mod_load_file'), modal=True, icon='\ue2c7'):
-        text '{mod_notl}Select a file to load:{/mod_notl}'
-        if len(mod.modFiles.listFiles()) == 0:
+    use mod_Dialog(title='{urm_notl}Open file{/urm_notl}', closeAction=Hide('URM_load_file'), modal=True, icon='\ue2c7'):
+        text '{urm_notl}Select a file to load:{/urm_notl}'
+        if len(mod.URMFiles.listFiles()) == 0:
             hbox:
                 ysize mod.scalePxInt(300)
                 xsize mod.scalePxInt(650)
                 vbox align (.5,.5) spacing mod.scalePxInt(10):
-                    label 'No .mod files found' xalign .5
-                    text "Looking for files in:\n{}\n{}".format(mod.modFiles.gameDir, mod.modFiles.saveDir or '')
+                    label 'No .urm files found' xalign .5
+                    text "Looking for files in:\n{}\n{}".format(mod.URMFiles.gameDir, mod.URMFiles.saveDir or '')
         else:
             viewport:
                 ysize mod.scalePxInt(300)
@@ -421,14 +421,14 @@ screen mod_load_file():
                 spacing 2
 
                 vbox spacing 2:
-                    for filename,file in mod.modFiles.listFiles().items():
+                    for filename,file in mod.URMFiles.listFiles().items():
                         hbox spacing 2:
                             button:
                                 xfill True right_margin mod.scalePxInt(45)
-                                action mod.modFiles.Load(filename, Hide('mod_load_file'), 'errorMessage')
+                                action mod.URMFiles.Load(filename, Hide('URM_load_file'), 'errorMessage')
                                 vbox:
                                     label filename[:-4]
-                                    text 'Modified: {}'.format(modTimeToText(file.mtime))
+                                    text 'Modified: {}'.format(URMTimeToText(file.mtime))
                                     if file.storeNames:
                                         hbox spacing 2:
                                             if 'vars' in file.storeNames:
@@ -442,7 +442,7 @@ screen mod_load_file():
                                             if 'textboxCustomizations' in file.storeNames:
                                                 text '\ue0b7' style_suffix 'icon'
 
-                            textbutton '\ue872' xoffset -mod.scalePxInt(45) style_suffix 'icon_button' action mod.Confirm('Are you sure you want to delete this file? This cannot be undone', mod.modFiles.Delete(file), title='Confirm deletion')
+                            textbutton '\ue872' xoffset -mod.scalePxInt(45) style_suffix 'icon_button' action mod.Confirm('Are you sure you want to delete this file? This cannot be undone', mod.URMFiles.Delete(file), title='Confirm deletion')
 
             if errorMessage != None:
                 text errorMessage bold True color "#f42929"
@@ -450,28 +450,28 @@ screen mod_load_file():
 # ==================
 # VAR CHANGED SCREEN
 # ==================
-screen mod_var_changed(varName, prevVal):
-    layer 'mod_Overlay'
+screen URM_var_changed(varName, prevVal):
+    layer 'Overlay'
     style_prefix "mod"
     default var = mod.Var(varName)
     default prevValType = mod.Var.getValType(prevVal)
     default errorMessage = None
 
-    use mod_Dialog(title='{mod_notl}Variable changed{/mod_notl}', closeAction=Hide('mod_var_changed'), modal=True):
-        label '{mod_notl}Variable{/mod_notl}'
+    use mod_Dialog(title='{urm_notl}Variable changed{/urm_notl}', closeAction=Hide('URM_var_changed'), modal=True):
+        label '{urm_notl}Variable{/urm_notl}'
         text "[var.name]"
 
         if var.varType != prevValType:
-            text "{mod_notl}Type changed from [prevValType] to [var.varType]{/mod_notl}"
+            text "{urm_notl}Type changed from [prevValType] to [var.varType]{/urm_notl}"
         else:
-            text "{mod_notl}Type: [var.varType]{/mod_notl}"
+            text "{urm_notl}Type: [var.varType]{/urm_notl}"
         null height mod.scalePxInt(10)
 
-        label "{mod_notl}Previous value{/mod_notl}"
-        text "{mod_notl}[prevVal]{/mod_notl}"
+        label "{urm_notl}Previous value{/urm_notl}"
+        text "{urm_notl}[prevVal]{/urm_notl}"
         null height mod.scalePxInt(10)
-        label "{mod_notl}New value{/mod_notl}"
-        text "{mod_notl}[var.value]{/mod_notl}"
+        label "{urm_notl}New value{/urm_notl}"
+        text "{urm_notl}[var.value]{/urm_notl}"
 
         if errorMessage != None:
             use mod_messagebar('error', errorMessage)
@@ -480,13 +480,13 @@ screen mod_var_changed(varName, prevVal):
             yoffset mod.scalePxInt(15)
             align (1.0,1.0)
             if var.varType != 'unsupported':
-                textbutton "{mod_notl}Change{/mod_notl}" style_suffix "buttonPrimary" action [Show('mod_modify_value', var=var),Hide('mod_var_changed')]
+                textbutton "{urm_notl}Change{/urm_notl}" style_suffix "buttonPrimary" action [Show('URM_modify_value', var=var),Hide('URM_var_changed')]
                 null width mod.scalePxInt(10)
-            textbutton "{mod_notl}Revert{/mod_notl}" style_suffix 'buttonCancel' align(0.0, 1.0) action mod.SetVarValue(var, onSuccess=Hide('mod_var_changed'), screenErrorVariable='errorMessage', newValue=prevVal)
+            textbutton "{urm_notl}Revert{/urm_notl}" style_suffix 'buttonCancel' align(0.0, 1.0) action mod.SetVarValue(var, onSuccess=Hide('URM_var_changed'), screenErrorVariable='errorMessage', newValue=prevVal)
             null width mod.scalePxInt(10)
-            textbutton "{mod_notl}Close{/mod_notl}" action Hide('mod_var_changed')
+            textbutton "{urm_notl}Close{/urm_notl}" action Hide('URM_var_changed')
 
-screen mod_objectVar(expandObjectVars):
+screen URM_objectVar(expandObjectVars):
     default objectPages = mod.Pages(len(expandObjectVars[-1].children), itemsPerPage=19)
     default colWidth = [mod.scaleX(25), mod.scaleX(25)]
 
@@ -498,24 +498,24 @@ screen mod_objectVar(expandObjectVars):
         # PAGES
         fixed ysize mod.scalePxInt(50):
             hbox xalign .5 yoffset 4 spacing 2:
-                use mod_pages(objectPages)
+                use URM_pages(objectPages)
             hbox xalign 1.0 yalign .5:
                 text 'Items: {}'.format(len(expandObjectVars[-1].children))
                 null width mod.scalePxInt(10)
 
         if expandObjectVars[-1].varType in ['dict','list']:
-            use mod_tableRow():
-                use mod_iconButton('\ue146', '{mod_notl}Add item{/mod_notl}', Show('mod_add_item', parentVar=expandObjectVars[-1]))
+            use URM_tableRow():
+                use mod_iconButton('\ue146', '{urm_notl}Add item{/urm_notl}', Show('URM_add_item', parentVar=expandObjectVars[-1]))
 
         # Headers
-        use mod_tableRow():
+        use URM_tableRow():
             hbox xsize colWidth[0]:
-                label '{mod_notl}Name{/mod_notl}'
+                label '{urm_notl}Name{/urm_notl}'
             hbox xsize colWidth[1]:
-                label '{mod_notl}Value{/mod_notl}'
+                label '{urm_notl}Value{/urm_notl}'
 
         if len(expandObjectVars[-1].children) == 0:
-            text '{mod_notl}No items{/mod_notl}' xalign .5 yoffset mod.scalePxInt(30)
+            text '{urm_notl}No items{/urm_notl}' xalign .5 yoffset mod.scalePxInt(30)
         else:
             # Results
             viewport:
@@ -525,30 +525,30 @@ screen mod_objectVar(expandObjectVars):
                 draggable True
                 scrollbars "vertical"
 
-                use mod_table():
+                use URM_table():
                     for i,var in enumerate(expandObjectVars[-1].children[objectPages.pageStartIndex:objectPages.pageEndIndex]):
-                        use mod_tableRow(i, True):
+                        use URM_tableRow(i, True):
                             hbox xsize colWidth[0] yalign .5:
                                 text mod.scaleText(var.namePath[-1], 23) substitute False
                             hbox xsize colWidth[1] yalign .5:
                                 if var.isExpandable:
                                     textbutton var.getButtonValue(23) substitute False action AddToSet(expandObjectVars, var)
                                 else:
-                                    textbutton var.getButtonValue(23) substitute False action Show('mod_modify_value', var=var)
+                                    textbutton var.getButtonValue(23) substitute False action Show('URM_modify_value', var=var)
                             hbox spacing 2 yalign .5:
                                 # Remember
                                 if mod.VarsStore.has(var.name):
-                                    use mod_iconButton('\ue4f8', '{mod_notl}Forget{/mod_notl}', Function(mod.VarsStore.forget, var.name))
+                                    use mod_iconButton('\ue4f8', '{urm_notl}Forget{/urm_notl}', Function(mod.VarsStore.forget, var.name))
                                 else:
-                                    use mod_iconButton('\ue862', '{mod_notl}Remember{/mod_notl}', Show('mod_remember_var', varName=var.name))
+                                    use mod_iconButton('\ue862', '{urm_notl}Remember{/urm_notl}', Show('URM_remember_var', varName=var.name))
                                 # Watch
                                 if mod.VarsStore.isWatched(var.name):
-                                    use mod_iconButton('\ue8f5', '{mod_notl}Unwatch{/mod_notl}', Function(mod.VarsStore.unwatch, var.name))
+                                    use mod_iconButton('\ue8f5', '{urm_notl}Unwatch{/urm_notl}', Function(mod.VarsStore.unwatch, var.name))
                                 else:
-                                    use mod_iconButton('\ue8f4', '{mod_notl}Watch{/mod_notl}', Show('mod_remember_var', varName=var.name, rememberType='watchVar'))
+                                    use mod_iconButton('\ue8f4', '{urm_notl}Watch{/urm_notl}', Show('URM_remember_var', varName=var.name, rememberType='watchVar'))
 
-screen mod_createVar():
-    layer 'mod_Overlay'
+screen URM_createVar():
+    layer 'Overlay'
     style_prefix "mod"
     
     default itemName = ''
@@ -561,12 +561,12 @@ screen mod_createVar():
         ],
         focusFirst=True,
         onSubmit=mod.CreateVar(
-            varName=modGetScreenVariable('itemName'),
-            varVal=modGetScreenVariable('itemVal'),
-            varType=modGetScreenVariable('valueTypes', modGetScreenVariable('valueTypeIndex')),
-            onSuccess=Hide('mod_createVar'),
+            varName=URMGetScreenVariable('itemName'),
+            varVal=URMGetScreenVariable('itemVal'),
+            varType=URMGetScreenVariable('valueTypes', URMGetScreenVariable('valueTypeIndex')),
+            onSuccess=Hide('URM_createVar'),
             screenErrorVariable='errorMessage',
-            overwrite=modGetScreenVariable('overwrite'),
+            overwrite=URMGetScreenVariable('overwrite'),
         ),
     )
     default errorMessage = None
@@ -577,8 +577,8 @@ screen mod_createVar():
     key 'K_TAB' action inputs.NextInput()
     key 'shift_K_TAB' action inputs.PreviousInput()
 
-    use mod_Dialog(title='{mod_notl}Create variable{/mod_notl}', closeAction=Hide('mod_createVar'), modal=True, icon='\ue146'):
-        text "{mod_notl}Name:{/mod_notl}"
+    use mod_Dialog(title='{urm_notl}Create variable{/urm_notl}', closeAction=Hide('URM_createVar'), modal=True, icon='\ue146'):
+        text "{urm_notl}Name:{/urm_notl}"
         button:
             xminimum mod.scalePxInt(450)
             key_events True
@@ -589,10 +589,10 @@ screen mod_createVar():
         null height mod.scalePxInt(10)
 
         hbox:
-            text "{mod_notl}Value type:{/mod_notl} " yalign .5
+            text "{urm_notl}Value type:{/urm_notl} " yalign .5
             textbutton valueTypes[valueTypeIndex] action SetScreenVariable('valueTypeIndex', (valueTypeIndex+1) % len(valueTypes))
 
-        text "{mod_notl}Value:{/mod_notl}"
+        text "{urm_notl}Value:{/urm_notl}"
         if valueTypes[valueTypeIndex] == 'boolean':
             textbutton "[itemVal]" action ToggleScreenVariable('itemVal', True, False)
         else:
@@ -608,6 +608,6 @@ screen mod_createVar():
         hbox:
             yoffset mod.scalePxInt(15)
             align (1.0,1.0)
-            textbutton "{mod_notl}Add{/mod_notl}" sensitive bool(str(inputs.itemName)) style_suffix "buttonPrimary" action inputs.onSubmit
+            textbutton "{urm_notl}Add{/urm_notl}" sensitive bool(str(inputs.itemName)) style_suffix "buttonPrimary" action inputs.onSubmit
             null width mod.scalePxInt(10)
-            textbutton "{mod_notl}Cancel{/mod_notl}" action Hide('mod_createVar')
+            textbutton "{urm_notl}Cancel{/urm_notl}" action Hide('URM_createVar')

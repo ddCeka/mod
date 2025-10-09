@@ -50,7 +50,7 @@ init -999 python in mod:
         
         def setTheme(self, theme):
             if not isinstance(theme, dict):
-                raise Exception(': supplied theme is not a dict')
+                raise Exception('0: supplied theme is not a dict')
             elif not self.isCurrentTheme(theme):
                 self._m1_10theme__theme.update(theme)
                 self._m1_10theme__isDark = None

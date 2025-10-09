@@ -31,7 +31,7 @@ init 3 python in mod:
         
         def match(self, query):
             """ Check if this character matches `query` """
-            if not isinstance(query, basestring): raise Exception('Character query should be a string, got {}'.format(type(query)))
+            if not isinstance(query, basestring): raise Exception('Characterquery should be a string, got {}'.format(type(query)))
             query = query.lower()
             return (query in self.name.lower() or query in self.displayName.lower() or query in self.varName.lower())
         
@@ -54,7 +54,7 @@ init 3 python in mod:
                 return renpy.substitute(self.name)
             except Exception as e:
                 if not self._m1_Characters__substituionErrorLogged:
-                    print(': Failed to substitute name "{}" for character "{}". Error: {}'.format(self.name, self.varName, e))
+                    print('info: Failed to substitute name "{}" for character "{}". Error: {}'.format(self.name, self.varName, e))
                     self._m1_Characters__substituionErrorLogged = True
                 return self.name
         

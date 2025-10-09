@@ -5,11 +5,11 @@ init 3 python in mod:
     class LabelsStoreClass(NonPicklable):
         @property
         def store(self):
-            if modFiles.file['labels'] == None: modFiles.file.addStore('labels')
-            return modFiles.file['labels']
+            if URMFiles.file['labels'] == None: URMFiles.file.addStore('labels')
+            return URMFiles.file['labels']
         
         def clear(self):
-            modFiles.file.clearStore('labels')
+            URMFiles.file.clearStore('labels')
         
         def remember(self, labelName, displayName):
             """ Add `labelName` to remembered labels list """
@@ -105,19 +105,19 @@ init 3 python in mod:
 
     class LabelImage(renpy.display.core.Displayable):
         
-        def __init__(self, modLabel, desaturated=False):
+        def __init__(self, urmLabel, desaturated=False):
             super(LabelImage, self).__init__()
-            self.modLabel = modLabel
+            self.urmLabel = urmLabel
             self.desaturated = desaturated
         
         def render(self, width, height, st, at):
             rv = renpy.display.render.Render(width, height)
             
-            if self.modLabel.hasImage: 
+            if self.urmLabel.hasImage: 
                 if self.desaturated:
-                    imgRender = renpy.display.render.render(self.modLabel.getImageDesaturated(width, height), width, height, st, at)
+                    imgRender = renpy.display.render.render(self.urmLabel.getImageDesaturated(width, height), width, height, st, at)
                 else:
-                    imgRender = renpy.display.render.render(self.modLabel.getImage(width, height), width, height, st, at)
+                    imgRender = renpy.display.render.render(self.urmLabel.getImage(width, height), width, height, st, at)
                 rv.blit(imgRender, (0, 0))
             
             else: 

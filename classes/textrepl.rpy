@@ -9,11 +9,11 @@ init 3 python in mod:
         
         @property
         def store(self):
-            if modFiles.file['replacements'] == None: modFiles.file.addStore('replacements')
-            return modFiles.file['replacements']
+            if URMFiles.file['replacements'] == None: URMFiles.file.addStore('replacements')
+            return URMFiles.file['replacements']
         
         def clear(self):
-            modFiles.file.clearStore('replacements')
+            URMFiles.file.clearStore('replacements')
         
         def changePos(self, sourceReplOriginal, targetReplOriginal):
             if sourceReplOriginal in self.store and targetReplOriginal in self.store:
@@ -114,7 +114,6 @@ init 3 python in mod:
                 text = replacement.sub(self.store[original]['replacement'], text)
             
             return text
-
 
 init 999 python in mod:
     TextRepl.attachFilters()

@@ -55,8 +55,8 @@ style mod_buttonSuccess_text is mod_button_text:
 
 style mod_icon_button is mod_button
 style mod_icon_button_text is mod_button_text:
-    font 'mod/framework/MaterialIconsOutlined-Regular.otf'
-    hover_font 'mod/framework/MaterialIcons-Regular.ttf'
+    font 'mods/framework/MaterialIconsOutlined-Regular.otf'
+    hover_font 'mods/framework/MaterialIcons-Regular.ttf'
 
 ##############
 # ICONBUTTON #
@@ -77,7 +77,7 @@ screen mod_iconButton(icon, text=None, action=None, xsize=None, sensitive=None, 
                     text text style_suffix 'button_text' yalign .5
         else: # Icon only button
             text icon style_suffix 'icon_button_text' yalign .5
-# We have this screen because in some cases updating the `icon` won't work
+# We have this screen because in some cases updating the `icon` for `URM_iconbutton` won't work
 screen mod_checkbox(checked, text, action=None, xsize=None, sensitive=None):
     style_prefix 'mod'
 
@@ -94,7 +94,7 @@ screen mod_checkbox(checked, text, action=None, xsize=None, sensitive=None):
                 else:
                     text '\ue909' style_suffix 'icon_button_text'
             text text style_suffix 'button_text' yalign .5
-# We have this screen because in some cases updating the `icon` won't work
+# We have this screen because in some cases updating the `icon` for `URM_iconbutton` won't work
 screen mod_radiobutton(checked, text, action=None, xsize=None, sensitive=None):
     style_prefix 'mod'
 

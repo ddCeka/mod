@@ -47,6 +47,7 @@ init -999 python in mod:
             
             if renpy.variant('touch'): self.Disable()()
             
+            
             if self.onEnter:
                 actions = self.onEnter if isinstance(self.onEnter, list) else [self.onEnter]
                 for action in actions:
@@ -152,6 +153,6 @@ init -999 python in mod:
                 input = scope[self.inputName]
             
             if input == None:
-                raise Exception(': Input screenvariable "{}" not found'.format(self.groupName or self.inputName))
+                raise Exception('info: Input screenvariable "{}" not found'.format(self.groupName or self.inputName))
             else:
                 return str(input)

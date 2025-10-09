@@ -40,6 +40,7 @@ init 3 python in mod:
             results = []
             self.searchQuery = str(self.queryInput)
             
+            
             if renpy.variant('touch'): self.queryInput.Disable()()
             
             if Settings.searchRecursive and len(self.results) > 0: 
@@ -52,6 +53,7 @@ init 3 python in mod:
                 else:
                     varCollection = renpy.store.__dict__
                 self.searchRecursive = False
+            
             
             if self.searchType == 'variable names' or self.searchType == 'labels': 
                 for varName in varCollection:
@@ -161,7 +163,7 @@ init 3 python in mod:
                     if len(varNames) > 0:
                         return varNames
             except Exception as e:
-                print(': matchVarValue failed for variable "{}". {}'.format(varName, e))
+                print('info: matchVarValue failed for variable "{}". {}'.format(varName, e))
         
         def matchVarName(self, varName, query, parentVarName=None):
             """
@@ -224,7 +226,7 @@ init 3 python in mod:
                 else:
                     return [Var(fullVarName)] if self._m1_search__matchStringValue(varName, query) else None
             except Exception as e:
-                print(': matchVarName failed for variable "{}". {}'.format(varName, e))
+                print('info: matchVarName failed for variable "{}". {}'.format(varName, e))
         
         def _m1_search__matchStringValue(self, val, query):
             if Settings.useWildcardSearch:

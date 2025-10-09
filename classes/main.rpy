@@ -1,13 +1,15 @@
 
 init python:
-    MF2.load(['dialogs','extra','inputs','tooltips'], 'mod', 'mod/framework')
+    MF2.load(['dialogs','extra','inputs','tooltips'], 'mod', 'mods/framework')
 
 init 52 python in mod:
     _constant = True 
-    version = '1.0'
+
+    version = '1.1'
+    
     Settings = SettingsClass()
     States = StatesClass()
-    modFiles = modFilesClass()
+    URMFiles = URMFilesClass()
     VarsStore = VarsStoreClass()
     LabelsStore = LabelsStoreClass()
     Search = SearchClass()
@@ -29,26 +31,26 @@ init 52 python in mod:
             renpy.config.gestures['s_e_n'] = 'alt_K_m'
             States.gestureInitialized = True
         
-        if not 'mod_notl' in renpy.config.custom_text_tags: 
+        if not 'urm_notl' in renpy.config.custom_text_tags: 
             def notl(tag, argument, contents): return contents
-            renpy.config.custom_text_tags['mod_notl'] = notl
+            renpy.config.custom_text_tags['urm_notl'] = notl
 
     def afterLoad(): 
-        renpy.show_screen('mod_overlay')
-        if 'mod_quickmenu' not in renpy.config.overlay_screens: renpy.config.overlay_screens.append('mod_quickmenu')
+        renpy.show_screen('URM_overlay')
+        if 'URM_quickmenu' not in renpy.config.overlay_screens: renpy.config.overlay_screens.append('URM_quickmenu')
         StoreMonitor.init()
         
         SetDialogTransparency(Settings.themeTransparency, doNotRebuild=True, doNotSave=True)()
         if Settings.theme != 'Default':
             SetTheme(Settings.theme, doNotSave=True)()
         
-        modFiles.autoLoad()
-
+        URMFiles.autoLoad()
+        
     def onLabelCalled(label, called):
         if label == 'start':
             afterLoad()
         elif label == '_start_replay':
-            renpy.show_screen('mod_overlay')
+            renpy.show_screen('URM_overlay')
 
     class Open(NonPicklable):
         def __init__(self, screen=None):
@@ -60,10 +62,9 @@ init 52 python in mod:
             else:
                 if self.screen:
                     Settings.currentScreen = self.screen
-                
                 else:
                     renpy.take_screenshot()
-                    renpy.run(renpy.store.Show('mod_main'))
+                    renpy.run(renpy.store.Show('URM_main'))
 
     def scale(percentage, size):
         return int((percentage / 100.0) * size)
@@ -108,19 +109,19 @@ init 52 python in mod:
         try:
             Settings.touchPosition = (drags[0].x, drags[0].y)
         except Exception as e:
-            print(': Failed to save touchbutton position: {}'.format(e))
+            print('info: Failed to save touchbutton position: {}'.format(e))
 
     def progressDragged(drags, *args, **kwargs):
         try:
             Settings.progressPosition = (drags[0].x, drags[0].y)
         except Exception as e:
-            print(': Failed to save progress position: {}'.format(e))
+            print('info: Failed to save progress position: {}'.format(e))
 
     class OpenConsole(NonPicklable):
         def __call__(self):
             renpy.store._console.enter()
 
-    class modReplay(NonPicklable):
+    class URMReplay(NonPicklable):
         def __init__(self, label, finishAction=None, screenErrorVariable=None):
             self.label = label
             self.finishAction = finishAction
@@ -138,6 +139,7 @@ init 52 python in mod:
             else:
                 if self.screenErrorVariable:
                     self._m1_main__currentScreen = renpy.current_screen()
+                
                 
                 replayScope = {}
                 for k, v in renpy.store.__dict__.items():
@@ -166,27 +168,27 @@ init 1999 python in _console:
 
 init 999 python:
     mod.init()
-    
-    MF2.loadFile('mod/mod_styles.rpy', 'mod')
-    MF2.loadFile('mod/screens/main.rpy', 'mod')
-    MF2.loadFile('mod/screens/search.rpy', 'mod')
-    MF2.loadFile('mod/screens/vars.rpy', 'mod')
-    MF2.loadFile('mod/screens/snapshots.rpy', 'mod')
-    MF2.loadFile('mod/screens/labels.rpy', 'mod')
-    MF2.loadFile('mod/screens/watchpanel.rpy', 'mod')
-    MF2.loadFile('mod/screens/textbox.rpy', 'mod')
-    MF2.loadFile('mod/screens/textrepl.rpy', 'mod')
-    MF2.loadFile('mod/screens/choices.rpy', 'mod')
-    MF2.loadFile('mod/screens/gamesaves.rpy', 'mod')
-    MF2.loadFile('mod/screens/paths.rpy', 'mod')
-    MF2.loadFile('mod/screens/progress.rpy', 'mod')
-    MF2.loadFile('mod/screens/options.rpy', 'mod')
-    MF2.loadFile('mod/screens/utils.rpy', 'mod')
-    MF2.loadFile('mod/screens/quickmenu.rpy', 'mod')
-    MF2.loadFile('mod/screens/codeview.rpy', 'mod')
+        
+    MF2.loadFile('mods/URM_styles.rpy', 'mod')
+    MF2.loadFile('mods/screens/main.rpy', 'mod')
+    MF2.loadFile('mods/screens/search.rpy', 'mod')
+    MF2.loadFile('mods/screens/vars.rpy', 'mod')
+    MF2.loadFile('mods/screens/snapshots.rpy', 'mod')
+    MF2.loadFile('mods/screens/labels.rpy', 'mod')
+    MF2.loadFile('mods/screens/watchpanel.rpy', 'mod')
+    MF2.loadFile('mods/screens/textbox.rpy', 'mod')
+    MF2.loadFile('mods/screens/textrepl.rpy', 'mod')
+    MF2.loadFile('mods/screens/choices.rpy', 'mod')
+    MF2.loadFile('mods/screens/gamesaves.rpy', 'mod')
+    MF2.loadFile('mods/screens/paths.rpy', 'mod')
+    MF2.loadFile('mods/screens/progress.rpy', 'mod')
+    MF2.loadFile('mods/screens/options.rpy', 'mod')
+    MF2.loadFile('mods/screens/utils.rpy', 'mod')
+    MF2.loadFile('mods/screens/quickmenu.rpy', 'mod')
+    MF2.loadFile('mods/screens/codeview.rpy', 'mod')
         
     renpy.config.after_load_callbacks.append(mod.afterLoad)
     mod.LabelMon.onLabelCalled.append(mod.onLabelCalled)
         
     if mod.Settings.skipSplashscreen:
-        renpy.config.label_overrides['splashscreen'] = 'mod_splashscreen'
+        renpy.config.label_overrides['splashscreen'] = 'URM_splashscreen'

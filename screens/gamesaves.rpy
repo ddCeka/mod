@@ -1,22 +1,22 @@
 
-screen mod_gamesaves():
+screen URM_gamesaves():
     style_prefix 'mod'
     default slotRegEx = '([0-9]+|quick)-([0-9]+)'
 
     hbox:
         vbox xsize mod.scaleX(22.8):
             hbox xsize mod.scaleX(22.8):
-                label '{mod_notl}Quick resume{/mod_notl}' yalign .5
+                label '{urm_notl}Quick resume{/urm_notl}' yalign .5
                 textbutton "\ueb8b" style_suffix "icon_button" xalign 1.0 hovered mod.Tooltip("Explain quick resume") unhovered mod.Tooltip() action mod.Confirm("""The game will immediately load this save after starting the game\nThis skips the title screen and menu, you're directly back in the game\n\n{b}IMPORTANT:{/b} This save will be deleted after it has been loaded""", title='Quick resume')
-            use mod_gamesaves_button('_reload-1')
+            use URM_gamesaves_button('_reload-1')
 
             null height mod.scalePxInt(10)
 
-            label '{mod_notl}Newest save{/mod_notl}'
-            use mod_gamesaves_button(renpy.newest_slot(slotRegEx))
+            label '{urm_notl}Newest save{/urm_notl}'
+            use URM_gamesaves_button(renpy.newest_slot(slotRegEx))
 
         null width mod.scalePxInt(10)
-        frame style_suffix "vseparator" xsize mod.scalePxInt(2)
+        frame style_suffix "vseperator" xsize mod.scalePxInt(2)
         null width mod.scalePxInt(10)
 
         vbox:
@@ -24,7 +24,7 @@ screen mod_gamesaves():
                 hbox:
                     text mod.Gamesaves.pageName yalign .5 substitute False style_suffix 'label_text'
                     null width mod.scalePxInt(10)
-                    textbutton "\ue9a2" style_suffix "icon_button" xalign 1.0 hovered mod.Tooltip("{mod_notl}Rename page{/mod_notl}") unhovered mod.Tooltip() action Show('mod_gamesaves_pagename')
+                    textbutton "\ue9a2" style_suffix "icon_button" xalign 1.0 hovered mod.Tooltip("{urm_notl}Rename page{/urm_notl}") unhovered mod.Tooltip() action Show('URM_gamesaves_pagename')
 
                 # PAGES
                 hbox xalign 1.0:
@@ -37,9 +37,9 @@ screen mod_gamesaves():
                         textbutton If(page<10, '0[page]', '[page]') sensitive (page != mod.Gamesaves.page) action SetField(mod.Gamesaves, 'page', page)
 
                     textbutton "\ue409" style_suffix 'icon_button' action SetField(mod.Gamesaves, 'page', mod.Gamesaves.nextPage) yalign .5 hovered mod.Tooltip('Go to next page') unhovered mod.Tooltip()
-                    textbutton "\uf045" style_suffix 'icon_button' action Show('mod_gamesaves_pagenumber') yalign .5 hovered mod.Tooltip('Enter page number') unhovered mod.Tooltip()
+                    textbutton "\uf045" style_suffix 'icon_button' action Show('URM_gamesaves_pagenumber') yalign .5 hovered mod.Tooltip('Enter page number') unhovered mod.Tooltip()
 
-            frame style_suffix "separator" ysize mod.scalePxInt(2)
+            frame style_suffix "seperator" ysize mod.scalePxInt(2)
             null height mod.scalePxInt(10)
             
             vpgrid:
@@ -51,10 +51,10 @@ screen mod_gamesaves():
                 spacing mod.scalePxInt(10)
 
                 for position in range(1,10):
-                    use mod_gamesaves_button('{}-{}'.format(mod.Gamesaves.page, position))
+                    use URM_gamesaves_button('{}-{}'.format(mod.Gamesaves.page, position))
 
 
-screen mod_gamesaves_button(slot):
+screen URM_gamesaves_button(slot):
     default thumbnailScale = 22.8
 
     vbox:
@@ -73,17 +73,17 @@ screen mod_gamesaves_button(slot):
         null height 2
         hbox xsize mod.scaleX(thumbnailScale):
             hbox spacing 2:
-                textbutton "\ue2c7" style_suffix "icon_button" hovered mod.Tooltip('{mod_notl}Load game{/mod_notl}') unhovered mod.Tooltip() action If(renpy.can_load(slot), Function(mod.Gamesaves.load, slot), None)
-                textbutton "\ue161" style_suffix "icon_button" hovered mod.Tooltip('{mod_notl}Save game{/mod_notl}') unhovered mod.Tooltip() action Function(mod.Gamesaves.save, slot)
+                textbutton "\ue2c7" style_suffix "icon_button" hovered mod.Tooltip('{urm_notl}Load game{/urm_notl}') unhovered mod.Tooltip() action If(renpy.can_load(slot), Function(mod.Gamesaves.load, slot), None)
+                textbutton "\ue161" style_suffix "icon_button" hovered mod.Tooltip('{urm_notl}Save game{/urm_notl}') unhovered mod.Tooltip() action Function(mod.Gamesaves.save, slot)
 
             hbox xalign 1.0 spacing 2:
-                textbutton "\ue89f" style_suffix "icon_button" hovered mod.Tooltip('{mod_notl}Move save{/mod_notl}') unhovered mod.Tooltip() action If(renpy.can_load(slot), Function(mod.Gamesaves.move, slot), None)
-                textbutton "\ue173" style_suffix "icon_button" hovered mod.Tooltip('{mod_notl}Copy save{/mod_notl}') unhovered mod.Tooltip() action If(renpy.can_load(slot), Function(mod.Gamesaves.copy, slot), None)
-                textbutton "\ue872" style_suffix "icon_button" hovered mod.Tooltip('{mod_notl}Delete save{/mod_notl}') unhovered mod.Tooltip() action If(renpy.can_load(slot), Function(mod.Gamesaves.delete, slot), None)
+                textbutton "\ue89f" style_suffix "icon_button" hovered mod.Tooltip('{urm_notl}Move save{/urm_notl}') unhovered mod.Tooltip() action If(renpy.can_load(slot), Function(mod.Gamesaves.move, slot), None)
+                textbutton "\ue173" style_suffix "icon_button" hovered mod.Tooltip('{urm_notl}Copy save{/urm_notl}') unhovered mod.Tooltip() action If(renpy.can_load(slot), Function(mod.Gamesaves.copy, slot), None)
+                textbutton "\ue872" style_suffix "icon_button" hovered mod.Tooltip('{urm_notl}Delete save{/urm_notl}') unhovered mod.Tooltip() action If(renpy.can_load(slot), Function(mod.Gamesaves.delete, slot), None)
 
 
-screen mod_gamesaves_selectslot(defaultPage, defaultPosition, callback, confirmButtonText='{mod_notl}OK{/mod_notl}'):
-    layer 'mod_Overlay'
+screen URM_gamesaves_selectslot(defaultPage, defaultPosition, callback, confirmButtonText='{urm_notl}OK{/urm_notl}'):
+    layer 'Overlay'
     style_prefix "mod"
     
     default inputs = mod.InputGroup([
@@ -91,13 +91,13 @@ screen mod_gamesaves_selectslot(defaultPage, defaultPosition, callback, confirmB
             ('position', mod.Input(text=defaultPosition)),
         ],
         focusFirst=True,
-        onSubmit=[Function(callback, mod.GetScreenInput('page', 'inputs'), mod.GetScreenInput('position', 'inputs')),Hide('mod_gamesaves_selectslot')],
+        onSubmit=[Function(callback, mod.GetScreenInput('page', 'inputs'), mod.GetScreenInput('position', 'inputs')),Hide('URM_gamesaves_selectslot')],
     )
 
     key 'K_TAB' action inputs.NextInput()
     key 'shift_K_TAB' action inputs.PreviousInput()
 
-    use mod_Dialog(title='{mod_notl}Select save slot{/mod_notl}', closeAction=Hide('mod_gamesaves_selectslot'), modal=True, icon='\ue161'):
+    use mod_Dialog(title='{urm_notl}Select save slot{/urm_notl}', closeAction=Hide('URM_gamesaves_selectslot'), modal=True, icon='\ue161'):
         text "Page:"
         button:
             xminimum mod.scalePxInt(450)
@@ -117,16 +117,16 @@ screen mod_gamesaves_selectslot(defaultPage, defaultPosition, callback, confirmB
             align (1.0,1.0)
             textbutton confirmButtonText style_suffix "buttonPrimary" action inputs.onSubmit
             null width mod.scalePxInt(10)
-            textbutton "{mod_notl}Cancel{/mod_notl}" action Hide('mod_gamesaves_selectslot')
+            textbutton "{urm_notl}Cancel{/urm_notl}" action Hide('URM_gamesaves_selectslot')
 
 
-screen mod_gamesaves_pagenumber():
-    layer 'mod_Overlay'
+screen URM_gamesaves_pagenumber():
+    layer 'Overlay'
     style_prefix "mod"
     
-    default pageInput = mod.Input(text=str(mod.Gamesaves.page), autoFocus=True, onEnter=[mod.Gamesaves.SetPage(mod.GetScreenInput('pageInput')),Hide('mod_gamesaves_pagenumber')])
+    default pageInput = mod.Input(text=str(mod.Gamesaves.page), autoFocus=True, onEnter=[mod.Gamesaves.SetPage(mod.GetScreenInput('pageInput')),Hide('URM_gamesaves_pagenumber')])
 
-    use mod_Dialog(title='{mod_notl}Enter a page number{/mod_notl}', closeAction=Hide('mod_gamesaves_pagenumber'), modal=True, icon='\uf045'):
+    use mod_Dialog(title='{urm_notl}Enter a page number{/urm_notl}', closeAction=Hide('URM_gamesaves_pagenumber'), modal=True, icon='\uf045'):
         text "Page:"
         button:
             xminimum mod.scalePxInt(350)
@@ -137,19 +137,19 @@ screen mod_gamesaves_pagenumber():
         hbox:
             yoffset mod.scalePxInt(15)
             align (1.0,1.0)
-            textbutton '{mod_notl}Open{/mod_notl}' style_suffix "buttonPrimary" action pageInput.onEnter
+            textbutton '{urm_notl}Open{/urm_notl}' style_suffix "buttonPrimary" action pageInput.onEnter
             null width mod.scalePxInt(10)
-            textbutton "{mod_notl}Cancel{/mod_notl}" action Hide('mod_gamesaves_pagenumber')
+            textbutton "{urm_notl}Cancel{/urm_notl}" action Hide('URM_gamesaves_pagenumber')
 
 
-screen mod_gamesaves_pagename():
-    layer 'mod_Overlay'
+screen URM_gamesaves_pagename():
+    layer 'Overlay'
     style_prefix "mod"
     
-    default pageNameInput = mod.Input(text=mod.Gamesaves.pageName, autoFocus=True, onEnter=[mod.Gamesaves.SetPageName(mod.GetScreenInput('pageNameInput')),Hide('mod_gamesaves_pagename')])
+    default pageNameInput = mod.Input(text=mod.Gamesaves.pageName, autoFocus=True, onEnter=[mod.Gamesaves.SetPageName(mod.GetScreenInput('pageNameInput')),Hide('URM_gamesaves_pagename')])
 
-    use mod_Dialog(title='{mod_notl}Change page name{/mod_notl}', closeAction=Hide('mod_gamesaves_pagename'), modal=True, icon='\ue9a2'):
-        text "{mod_notl}Page name:{/mod_notl}"
+    use mod_Dialog(title='{urm_notl}Change page name{/urm_notl}', closeAction=Hide('URM_gamesaves_pagename'), modal=True, icon='\ue9a2'):
+        text "{urm_notl}Page name:{/urm_notl}"
         button:
             xminimum mod.scalePxInt(350)
             key_events True
@@ -159,18 +159,18 @@ screen mod_gamesaves_pagename():
         hbox:
             yoffset mod.scalePxInt(15)
             align (1.0,1.0)
-            textbutton '{mod_notl}Change{/mod_notl}' style_suffix "buttonPrimary" action pageNameInput.onEnter
+            textbutton '{urm_notl}Change{/urm_notl}' style_suffix "buttonPrimary" action pageNameInput.onEnter
             null width mod.scalePxInt(10)
-            textbutton "{mod_notl}Cancel{/mod_notl}" action Hide('mod_gamesaves_pagename')
+            textbutton "{urm_notl}Cancel{/urm_notl}" action Hide('URM_gamesaves_pagename')
 
-screen mod_gamesaves_savename(callback):
-    layer 'mod_Overlay'
+screen URM_gamesaves_savename(callback):
+    layer 'Overlay'
     style_prefix "mod"
     
-    default inputSaveName = mod.Input(autoFocus=True, onEnter=[Function(callback, mod.GetScreenInput('inputSaveName')),Hide('mod_gamesaves_savename')])
+    default inputSaveName = mod.Input(autoFocus=True, onEnter=[Function(callback, mod.GetScreenInput('inputSaveName')),Hide('URM_gamesaves_savename')])
 
-    use mod_Dialog(title='{mod_notl}Save description{/mod_notl}', closeAction=Hide('mod_gamesaves_savename'), modal=True, icon='\ue161'):
-        text "{mod_notl}Save name:{/mod_notl}"
+    use mod_Dialog(title='{urm_notl}Save description{/urm_notl}', closeAction=Hide('URM_gamesaves_savename'), modal=True, icon='\ue161'):
+        text "{urm_notl}Save name:{/urm_notl}"
         button:
             xminimum mod.scalePxInt(350)
             key_events True
@@ -180,6 +180,6 @@ screen mod_gamesaves_savename(callback):
         hbox:
             yoffset mod.scalePxInt(15)
             align (1.0,1.0)
-            textbutton '{mod_notl}Save{/mod_notl}' style_suffix "buttonPrimary" action inputSaveName.onEnter
+            textbutton '{urm_notl}Save{/urm_notl}' style_suffix "buttonPrimary" action inputSaveName.onEnter
             null width mod.scalePxInt(10)
-            textbutton "{mod_notl}Cancel{/mod_notl}" action Hide('mod_gamesaves_savename')
+            textbutton "{urm_notl}Cancel{/urm_notl}" action Hide('URM_gamesaves_savename')

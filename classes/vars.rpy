@@ -5,19 +5,19 @@ init 3 python in mod:
     class VarsStoreClass(NonPicklable):
         @property
         def store(self):
-            if modFiles.file['vars'] == None: modFiles.file.addStore('vars')
-            return modFiles.file['vars']
+            if URMFiles.file['vars'] == None: URMFiles.file.addStore('vars')
+            return URMFiles.file['vars']
         
         def clear(self):
-            modFiles.file.clearStore('vars')
+            URMFiles.file.clearStore('vars')
         
         @property
         def watchedStore(self):
-            if modFiles.file['watched'] == None: modFiles.file.addStore('watched')
-            return modFiles.file['watched']
+            if URMFiles.file['watched'] == None: URMFiles.file.addStore('watched')
+            return URMFiles.file['watched']
         
         def clearWatched(self):
-            modFiles.file.clearStore('watched')
+            URMFiles.file.clearStore('watched')
         
         def remember(self, varName, displayName=None):
             """ Add `varName` to remembered list """
@@ -260,9 +260,9 @@ init 3 python in mod:
                         exec('renpy.store.'+settableVar.name+operator+settableValue)
                     return True
                 else:
-                    print(": No valid value for {} (varType: {})".format(settableVar.name, varType))
+                    print("info: No valid value for {} (varType: {})".format(settableVar.name, varType))
             except Exception as e:
-                print(": Couldn't set value for "+settableVar.name+'. '+str(e))
+                print("info: Couldn't set value for "+settableVar.name+'. '+str(e))
                 pass
             finally:
                 if isFrozen: VarsStore.freeze(self._m1_vars__varName)
@@ -314,7 +314,7 @@ init 3 python in mod:
                             else:
                                 break
             except Exception as e:
-                print(': Failed to delete variable "{}": {}'.format(self.name, e))
+                print('info: Failed to delete variable "{}": {}'.format(self.name, e))
                 pass
         
         def getButtonValue(self, scalePercentage=None):
@@ -394,7 +394,7 @@ init 3 python in mod:
                 elif isinstance(val, renpy.persistent.Persistent): 
                     return 'persistent'
                 elif isinstance(val, SearchClass):
-                    return 'modsearch'
+                    return 'urmsearch'
                 elif isinstance(val, renpy.python.StoreDeleted):
                     return 'deleted'
                 elif hasattr(val, '__dict__'):
@@ -470,10 +470,10 @@ init 3 python in mod:
                     setattr(renpy.store, varName, settableValue)
                     self.onSuccess()
                 else:
-                    print(": No valid value for {} (varType: {})".format(varName, varType))
+                    print("info: No valid value for {} (varType: {})".format(varName, varType))
                     renpy.store.SetScreenVariable(self.screenErrorVariable, 'Invalid value for variable type')()
             except Exception as e:
-                print(': Couldn\'t set value for "{}". {}'.format(varName, e))
+                print('info: Couldn\'t set value for "{}". {}'.format(varName, e))
                 renpy.store.SetScreenVariable(self.screenErrorVariable, 'Failed to set variable. Check log for details')()
             finally:
                 if isFrozen: VarsStore.freeze(varName)
@@ -505,7 +505,7 @@ init 3 python in mod:
                 return True
             
             except Exception as e:
-                print(': Failed to attach mod StoreMonitor: {}'.format(e))
+                print('info: Failed to attach URM StoreMonitor: {}'.format(e))
                 return False
         
         def _m1_vars__cloneMethod(self, method):
@@ -532,8 +532,8 @@ init 3 python in mod:
             
             
             elif VarsStore.isMonitored(varName):
-                if not renpy.get_screen('mod_modify_value') and oldVal != newVal: 
-                    Notifications.add(label='Variable changed', text=varName, action=renpy.store.Show('mod_var_changed', varName=varName, prevVal=oldVal))
+                if not renpy.get_screen('URM_modify_value') and oldVal != newVal: 
+                    Notifications.add(label='Variable changed', text=varName, action=renpy.store.Show('URM_var_changed', varName=varName, prevVal=oldVal))
             
             return True
         
@@ -554,12 +554,13 @@ init 3 python in mod:
                 for varName in changes:
                     oldVal = changes[varName]
                     
+                    
                     if isinstance(oldVal, renpy.python.StoreDeleted): return
                     
                     self.handleVarChange(varName, oldVal, Var(varName).value)
             
             except Exception as e:
-                print(': Failed to process variable changes. {}'.format(e))
+                print('info: Failed to process variable changes. {}'.format(e))
         
         @property
         def isSupported(self):

@@ -40,7 +40,7 @@ init 3 python in mod:
                     
                     self.save(slot, saveName, overwrite, notify)
                 
-                renpy.show_screen('mod_gamesaves_savename', callback)
+                renpy.show_screen('URM_gamesaves_savename', callback)
             else:
                 if not overwrite and renpy.can_load(slot):
                     Confirm('Do you want to overwrite the existing save?', renpy.store.Function(self.save, slot, name or '', overwrite=True, notify=notify), title='Overwrite save')()
@@ -68,7 +68,7 @@ init 3 python in mod:
                     else:
                         self.copy(sourceSlot, '{}-{}'.format(page, position))
                 
-                renpy.show_screen('mod_gamesaves_selectslot', sourceSlot.split('-')[0], sourceSlot.split('-')[1], callback, 'Copy')
+                renpy.show_screen('URM_gamesaves_selectslot', sourceSlot.split('-')[0], sourceSlot.split('-')[1], callback, 'Copy')
             
             elif renpy.can_load(destSlot):
                 Confirm('Do you want to overwrite the existing save in the destination slot?', renpy.store.Function(renpy.copy_save, sourceSlot, destSlot), title='Overwrite save')()
@@ -87,7 +87,7 @@ init 3 python in mod:
                     else:
                         self.move(sourceSlot, '{}-{}'.format(page, position))
                 
-                renpy.show_screen('mod_gamesaves_selectslot', sourceSlot.split('-')[0], sourceSlot.split('-')[1], callback, 'Move')
+                renpy.show_screen('URM_gamesaves_selectslot', sourceSlot.split('-')[0], sourceSlot.split('-')[1], callback, 'Move')
             
             elif renpy.can_load(destSlot):
                 Confirm('Do you want to overwrite the existing save in the destination slot?', renpy.store.Function(renpy.rename_save, sourceSlot, destSlot), title='Overwrite save')()

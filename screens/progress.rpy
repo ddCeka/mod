@@ -13,7 +13,7 @@ style mod_progressBar_fore:
 style mod_progressBar_fore_translucent is mod_progressBar_fore:
     background Transform(mod.Theme.secondary, alpha=.3)
 
-screen mod_progress():
+screen URM_progress():
     default hovered = False
 
     drag:
@@ -26,9 +26,9 @@ screen mod_progress():
         hovered SetLocalVariable('hovered', True)
         unhovered SetLocalVariable('hovered', False)
 
-        use mod_progressBar(translucent=not hovered)
+        use URM_progressBar(translucent=not hovered)
 
-screen mod_progressBar(translucent=False):
+screen URM_progressBar(translucent=False):
     style_prefix 'mod'
 
     python:

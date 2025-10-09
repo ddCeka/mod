@@ -36,7 +36,8 @@ init 2 python in mod:
                     self.update(newOrder)
             
             except Exception as e:
-                print(': Sorting failed with error: {}'.format(e))
+                print('info: Sorting failed with error: {}'.format(e))
+
 
     class ColorPicker(NonPicklable):
         def __init__(self, defaultColor=None):
@@ -135,7 +136,7 @@ init 2 python in mod:
 
     def getScreenSize(screenName):
         screen = renpy.display.screen.get_screen_variant(screenName)
-        if not screen: raise Exception(': Tried to get size for non existing screen "{}"'.format(screenName))
+        if not screen: raise Exception('info: Tried to get size for non existing screen "{}"'.format(screenName))
         screenLayer = renpy.display.screen.get_screen_layer(screenName)
         d = renpy.display.screen.ScreenDisplayable(screen, screen.tag, screenLayer)
         d.update()
@@ -143,11 +144,11 @@ init 2 python in mod:
         if hasattr(d, 'child') and d.child and hasattr(d.child, 'children') and len(d.child.children):
             return getDisplayableSize(d.child.children[0])
         else:
-            raise Exception(': Tried to get size for screen "{}", but the screen didn\'t have any children'.format(screenName))
+            raise Exception('info: Tried to get size for screen "{}", but the screen didn\'t have any children'.format(screenName))
 
     def getDisplayableSize(displayable):
         if not isinstance(displayable, renpy.display.core.Displayable):
-            raise Exception(': Tried to get the size of something else then a displayable. Supplied type: {}'.format(type(displayable)))
+            raise Exception('info: Tried to get the size of something else then a displayable. Supplied type: {}'.format(type(displayable)))
         
         rendered = renpy.display.render.render(displayable, renpy.config.screen_width, renpy.config.screen_height, 0, 0)
         return [int(rendered.width), int(rendered.height)]

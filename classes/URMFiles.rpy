@@ -2,27 +2,27 @@
 init 3 python in mod:
     _constant = True
 
-    class modFilesClass(NonPicklable):
+    class URMFilesClass(NonPicklable):
         def __init__(self):
-            self.file = modFile()
+            self.file = URMFile()
             
-            self._m1_modFiles__saveDir = None 
+            self._m1_URMFiles__saveDir = None 
             self.gameDir = renpy.os.path.abspath(renpy.os.path.join(renpy.config.basedir, "game"))
         
         @property
         def saveDir(self):
-            if self._m1_modFiles__saveDir == None:
+            if self._m1_URMFiles__saveDir == None:
                 if Settings.saveDir:
-                    self._m1_modFiles__saveDir = renpy.os.path.abspath(renpy.os.path.join(Settings.saveDir, renpy.config.save_directory)) 
+                    self._m1_URMFiles__saveDir = renpy.os.path.abspath(renpy.os.path.join(Settings.saveDir, renpy.config.save_directory)) 
                 elif renpy.os.path.isdir(renpy.config.savedir):
-                    self._m1_modFiles__saveDir = renpy.config.savedir 
+                    self._m1_URMFiles__saveDir = renpy.config.savedir
                 
                 try:
                     renpy.os.makedirs(self.saveDir)
                 except Exception:
                     pass
             
-            return self._m1_modFiles__saveDir
+            return self._m1_URMFiles__saveDir
         
         def fileExists(self, filename):
             return renpy.exists(renpy.os.path.join(self.gameDir, filename)) or (self.saveDir and renpy.exists(renpy.os.path.join(self.saveDir, filename)))
@@ -38,17 +38,17 @@ init 3 python in mod:
             
             files = {}
             
-            gameDirFiles = glob(renpy.os.path.join(re.sub(r'(\[|\])', r'[\1]', self.gameDir), '*.mod')) 
+            gameDirFiles = glob(renpy.os.path.join(re.sub(r'(\[|\])', r'[\1]', self.gameDir), '*.urm')) 
             for i,filename in enumerate(gameDirFiles):
-                files[filename[len(self.gameDir)+1:]] = modFile(filename)
+                files[filename[len(self.gameDir)+1:]] = URMFile(filename)
             
             if self.saveDir:
-                saveDirFiles = glob(renpy.os.path.join(re.sub(r'(\[|\])', r'[\1]', self.saveDir), '*.mod')) 
+                saveDirFiles = glob(renpy.os.path.join(re.sub(r'(\[|\])', r'[\1]', self.saveDir), '*.urm')) 
                 for i,filename in enumerate(saveDirFiles):
                     mtime = renpy.os.path.getmtime(filename)
                     name = filename[len(self.saveDir)+1:]
                     if not hasattr(files, name) or files[name].mtime < mtime:
-                        files[name] = modFile(filename)
+                        files[name] = URMFile(filename)
             
             files = OrderedDict(sorted(files.items()))
             
@@ -64,23 +64,23 @@ init 3 python in mod:
             if self.file.unsaved and not confirm:
                 Confirm('Unsaved changes will be lost, do you want to continue?', renpy.store.Function(self.clear, confirm=True))()
             else:
-                self.file = modFile()
+                self.file = URMFile()
                 Settings.lastLoadedFile = None
         
         class Clear(NonPicklable):
             def __call__(self):
-                modFiles.clear()
+                URMFiles.clear()
         
         def load(self, filename):
-            modFile = modFile(filename)
+            urmFile = URMFile(filename)
             
-            
-            filepath = modFile.lastModifiedPath
+            filepath = urmFile.lastModifiedPath
             if filepath:
-                modFile = self.loadLegacymodFile(filepath) or modFile
+                urmFile = self.loadLegacyURMFile(filepath) or urmFile
                 
-                self.file = modFile
+                self.file = urmFile
                 Settings.lastLoadedFile = filename
+                
                 return True
             else:
                 return False
@@ -93,13 +93,13 @@ init 3 python in mod:
             
             def __call__(self):
                 if not self.filename:
-                    if modFiles.file.unsaved:
-                        Confirm('Unsaved changes will be lost, do you want to continue?', renpy.store.Show('mod_load_file'))()
+                    if URMFiles.file.unsaved:
+                        Confirm('Unsaved changes will be lost, do you want to continue?', renpy.store.Show('URM_load_file'))()
                     else:
-                        renpy.show_screen('mod_load_file')
+                        renpy.show_screen('URM_load_file')
                         renpy.restart_interaction()
                 else:
-                    if modFiles.load(self.filename):
+                    if URMFiles.load(self.filename):
                         if self.finishAction:
                             self.finishAction()
                     elif self.screenErrorVariable: 
@@ -108,7 +108,7 @@ init 3 python in mod:
                             cs.scope[self.screenErrorVariable] = 'Failed to load file'
                             renpy.restart_interaction()
         
-        def loadLegacymodFile(self, filepath):
+        def loadLegacyURMFile(self, filepath):
             import json
             
             jsonData = None
@@ -119,28 +119,28 @@ init 3 python in mod:
                     jsonData = json.loads(renpy.os.read(f, renpy.os.path.getsize(filepath)), object_pairs_hook=OrderedDict)
                 renpy.os.close(f)
             except Exception as e:
-                print(': Loading file "{}" failed with error: {}'.format(filepath, e))
+                print('info: Loading file "{}" failed with error: {}'.format(filepath, e))
                 return None
             
             if jsonData:
                 try:
-                    newfile = modFile(renpy.os.path.split(filepath)[1])
+                    newfile = URMFile(renpy.os.path.split(filepath)[1])
                     for store in jsonData:
                         if store == 'replacements':
                             jsonData[store] = OrderedDict([(r['original'], r) for r in jsonData[store]]) 
                         
-                        newfile.addStore(store, modFileStore(jsonData[store]))
+                        newfile.addStore(store, URMFileStore(jsonData[store]))
                     
                     return newfile
                 except Exception as e:
-                    print(': Failed to parse contents for file "{}" with error: {}'.format(filepath, e))
+                    print('info: Failed to parse contents for file "{}" with error: {}'.format(filepath, e))
                     return None
         
         def save(self, name, successAction=None, failureAction=None, overwrite=False):
-            filename = self.stripSpecialChars(name)+'.mod'
+            filename = self.stripSpecialChars(name)+'.urm'
             if self.fileExists(filename) and not overwrite:
                 return Confirm('Do you want to overwrite the existing file?', renpy.store.Function(self.save, name, successAction, failureAction, True))()
-            elif self.file and isinstance(self.file, modFile):
+            elif self.file and isinstance(self.file, URMFile):
                 if self.file.save(filename):
                     Settings.lastLoadedFile = filename
                     
@@ -162,7 +162,7 @@ init 3 python in mod:
             
             def __call__(self):
                 if self.name == None: 
-                    renpy.show_screen('mod_save_file')
+                    renpy.show_screen('URM_save_file')
                     renpy.restart_interaction()
                 else:
                     cs = renpy.current_screen()
@@ -176,17 +176,17 @@ init 3 python in mod:
                             cs.scope[self.screenErrorVariable] = 'Failed to save file'
                             renpy.restart_interaction()
                     
-                    modFiles.save(self.name if not callable(self.name) else self.name(), onSuccess, onFailure)
+                    URMFiles.save(self.name if not callable(self.name) else self.name(), onSuccess, onFailure)
         
         class Delete(NonPicklable):
-            def __init__(self, modFile):
-                self.modFile = modFile
+            def __init__(self, urmFile):
+                self.urmFile = urmFile
             
             def __call__(self):
-                if isinstance(self.modFile, modFile):
-                    self.modFile.delete()
+                if isinstance(self.urmFile, URMFile):
+                    self.urmFile.delete()
 
-    class modFileStore(OrderedDict):
+    class URMFileStore(OrderedDict):
         def __init__(self, data=None, unsaved=False):
             super(OrderedDict, self).__init__(data or {})
             self.unsaved = unsaved
@@ -216,19 +216,19 @@ init 3 python in mod:
             import json
             return json.dumps(self)
 
-    class modFile(NonPicklable):
+    class URMFile(NonPicklable):
         def __init__(self, filename=None):
             self.filename = renpy.os.path.split(filename)[1] if filename else filename
             self.mtime = self.mtime = renpy.os.path.getmtime(self.lastModifiedPath) if self.lastModifiedPath else None
-            self._m1_modFiles__stores = None
-            self._m1_modFiles__storeNames = None
+            self._m1_URMFiles__stores = None
+            self._m1_URMFiles__storeNames = None
         
         def getStore(self, name, doNotLoad=False):
-            if self._m1_modFiles__stores and name in self._m1_modFiles__stores: 
-                return self._m1_modFiles__stores[name]
-            elif self._m1_modFiles__storeNames != None and name not in self._m1_modFiles__storeNames: 
+            if self._m1_URMFiles__stores and name in self._m1_URMFiles__stores: 
+                return self._m1_URMFiles__stores[name]
+            elif self._m1_URMFiles__storeNames != None and name not in self._m1_URMFiles__storeNames: 
                 return None
-            elif self._m1_modFiles__stores == None and doNotLoad == False: 
+            elif self._m1_URMFiles__stores == None and doNotLoad == False: 
                 self.load()
                 return self.getStore(name, doNotLoad=True)
         
@@ -236,50 +236,50 @@ init 3 python in mod:
             return self.getStore(key)
         
         def addStore(self, name, data=None):
-            if self._m1_modFiles__stores == None: self._m1_modFiles__stores = {}
-            if isinstance(data, modFileStore):
-                self._m1_modFiles__stores[name] = data
+            if self._m1_URMFiles__stores == None: self._m1_URMFiles__stores = {}
+            if isinstance(data, URMFileStore):
+                self._m1_URMFiles__stores[name] = data
             else:
-                self._m1_modFiles__stores[name] = modFileStore(data)
+                self._m1_URMFiles__stores[name] = URMFileStore(data)
         
         def clearStore(self, name):
-            if self._m1_modFiles__stores and name in self._m1_modFiles__stores:
-                self._m1_modFiles__stores[name].clear()
+            if self._m1_URMFiles__stores and name in self._m1_URMFiles__stores:
+                self._m1_URMFiles__stores[name].clear()
         
         @property
         def storeNames(self):
             """ Names of stores present in this file """
-            if self._m1_modFiles__stores:
-                return self._m1_modFiles__stores.keys()
-            elif self._m1_modFiles__storeNames != None:
-                return self._m1_modFiles__storeNames
+            if self._m1_URMFiles__stores:
+                return self._m1_URMFiles__stores.keys()
+            elif self._m1_URMFiles__storeNames != None:
+                return self._m1_URMFiles__storeNames
             else:
-                self._m1_modFiles__storeNames = self._m1_modFiles__loadStoreNames()
-                return self._m1_modFiles__storeNames
+                self._m1_URMFiles__storeNames = self._m1_URMFiles__loadStoreNames()
+                return self._m1_URMFiles__storeNames
         
         @property
         def unsaved(self):
-            if self._m1_modFiles__stores:
-                for name in self._m1_modFiles__stores:
-                    if self._m1_modFiles__stores[name].unsaved:
+            if self._m1_URMFiles__stores:
+                for name in self._m1_URMFiles__stores:
+                    if self._m1_URMFiles__stores[name].unsaved:
                         return True
             return False
         
         @unsaved.setter
         def unsaved(self, val):
-            if self._m1_modFiles__stores:
-                for name in self._m1_modFiles__stores:
-                    self._m1_modFiles__stores[name].unsaved = val
+            if self._m1_URMFiles__stores:
+                for name in self._m1_URMFiles__stores:
+                    self._m1_URMFiles__stores[name].unsaved = val
         
         @property
         def gameDirPath(self):
             if self.filename:
-                return renpy.os.path.join(modFiles.gameDir, self.filename)
+                return renpy.os.path.join(URMFiles.gameDir, self.filename)
         
         @property
         def saveDirPath(self):
-            if self.filename and modFiles.saveDir:
-                return renpy.os.path.join(modFiles.saveDir, self.filename)
+            if self.filename and URMFiles.saveDir:
+                return renpy.os.path.join(URMFiles.saveDir, self.filename)
         
         @property
         def lastModifiedPath(self):
@@ -287,6 +287,7 @@ init 3 python in mod:
                 
                 gameDirMtime = renpy.os.path.getmtime(self.gameDirPath) if renpy.os.path.isfile(self.gameDirPath) else 0
                 saveDirMtime = renpy.os.path.getmtime(self.saveDirPath) if renpy.os.path.isfile(self.saveDirPath or '') else 0
+                
                 
                 selectedFile = None
                 if gameDirMtime >= saveDirMtime and gameDirMtime > 0:  
@@ -296,8 +297,8 @@ init 3 python in mod:
                 
                 return selectedFile
         
-        def _m1_modFiles__initProperties(self):
-            self.addStore('properties', {'modVersion': version, 'gameId': renpy.config.save_directory})
+        def _m1_URMFiles__initProperties(self):
+            self.addStore('properties', {'urmVersion': version, 'gameId': renpy.config.save_directory})
         
         def save(self, filename=None):
             import json, zipfile, shutil
@@ -305,25 +306,26 @@ init 3 python in mod:
             if filename: self.filename = filename
             
             if self.filename:
-                self._m1_modFiles__initProperties()
+                self._m1_URMFiles__initProperties()
                 
                 filenameNew = self.gameDirPath + '.new'
                 try:
                     with zipfile.ZipFile(filenameNew, 'w', zipfile.ZIP_DEFLATED) as zf:
-                        for entry in self._m1_modFiles__stores or {}:
-                            if not self._m1_modFiles__stores[entry].isEmpty: 
-                                zf.writestr(entry, self._m1_modFiles__stores[entry].toJSON())
+                        for entry in self._m1_URMFiles__stores or {}:
+                            if not self._m1_URMFiles__stores[entry].isEmpty: 
+                                zf.writestr(entry, self._m1_URMFiles__stores[entry].toJSON())
                     
                     shutil.move(filenameNew, self.gameDirPath)
                 except Exception as e:
-                    print(': Failed to save file "{}" with error: {}'.format(self.gameDirPath, e))
+                    print('info: Failed to save file "{}" with error: {}'.format(self.gameDirPath, e))
                     return False
+                
                 
                 if self.saveDirPath:
                     try:
                         shutil.copy(self.gameDirPath, self.saveDirPath)
                     except Exception as e:
-                        print(': Failed to save file "{}" with error: {}'.format(self.saveDirPath, e))
+                        print('info: Failed to save file "{}" with error: {}'.format(self.saveDirPath, e))
                 
                 self.unsaved = False
                 return True
@@ -331,7 +333,7 @@ init 3 python in mod:
             else: 
                 return False
         
-        def _m1_modFiles__loadStoreNames(self):
+        def _m1_URMFiles__loadStoreNames(self):
             import zipfile
             selectedFile = self.lastModifiedPath
             
@@ -342,24 +344,25 @@ init 3 python in mod:
                     with zipfile.ZipFile(selectedFile, 'r') as zf:
                         return zf.namelist()
                 except Exception as e:
-                    print(': Loading storenames from file "{}" failed with error: {}'.format(selectedFile, e))
+                    print('info: Loading storenames from file "{}" failed with error: {}'.format(selectedFile, e))
                     return []
         
         def load(self):
             import json, zipfile
-            self._m1_modFiles__stores = {}
+            self._m1_URMFiles__stores = {}
             selectedFile = self.lastModifiedPath
+            
             
             if selectedFile:
                 try:
                     with zipfile.ZipFile(selectedFile, 'r') as zf:
                         for entry in zf.namelist():
                             try:
-                                self._m1_modFiles__stores[entry] = modFileStore(json.loads(zf.read(entry), object_pairs_hook=OrderedDict))
+                                self._m1_URMFiles__stores[entry] = URMFileStore(json.loads(zf.read(entry), object_pairs_hook=OrderedDict))
                             except Exception as e:
-                                print(': Failed to parse json for entry "{}" in file "{}". {}'.format(entry, selectedFile, e))
+                                print('info: Failed to parse json for entry "{}" in file "{}". {}'.format(entry, selectedFile, e))
                 except Exception as e:
-                    print(': Loading file "{}" failed with error: {}'.format(selectedFile, e))
+                    print('info: Loading file "{}" failed with error: {}'.format(selectedFile, e))
                     return None
         
         def delete(self):
@@ -367,11 +370,11 @@ init 3 python in mod:
                 if renpy.os.path.isfile(self.gameDirPath):
                     renpy.os.remove(self.gameDirPath)
             except Exception as e:
-                print(': Failed to delete file "{}" with error: {}'.format(self.gameDirPath, e))
+                print('info: Failed to delete file "{}" with error: {}'.format(self.gameDirPath, e))
             
             if self.saveDirPath:
                 try:
                     if renpy.os.path.isfile(self.saveDirPath):
                         renpy.os.remove(self.saveDirPath)
                 except Exception as e:
-                    print(': Failed to delete file "{}" with error: {}'.format(self.saveDirPath, e))
+                    print('info: Failed to delete file "{}" with error: {}'.format(self.saveDirPath, e))

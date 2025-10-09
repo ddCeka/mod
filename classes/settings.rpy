@@ -6,26 +6,26 @@ init 3 python in mod:
         defaultValues = {
             'lastLoadedFile': None,
             'labelsView': 'thumbnails',
-            'searchRecursive': False,
+            'searchRecursive': True,
             'searchPersistent': True,
             'searchObjects': True,
             'showUnsupportedVariables': False,
-            'searchInternalVars': False,
+            'searchInternalVars': True,
             'useWildcardSearch': False,
             'showWatchPanel': False,
             'collapsedWatchPanel': False,
             'watchpanelToggleKey': '',
             'watchpanelHideToggleButton': False,
             'watchPanelPos': 'l',
-            'watchPanelFileLine': 1,
+            'watchPanelFileLine': 0,
             'watchPanelCurrentLabel': 1,
             'watchPanelChoiceDetection': 1,
             'watchPanelPathDetection': 1,
-            'watchPanelProgress': 1,
+            'watchPanelProgress': 0,
             'watchPanelVars': 1,
             'showChoicesNotification': True,
             'showPathsNotification': True,
-            'stopSkippingOnPathDetection': True,
+            'stopSkippingOnPathDetection': False,
             'showReplayNotification': True,
             'currentScreen': 'search',
             'searchType': 'variable names',
@@ -47,19 +47,19 @@ init 3 python in mod:
             'notificationTimeout': 0,
             
             'quickmenuEnabled': True,
-            'quickmenuAlignX': 0.5,
+            'quickmenuAlignX': 0.0,
             'quickmenuAlignY': 1.0,
             'quickmenuVertical': False,
             'quickmenuBtnBack': False,
             'quickmenuBtnSkip': False,
             'quickmenuBtnAuto': False,
             'quickmenuBtnQuicksave': False,
-            'quickmenuBtnSave': False,
+            'quickmenuBtnSave': True,
             'quickmenuBtnQuickload': False,
-            'quickmenuBtnLoad': False,
+            'quickmenuBtnLoad': True,
             'quickmenuBtnMenu': False,
-            'quickmenuBtnAddon': True,
-            'quickmenuBtnMod': True,
+            'quickmenuBtnMods': True,
+            'quickmenuBtnUrm': True,
             'quickmenuBtnExit': False,
             'quickmenuAutoHide': False,
             'quickmenuStyle': 'default',
@@ -74,16 +74,16 @@ init 3 python in mod:
             
             if renpy.android:
                 if renpy.os.path.isdir('/sdcard/JoiPlay'):
-                    SettingsClass._m1_settings__saveDir = renpy.os.path.join(self._m1_settings__resolveSymlink('/sdcard'), 'JoiPlay', '.mod')
+                    SettingsClass._m1_settings__saveDir = renpy.os.path.join(self._m1_settings__resolveSymlink('/sdcard'), 'JoiPlay', '.URM')
             else:
-                SettingsClass._m1_settings__saveDir = __main__.path_to_saves(renpy.config.gamedir, 'mod')
+                SettingsClass._m1_settings__saveDir = __main__.path_to_saves(renpy.config.gamedir, '.URM')
             
             
             if self.saveDir and not renpy.os.path.isdir(self.saveDir):
                 try:
                     renpy.os.mkdir(self.saveDir)
                 except Exception as e:
-                    print(': Failed to create dir "{}". {}'.format(self.saveDir, e))
+                    print('info: Failed to create dir "{}". {}'.format(self.saveDir, e))
                     SettingsClass._m1_settings__saveDir = None
             
             
@@ -101,7 +101,7 @@ init 3 python in mod:
                         renpy.os.close(f)
                         renpy.os.unlink(fn)
                 except Exception as e:
-                    print(': Failed to write to dir "{}". {}'.format(self.saveDir, e))
+                    print('info: Failed to write to dir "{}". {}'.format(self.saveDir, e))
                     SettingsClass._m1_settings__saveDir = None
             
             self._m1_settings__loadGlobalSettings()
@@ -133,7 +133,7 @@ init 3 python in mod:
             if attr in SettingsClass.defaultValues:
                 return self.get(attr)
             elif attr not in ['nosave','values']: 
-                print(': Something requested an unknown setting "{}"'.format(attr))
+                print('info: Something requested an unknown setting "{}"'.format(attr))
         
         def __setattr__(self, attr, value):
             if attr in SettingsClass.defaultValues:
@@ -150,12 +150,12 @@ init 3 python in mod:
                     return defaultValue
             
             elif globalSetting == False: 
-                if renpy.store.persistent.modSettings != None and name in renpy.store.persistent.modSettings:
-                    return renpy.store.persistent.modSettings[name]
+                if renpy.store.persistent.URMSettings != None and name in renpy.store.persistent.URMSettings:
+                    return renpy.store.persistent.URMSettings[name]
             
             else: 
-                if renpy.store.persistent.modSettings != None and name in renpy.store.persistent.modSettings:
-                    return renpy.store.persistent.modSettings[name]
+                if renpy.store.persistent.URMSettings != None and name in renpy.store.persistent.URMSettings:
+                    return renpy.store.persistent.URMSettings[name]
                 elif name in SettingsClass._m1_settings__globalSettings:
                     return SettingsClass._m1_settings__globalSettings[name]
                 else:
@@ -171,12 +171,12 @@ init 3 python in mod:
                 
                 self._m1_settings__saveGlobalSettings() 
             else:
-                if renpy.store.persistent.modSettings == None: renpy.store.persistent.modSettings = {}
+                if renpy.store.persistent.URMSettings == None: renpy.store.persistent.URMSettings = {}
                 if value == None: 
-                    if name in renpy.store.persistent.modSettings:
-                        del renpy.store.persistent.modSettings[name]
+                    if name in renpy.store.persistent.URMSettings:
+                        del renpy.store.persistent.URMSettings[name]
                 else:
-                    renpy.store.persistent.modSettings[name] = value
+                    renpy.store.persistent.URMSettings[name] = value
             
             renpy.restart_interaction()
         
@@ -189,12 +189,13 @@ init 3 python in mod:
                 try:
                     with zipfile.ZipFile(fileName, 'r') as zf:
                         jsonStr = zf.read('json')
-                        modVersion = zf.read('modVersion')
+                        SettingsClass._m1_settings__id = zf.read('id')
+                        urmVersion = zf.read('urmVersion')
                     
                     
                     SettingsClass._m1_settings__globalSettings = json.loads(jsonStr)
                 except Exception as e:
-                    print(': Failed to read global settings from {}. {}'.format(fileName, e))
+                    print('info: Failed to read global settings from {}. {}'.format(fileName, e))
         
         def _m1_settings__saveGlobalSettings(self):
             if not self.saveDir: return 
@@ -205,14 +206,15 @@ init 3 python in mod:
             try:
                 with zipfile.ZipFile(fileNameNew, 'w', zipfile.ZIP_DEFLATED) as zf:
                     zf.writestr('json', json.dumps(SettingsClass._m1_settings__globalSettings))
-                    zf.writestr('modVersion', version)
+                    if self.id: zf.writestr('id', self.id)
+                    zf.writestr('urmVersion', version)
                 
                 shutil.move(fileNameNew, fileName)
             except Exception as e:
-                print(': Failed to save global settings to {}. {}'.format(fileName, e))
+                print('info: Failed to save global settings to {}. {}'.format(fileName, e))
                 raise e
 
-    class SetmodSetting(renpy.ui.Action):
+    class SetURMSetting(renpy.ui.Action):
         def __init__(self, name, value, globalSetting=False):
             self.name = name
             self.value = value

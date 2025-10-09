@@ -19,7 +19,7 @@ style mod_default is default:
     spacing 0 line_spacing 0
 
 style mod_text is mod_default:
-    font 'mod/framework/Roboto-Regular.ttf'
+    font 'mods/framework/Roboto-Regular.ttf'
     color mod.Theme.text
     size mod.scalePxInt(24)
     text_align 0.0
@@ -31,10 +31,10 @@ style mod_label_text is mod_text:
     bold True
 
 style mod_icon is mod_text:
-    font 'mod/framework/MaterialIconsOutlined-Regular.otf'
+    font 'mods/framework/MaterialIconsOutlined-Regular.otf'
 
 style mod_iconSolid is mod_icon:
-    font 'mod/framework/MaterialIcons-Regular.ttf'
+    font 'mods/framework/MaterialIcons-Regular.ttf'
 
 style mod_overlay:
     background mod.Theme.colorAlpha(mod.Theme.background, 0.4)

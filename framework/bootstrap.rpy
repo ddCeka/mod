@@ -2,14 +2,13 @@
 init -1000 python in MF2:
     _constant = True
 
-
     from collections import OrderedDict
     availableModules = OrderedDict([
         ('main', ['bootstrap.rpy','modules/01utils.rpy']), 
         ('fonts', ['MaterialIcons-Regular.ttf','MaterialIconsOutlined-Regular.otf','Roboto-Regular.ttf']),
         ('theming', ['fonts','modules/10theme.rpy','theme.rpy.','screens/buttons.rpy.','screens/messagebars.rpy.']),
         ('dialogs', ['theming','modules/dialogs.rpy','screens/dialogs.rpy.']),
-        ('extra', ['modules/addon.rpy']),
+        ('extra', ['modules/mods.rpy']),
         ('inputs', ['modules/inputs.rpy']),
         ('screeninjector', ['modules/screeninjector.rpy']),
         ('screenreader', ['modules/screenreader.rpy']),
@@ -18,7 +17,7 @@ init -1000 python in MF2:
 
     def load(modules, modName, mfPath, minVersion='6.99.14'):
         
-        if renpy.version_only < minVersion: raise Exception(': This mod ({}) does not support Ren\'Py version {}. Lowest supported version is {}'.format(modName, renpy.version_only, minVersion))
+        if renpy.version_only < minVersion: raise Exception('info: This mod ({}) does not support Ren\'Py version {}. Lowest supported version is {}'.format(modName, renpy.version_only, minVersion))
         
         if not 'main' in modules: modules.append('main') 
         
@@ -26,6 +25,9 @@ init -1000 python in MF2:
         if archivePath: 
             if hasattr(renpy.store, modName) and isinstance(getattr(renpy.store, modName), renpy.python.StoreModule):
                 getattr(renpy.store, modName).archivePath = archivePath
+        else: 
+            import hashlib, random, string
+            renpy.game.script.digest = hashlib.md5(''.join(random.choice(string.ascii_letters + string.digits) for i in range(20)).encode())
         
         filesToLoad = []
         def addFilesToLoad(files):
@@ -60,15 +62,15 @@ init -1000 python in MF2:
                     modFileLoaded = (renpy.load_string(modFileContents, fullFn) != None) 
                     if not modFileLoaded: raise Exception(renpy.get_parse_errors()) 
                 except Exception as e:
-                    raise Exception('0: Failed to load file "{}". {}'.format(fullFn, e))
+                    raise Exception('info: Failed to load file "{}". {}'.format(fullFn, e))
             
-            elif ext == '.rpy': 
+            elif ext == '.rpyc': 
                 fullFn = fullFn[:-6] + 'rpyc'
                 if not renpy.loadable(fullFn):
-                    raise Exception(': File "{}" not found'.format(fullFn))
+                    raise Exception('info: File "{}" not found'.format(fullFn))
             
             else:
-                raise Exception(': File "{}" not found'.format(fullFn))
+                raise Exception('info: File "{}" not found'.format(fullFn))
 
     def findArchivePath(fullFn):
         """ Find the archive path for a certain file """
@@ -80,4 +82,4 @@ init -1000 python in MF2:
                 return archivePath
 
 init 999 python:
-    if not 'Overlay' in config.layers: config.layers.append('mod_Overlay') 
+    if not 'Overlay' in config.layers: config.layers.append('Overlay') 

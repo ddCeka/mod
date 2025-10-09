@@ -1,5 +1,4 @@
 
-
 screen mod_messagebar(kind, message, icon=None, substitute=True):
     style_prefix 'mod'
 

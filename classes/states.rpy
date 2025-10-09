@@ -17,7 +17,7 @@ init 1 python in mod:
                 else:
                     return StatesClass.defaultValues[attr]
             else:
-                print(': Something requested an unknown state "{}"'.format(attr))
+                print('info: Something requested an unknown state "{}"'.format(attr))
         
         def __setattr__(self, attr, value):
             if attr in StatesClass.defaultValues:

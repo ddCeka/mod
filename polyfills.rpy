@@ -4,6 +4,7 @@ init 1 python:
         def SetLocalVariable(name, value): 
             return SetDict(renpy.sys._getframe(1).f_locals, name, value)
 
+
     if not hasattr(renpy, 'get_registered_image'):
         def getRegisteredImage(name):
             if not isinstance(name, tuple):
@@ -16,12 +17,12 @@ init 1 python:
         def __call__(self, *args, **kwargs):
             return
 
-    class modFunctionWithArgs(Function):
+    class URMFunctionWithArgs(Function):
         """ Like Ren'Py's Function class, but ignoring arguments """
         def __call__(self, *args, **kwargs):
             return self.callable(*self.args, **self.kwargs)
 
-    class modGetScreenVariable(mod.NonPicklable):
+    class URMGetScreenVariable(mod.NonPicklable):
         def __init__(self, name, key=None):
             self.name = name
             self.key = key
@@ -38,7 +39,7 @@ init 1 python:
             else:
                 return cs.scope[self.name]
 
-    def modTimeToText(t):
+    def URMTimeToText(t):
         if t:
             import time
             return _strftime('%a, %b %d %Y, %H:%M', time.localtime(t))

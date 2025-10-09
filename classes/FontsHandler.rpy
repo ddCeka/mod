@@ -19,5 +19,4 @@ init 999 python in mod:
             
             return handler
 
-
     FontsHandler()

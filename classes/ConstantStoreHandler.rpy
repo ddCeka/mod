@@ -10,7 +10,7 @@ init 999 python in mod:
                     renpy.python.RollbackLog.complete = self.createRollbackCompleteHandler(renpy.python.RollbackLog.complete)
                     pass
                 except Exception as e:
-                    print(': Failed to attach ConstantStoreHandler: {}'.format(e))
+                    print('info: Failed to attach ConstantStoreHandler: {}'.format(e))
         
         def createGetChangesHandler(self, originalMethod):
             def handler(storeDict, *args, **kwargs):
@@ -18,7 +18,7 @@ init 999 python in mod:
                     if storeDict.get('_constant', False):
                         return ({}, set())
                 except Exception as e:
-                    print(': Failed to handle get_changes. {}'.format(e))
+                    print('info: Failed to handle get_changes. {}'.format(e))
                 
                 return originalMethod(storeDict, *args, **kwargs)
             
@@ -35,7 +35,7 @@ init 999 python in mod:
                             if hasattr(rollbackLog.current, 'delta_ebc'):
                                 del rollbackLog.current.delta_ebc[name]
                 except Exception as e:
-                    print(': Failed to handle RollbackLog.complete. {}'.format(e))
+                    print('info: Failed to handle RollbackLog.complete. {}'.format(e))
             
             return handler
 

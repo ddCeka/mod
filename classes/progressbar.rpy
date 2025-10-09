@@ -13,7 +13,7 @@ init 3 python in mod:
         
         def _m1_progressbar__seenCountCorrection(self):
             try:
-                node = renpy.game.script.lookup('mod_textboxCustomizer').next
+                node = renpy.game.script.lookup('URM_textboxCustomizer').next
                 while node:
                     if isinstance(node, renpy.ast.Translate) and node.identifier not in renpy.game.persistent._seen_translates:
                         renpy.game.persistent._seen_translates.add(node.identifier)
@@ -21,7 +21,7 @@ init 3 python in mod:
                         renpy.game.new_translates_count += 1
                     node = node.next
             except Exception as e:
-                print(': Failed to correct progress count. {}'.format(e))
+                print('info: Failed to correct progress count. {}'.format(e))
         
         @property
         def percentage(self):

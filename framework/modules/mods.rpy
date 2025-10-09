@@ -130,7 +130,7 @@ init python:
 
         config.statement_callbacks.append(crashdefender)
 
-## addon begin here
+## mods begin here
 init 99:
     default preferences.gl_powersave = False
     define config.console = True
@@ -279,21 +279,21 @@ init python:
     config.gestures["n_s_n"] = "performance"
     config.gestures["e_w_e"] = "fast_skip"
     config.gestures["n_w_s"] = "console"
-    ## part of walkthrough addon
+    ## part of walkthrough mods
     gr = "{color=#00c000}"
     red = "{color=#f00}"
     blue = "{color=#00f}"
     pink = "{color=#f626a1}"
     modt = "{size=-8}"
-    mark = "{image=mod/images/mark.png}"
+    mark = "{image=mods/images/mark.png}"
 
 
-screen addon():
+screen mods():
 
     zorder 1
 
     drag:
-        drag_name "addon"
+        drag_name "mods"
         align (0.5, 0.5)
         drag_handle (0, 0, 1.0, 53)
 
@@ -305,30 +305,30 @@ screen addon():
             add Solid("#000000e6")
         else:
             add Solid("#000000")
-        textbutton "Close" text_style "addon_toolbar_textbutton" action Return() align (0.0, 1.0) yoffset -6
+        textbutton "Close" text_style "mods_toolbar_textbutton" action Return() align (0.0, 1.0) yoffset -6
 
 
         hbox:
             align (0.015, 0.007)
             anchor (0.0, 0.0)
             spacing 70
-            textbutton "Prefs" selected setting_current_tab == "home" text_style "addon_toolbar_textbutton" action [SetScreenVariable("setting_current_tab", "home"), SetScreenVariable("setting_column2", None), SetScreenVariable("setting_column2_name", "")]
-            textbutton "Extra" selected setting_current_tab == "extra" text_style "addon_toolbar_textbutton" action [SetScreenVariable("setting_current_tab", "extra"), SetScreenVariable("setting_column2", None), SetScreenVariable("setting_column2_name", "")]
+            textbutton "Prefs" selected setting_current_tab == "home" text_style "mods_toolbar_textbutton" action [SetScreenVariable("setting_current_tab", "home"), SetScreenVariable("setting_column2", None), SetScreenVariable("setting_column2_name", "")]
+            textbutton "Extra" selected setting_current_tab == "extra" text_style "mods_toolbar_textbutton" action [SetScreenVariable("setting_current_tab", "extra"), SetScreenVariable("setting_column2", None), SetScreenVariable("setting_column2_name", "")]
             if persistent.mod_textbox:
-                textbutton "Textbox" selected setting_current_tab == "textbox" text_style "addon_toolbar_textbutton" action [SetScreenVariable("setting_current_tab", "textbox"), SetScreenVariable("setting_column2", None), SetScreenVariable("setting_column2_name", "")]
-            textbutton "Gesture" selected setting_current_tab == "gesture" text_style "addon_toolbar_textbutton" action [SetScreenVariable("setting_current_tab", "gesture"), SetScreenVariable("setting_column2", None), SetScreenVariable("setting_column2_name", "")]
+                textbutton "Textbox" selected setting_current_tab == "textbox" text_style "mods_toolbar_textbutton" action [SetScreenVariable("setting_current_tab", "textbox"), SetScreenVariable("setting_column2", None), SetScreenVariable("setting_column2_name", "")]
+            textbutton "Gesture" selected setting_current_tab == "gesture" text_style "mods_toolbar_textbutton" action [SetScreenVariable("setting_current_tab", "gesture"), SetScreenVariable("setting_column2", None), SetScreenVariable("setting_column2_name", "")]
 
 
         if setting_current_tab == "home":
-            text "Preferences" style "addon_home_title"
+            text "Preferences" style "mods_home_title"
 
             frame:
-                style "addon_frame_outline"
+                style "mods_frame_outline"
                 has frame:
-                    style "addon_frame_main"
+                    style "mods_frame_main"
 
                 hbox:
-                    style_prefix "addon_settings"
+                    style_prefix "mods_settings"
                     align (0.5, 0.6)
                     spacing 80
                     
@@ -351,15 +351,15 @@ screen addon():
 
 
         elif setting_current_tab == "extra":
-            text "Extra" style "addon_home_title"
+            text "Extra" style "mods_home_title"
 
             frame:
-                style "addon_frame_outline"
+                style "mods_frame_outline"
                 has frame:
-                    style "addon_frame_main"
+                    style "mods_frame_main"
 
                 hbox:
-                    style_prefix "addon_settings"
+                    style_prefix "mods_settings"
                     align (0.5, 0.6)
                     spacing 40
                     
@@ -386,15 +386,15 @@ screen addon():
 
 
         elif setting_current_tab == "textbox":
-            text "Customize Textbox" style "addon_home_title"
+            text "Customize Textbox" style "mods_home_title"
 
             frame:
-                style "addon_frame_outline"
+                style "mods_frame_outline"
                 has frame:
-                    style "addon_frame_main"
+                    style "mods_frame_main"
                 
                 hbox:
-                    style_prefix "addon_settings"
+                    style_prefix "mods_settings"
                     align (0.5, 0.6)
                     spacing 80
                     
@@ -417,15 +417,15 @@ screen addon():
                             
                             
         elif setting_current_tab == "gesture":
-            text "Gestures" style "addon_home_title"
+            text "Gestures" style "mods_home_title"
 
             frame:
-                style "addon_frame_outline"
+                style "mods_frame_outline"
                 yalign 0.75
                 has frame:
-                    style "addon_frame_main"
+                    style "mods_frame_main"
                 vbox:
-                    style_prefix "addon_settings"
+                    style_prefix "mods_settings"
                     align (0.5, 0.6)
                     spacing 10
 
@@ -444,10 +444,10 @@ screen addon():
                 align (0.03, 0.08)
                 anchor (0.0, 0.0)
                 for i in getattr(store, setting_current_tab):
-                    textbutton i[0] selected setting_column2_name == i[0] text_style "addon_column1_textbutton" action [SetScreenVariable("setting_column2", getattr(store, i[1])), SetScreenVariable("setting_column2_name", i[0])]
+                    textbutton i[0] selected setting_column2_name == i[0] text_style "mods_column1_textbutton" action [SetScreenVariable("setting_column2", getattr(store, i[1])), SetScreenVariable("setting_column2_name", i[0])]
 
             if setting_column2 is not None:
-                text setting_column2_name align (0.0, 0.078) style "addon_column2_header" xoffset 318
+                text setting_column2_name align (0.0, 0.078) style "mods_column2_header" xoffset 318
                 vbox:
                     pos (305, 99)
                     anchor (0.0, 0.0)
@@ -457,15 +457,15 @@ screen addon():
                             xysize (495, 48)
                             idle_background mod.Theme.colorAlpha(mod.Theme.background, 0.4)
                             hover_background Solid(mod.Theme.background)
-                            text i[0] align (0.0, 0.5) style "addon_column2_textbutton"
+                            text i[0] align (0.0, 0.5) style "mods_column2_textbutton"
                             action Show(i[1])
 
 
 style game_menu_outer_frame is empty
-style addon_label is gui_label
-style addon_label_text is gui_label_text
+style mods_label is gui_label
+style mods_label_text is gui_label_text
 
-style addon_home_title is text:
+style mods_home_title is text:
     size 26
     font "DejaVuSans.ttf"
     color "#fff"
@@ -473,14 +473,14 @@ style addon_home_title is text:
     hover_color "#8888887f"
     align (0.5, 0.2)
 
-style addon_toolbar_textbutton is text:
+style mods_toolbar_textbutton is text:
     font "DejaVuSans.ttf"
     color "#fff"
     selected_color "#02ffbf"
     hover_color "#8888887f"
     size 18
 
-style addon_column1_textbutton is text:
+style mods_column1_textbutton is text:
     font "DejaVuSans.ttf"
     color "#fff"
     selected_color "#02ffbf"
@@ -488,13 +488,13 @@ style addon_column1_textbutton is text:
     size 18
     outlines [ (absolute(2), "#000", absolute(1), absolute(1)) ]
 
-style addon_column2_header is text:
+style mods_column2_header is text:
     font "DejaVuSans.ttf"
     color "#fff"
     size 18
     outlines [ (absolute(2), "#000", absolute(1), absolute(1)) ]
 
-style addon_column2_textbutton is text:
+style mods_column2_textbutton is text:
     xoffset 15
     font "DejaVuSans.ttf"
     color "#fff"
@@ -503,28 +503,28 @@ style addon_column2_textbutton is text:
     size 14
     outlines [ (absolute(2), "#000", absolute(1), absolute(1)) ]
 
-style addon_frame_outline is frame:
+style mods_frame_outline is frame:
     align (0.5, 0.65)
     padding (2, 2)
     background Solid(mod.Theme.background)
 
-style addon_frame_main is frame:
+style mods_frame_main is frame:
     align (0.5, 0.5)
     padding (20, 20)
     background mod.Theme.colorAlpha(mod.Theme.background, 0.4)
 
-style addon_outer_frame:
+style mods_outer_frame:
     bottom_padding 45
     top_padding 90
     background mod.Theme.colorAlpha(mod.Theme.background, 0.4)
 
-style addon_settings_text is text:
+style mods_settings_text is text:
     font "DejaVuSans.ttf"
     color "#fff"
     size 16
     outlines [ (absolute(2), "#000", absolute(1), absolute(1)) ]
 
-style addon_settings_button_text is button_text:
+style mods_settings_button_text is button_text:
     font "DejaVuSans.ttf"
     color "#fff"
     selected_idle_color "#02ffbf"

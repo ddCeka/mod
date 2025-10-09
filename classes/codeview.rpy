@@ -11,21 +11,21 @@ init 2 python in mod:
                     'keywords': '#AF00DB',
                     'specialKeywords': '#0070C1',
                     'numbers': '#098658',
-                    'strings': '#a31515',
+                    'strings': '#A31515',
                     'variables': '#001080',
-                    'types': '#267f99',
-                    'background': '#ffffff',
+                    'types': '#267F99',
+                    'background': '#FFFFFF',
                 },
                 'dark': {
                     'comments': '#6A9955',
                     'functions': '#DCDCAA',
                     'keywords': '#C586C0',
                     'specialKeywords': '#4FC1FF',
-                    'numbers': '#b5cea8',
-                    'strings': '#ce9178',
+                    'numbers': '#B5CEA8',
+                    'strings': '#CE9178',
                     'variables': '#9CDCFE',
                     'types': '#4EC9B0',
-                    'background': '#1f1f1f',
+                    'background': '#1F1F1F',
                 },
             }
             self._m1_codeview__varOperators = [
@@ -48,14 +48,14 @@ init 2 python in mod:
                     r'\b(True|False)\b', 
                 ]),
                 ('variables', [
-                    r'\b((?!modTKN[0-9]+modTKN)[A-Za-z_]{1}[\w\.]*) ?(?:' + r'|'.join(self._m1_codeview__varOperators) + r')',
-                    r'(?:' + r'|'.join(self._m1_codeview__varOperators) + r') ?((?!modTKN[0-9]+modTKN)[A-Za-z_]{1}[\w\.]*)\b',
-                    r'\b((?!modTKN[0-9]+modTKN)[A-Za-z_]{1}[\w\.]*) (?:not )?(?:is|in|and|or)(?: not)?',
-                    r'(?:not )?(?:is|in|and|or)(?: not)? ((?!modTKN[0-9]+modTKN)[A-Za-z_]{1}[\w\.]*)\b',
-                    r'\breturn ((?!modTKN[0-9]+modTKN)[A-Za-z_]{1}[\w\.]*)\b',
+                    r'\b((?!URMTKN[0-9]+URMTKN)[A-Za-z_]{1}[\w\.]*) ?(?:' + r'|'.join(self._m1_codeview__varOperators) + r')',
+                    r'(?:' + r'|'.join(self._m1_codeview__varOperators) + r') ?((?!URMTKN[0-9]+URMTKN)[A-Za-z_]{1}[\w\.]*)\b',
+                    r'\b((?!URMTKN[0-9]+URMTKN)[A-Za-z_]{1}[\w\.]*) (?:not )?(?:is|in|and|or)(?: not)?',
+                    r'(?:not )?(?:is|in|and|or)(?: not)? ((?!URMTKN[0-9]+URMTKN)[A-Za-z_]{1}[\w\.]*)\b',
+                    r'\breturn ((?!URMTKN[0-9]+URMTKN)[A-Za-z_]{1}[\w\.]*)\b',
                     (
-                        r'\(((?!modTKN[0-9]+modTKN)[A-Za-z_]{1}[\w\.]*(?:, ?(?!modTKN[0-9]+modTKN)[A-Za-z_]{1}[\w\.]*)*)\)', 
-                        r'((?!modTKN[0-9]+modTKN)[A-Za-z_]{1}[\w\.]*)(?:, )?', 
+                        r'\(((?!URMTKN[0-9]+URMTKN)[A-Za-z_]{1}[\w\.]*(?:, ?(?!URMTKN[0-9]+URMTKN)[A-Za-z_]{1}[\w\.]*)*)\)', 
+                        r'((?!URMTKN[0-9]+URMTKN)[A-Za-z_]{1}[\w\.]*)(?:, )?', 
                     ),
                 ]),
                 ('specialKeywords', [
@@ -73,15 +73,15 @@ init 2 python in mod:
                     r'\b(and|or|jump|call|return|if|elif|else|for|while|import|from|as|continue|del|break|finnaly|except|pass|raise|try|with)\b',
                 ]),
             ]
-            renpy.config.hyperlink_handlers['modVarDialog'] = self.handleVarClicked
-            renpy.config.hyperlink_handlers['modLabelDialog'] = self.handleLabelClicked
+            renpy.config.hyperlink_handlers['URMVarDialog'] = self.handleVarClicked
+            renpy.config.hyperlink_handlers['URMLabelDialog'] = self.handleLabelClicked
         
         def handleVarClicked(self, varName):
-            renpy.show_screen('mod_modify_value', Var(varName), allowRemember=True)
+            renpy.show_screen('URM_modify_value', Var(varName), allowRemember=True)
             renpy.restart_interaction()
         
         def handleLabelClicked(self, label):
-            renpy.show_screen('mod_replay_jump', label)
+            renpy.show_screen('URM_replay_jump', label)
             renpy.restart_interaction()
         
         @property
@@ -107,7 +107,7 @@ init 2 python in mod:
                         return renpy.re.sub(subpattern, replaceWithToken(), match.group(), flags=renpy.re.MULTILINE)
                     else:
                         tokens.append('{{color={}}}{}{{/color}}'.format(self.colors[color], match.group(1)))
-                        return match.group().replace(match.group(1), 'modTKN{}modTKN'.format(len(tokens)-1))
+                        return match.group().replace(match.group(1), 'URMTKN{}URMTKN'.format(len(tokens)-1))
                 return subCall
             
             for (color, patterns) in self._m1_codeview__tokenPatterns:
@@ -121,7 +121,7 @@ init 2 python in mod:
             def insertToken(match):
                 return tokens[int(match.group(1))]
             
-            code = renpy.re.sub(r'modTKN([0-9]+)modTKN', insertToken, code)
+            code = renpy.re.sub(r'URMTKN([0-9]+)URMTKN', insertToken, code)
             
             if interactiveVariables:
                 code = self.interactiveVariables(code)
@@ -135,7 +135,7 @@ init 2 python in mod:
             pattern = r'{color=' + self.colors['variables'] + r'}([\w\.]+){/color}'
             
             def addLink(match):
-                return '{{a=modVarDialog:{}}}{}{{/a}}'.format(match.group(1), match.group())
+                return '{{a=URMVarDialog:{}}}{}{{/a}}'.format(match.group(1), match.group())
             
             return renpy.re.sub(pattern, addLink, coloredCode)
         
@@ -143,7 +143,7 @@ init 2 python in mod:
             pattern = r'{color=' + self.colors['keywords'] + r'}(?:call|jump){/color} {color=' + self.colors['functions'] + r'}([\w\.]+){/color}'
             
             def addLink(match):
-                return '{{a=modLabelDialog:{}}}{}{{/a}}'.format(match.group(1), match.group())
+                return '{{a=URMLabelDialog:{}}}{}{{/a}}'.format(match.group(1), match.group())
             
             return renpy.re.sub(pattern, addLink, coloredCode)
         
@@ -157,7 +157,7 @@ init 2 python in mod:
                     else:
                         return '{} # X - Condition not met'.format(match.group())
                 except Exception as e:
-                    print(': CodeView: Failed to evaluatie condition: "{}". {}'.format(match.group(), e))
+                    print('info: CodeView: Failed to evaluatie condition: "{}". {}'.format(match.group(), e))
                     return '{} # ? - Unable to evaluate condition'.format(match.group())
             
             return renpy.re.sub(pattern, evalCondition, code, flags=renpy.re.MULTILINE)
@@ -192,7 +192,7 @@ init 2 python in mod:
                             if hasattr(node.arguments, 'get_code'):
                                 output += createLine('call {} {}\n'.format(node.label, node.arguments.get_code()))
                             else:
-                                output += createLine('call {} # This call has arguments mod could not show\n'.format(node.label))
+                                output += createLine('call {} # This call has arguments URM could not show\n'.format(node.label))
                         else:
                             output += createLine('call {}\n'.format(node.label))
                     elif isinstance(node, renpy.ast.UserStatement):
