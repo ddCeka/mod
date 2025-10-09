@@ -23,8 +23,6 @@ screen URM_options_main(selectedOption=None):
         vbox:
             xfill True yfill True
 
-            # if renpy.has_screen('URM_options_{}'.format(mod.Settings.currentScreen[8:])):
-            #     use expression 'URM_options_{}'.format(mod.Settings.currentScreen[8:]) # THIS IS NOT AVAILABLE IN OLDER RENPY VERSIONS
             if mod.Settings.currentScreen[8:] == 'notifications':
                 use URM_options_notifications()
             elif mod.Settings.currentScreen[8:] == 'watchpanel':
@@ -535,7 +533,6 @@ screen URM_options_appearance():
 
 screen URM_options_themeOption(themeName, globalSetting=None):
     style_prefix 'mod'
-
     hbox:
         spacing mod.scalePxInt(10)
         frame:

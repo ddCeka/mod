@@ -31,14 +31,12 @@ screen URM_paths():
                             key 'alt_K_{}'.format(i+1) action ToggleScreenVariable('selectedIndex', i, None)
                         else:
                             text str(i+1)
-
                     hbox xsize colWidth[1] yalign .5:
                         hbox yalign .5:
                             if i == selectedStatementIndex:
                                 use mod_messagebar('success', '{urm_notl}True{/urm_notl}')
                             else:
                                 use mod_messagebar('error', '{urm_notl}False{/urm_notl}')
-
                         if statement.condition != 'True':
                             null width mod.scalePxInt(10)
                             use mod_iconButton('\uf1c2', If(selectedIndex==i, '{u}C{/u}ondition', '{urm_notl}Condition{/urm_notl}'), statement.OpenConditionView)
@@ -46,7 +44,6 @@ screen URM_paths():
                                 key 'alt_K_c' action statement.OpenConditionView
                         elif selectedIndex==i:
                                 key 'alt_K_c' action NullAction()
-
                     hbox xsize colWidth[2] yalign .5:
                         if statement.code:
                             use mod_iconButton('\ue86f', If(selectedIndex==i, '{u}S{/u}how', '{urm_notl}Show{/urm_notl}'), statement.OpenCodeView)
@@ -56,7 +53,6 @@ screen URM_paths():
                             text 'Not found'
                             if selectedIndex==i:
                                 key 'alt_K_s' action NullAction()
-
                     hbox xsize colWidth[3] yalign .5:
                         if statement.jumpTo:
                             use mod_iconButton('\ue163', If(selectedIndex==i, 'L{u}a{/u}bel', mod.scaleText(statement.jumpTo, 14, 'URM_button_text')), Show('URM_replay_jump', jumpTo=statement.jumpTo))
@@ -66,7 +62,6 @@ screen URM_paths():
                             text 'N/A'
                             if selectedIndex==i:
                                 key 'alt_K_a' action NullAction()
-
                     hbox xsize mod.scalePxInt(150):
                         if statement.Action:
                             use mod_iconButton('\ue86c', If(selectedIndex==i, '{b}S{u}e{/u}lect{/b}', '{urm_notl}Select{/urm_notl}'), [statement.Action,Hide('URM_paths'),Hide('URM_CodeView')])

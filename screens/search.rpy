@@ -66,7 +66,6 @@ screen URM_search():
                         if not mod.LabelsStore.has(mod.Search.lastLabel):
                             textbutton "\ue609" style_suffix "icon_button" yalign 0.5 hovered mod.Tooltip('Remember label') unhovered mod.Tooltip() action Show('URM_remember_var', varName=mod.Search.lastLabel, rememberType='label')
                         textbutton "\ue1c4" style_suffix "icon_button" yalign 0.5 hovered mod.Tooltip('Replay label') unhovered mod.Tooltip() action Show('URM_replay', labelName=mod.Search.lastLabel)
-
             hbox xalign 1.0 yalign .5 spacing 2:
                 textbutton '{urm_notl}R{/urm_notl}' style_suffix If(mod.Settings.searchRecursive, 'buttonSuccess', 'buttonCancel') selected False hovered mod.Tooltip(If(mod.Settings.searchRecursive, 'Recursive search enabled', 'Recursive search disabled')) unhovered mod.Tooltip() action ToggleField(mod.Settings, 'searchRecursive', True, False) text_xalign .5 xsize mod.scalePxInt(36)
                 textbutton '{urm_notl}P{/urm_notl}' style_suffix If(mod.Settings.searchPersistent, 'buttonSuccess', 'buttonCancel') selected False hovered mod.Tooltip(If(mod.Settings.searchPersistent, 'Persistent variables search enabled', 'Persistent variables search disabled')) unhovered mod.Tooltip() action ToggleField(mod.Settings, 'searchPersistent', True, False) text_xalign .5 xsize mod.scalePxInt(36)
@@ -87,7 +86,6 @@ screen URM_search():
                 hbox xalign 1.0 yalign .5:
                     text 'Results: {}'.format(len(mod.Search.results))
                     null width mod.scalePxInt(10)
-
             # Headers
             use URM_tableRow():
                 hbox xsize colWidth[0]:
@@ -99,7 +97,6 @@ screen URM_search():
                             textbutton If(nameSorted,'{size=-6}\ue313{/size}','{size=-6}\ue5d7{/size}') yoffset mod.scalePxInt(-4) style_suffix 'icon_textbutton' hovered mod.Tooltip('{urm_notl}Sort ascending{/urm_notl}') unhovered mod.Tooltip() action [Function(mod.Search.sort),SetLocalVariable('nameSorted', 'asc')]
                 hbox xsize colWidth[1]:
                     label If(mod.Search.searchType=='labels', '{urm_notl}Replay{/urm_notl}', '{urm_notl}Value{/urm_notl}')
-
             # Results
             viewport:
                 xfill True
@@ -122,7 +119,6 @@ screen URM_search():
                                         use mod_iconButton('\ue4f8', '{urm_notl}Forget{/urm_notl}', Function(mod.LabelsStore.forget, var.name))
                                     else:
                                         use mod_iconButton('\ue862', '{urm_notl}Remember{/urm_notl}', Show('URM_remember_var', varName=var.name, rememberType='label'))
-
                             else: # We are searching variables
                                 hbox xsize colWidth[0] yalign .5:
                                     text mod.scaleText(var.name, 23) substitute False
@@ -145,7 +141,6 @@ screen URM_search():
                                         use mod_iconButton('\ue8f5', '{urm_notl}Unwatch{/urm_notl}', Function(mod.VarsStore.unwatch, var.name))
                                     else:
                                         use mod_iconButton('\ue8f4', '{urm_notl}Watch{/urm_notl}', Show('URM_remember_var', varName=var.name, rememberType='watchVar'))
-
         else: # No results
             vbox:
                 yoffset mod.scaleY(1.5)

@@ -22,7 +22,6 @@ screen URM_textrepl():
                 textbutton "\ue16c" style_suffix "icon_button" action If(mod.TextRepl.store.unsaved, mod.Confirm('This will clear the list below, are you sure?', Function(mod.TextRepl.clear), title='Clear list'), Function(mod.TextRepl.clear))
             else:
                 text "Load a file or add text replacements using the buttons on the right"
-
         hbox spacing 2:
             xalign 1.0
             textbutton "\uf106" sensitive (not mod.TextRepl.incompatible) style_suffix "icon_button" hovered mod.Tooltip('Rename a character') unhovered mod.Tooltip() action Show('URM_rename_character')
@@ -35,7 +34,6 @@ screen URM_textrepl():
         fixed ysize mod.scalePxInt(50):
             hbox xalign .5 yoffset 4 spacing 2:
                 use URM_pages(textreplPages)
-
         # Headers
         use URM_tableRow():
             hbox xsize colWidth[0]:
@@ -57,7 +55,6 @@ screen URM_textrepl():
                     else:
                         textbutton '{size=-6}\ue5d7{/size}' yoffset mod.scalePxInt(-4) style_suffix 'icon_textbutton' hovered mod.Tooltip('{urm_notl}Sort ascending{/urm_notl}') unhovered mod.Tooltip() action [Function(mod.TextRepl.sort, sortReplacement=True),SetLocalVariable('listSorted', 'replacementAsc')]
             label "{urm_notl}Case insensitive{/urm_notl}" xsize colWidth[2]
-
         # Results
         viewport:
             xfill True
@@ -88,7 +85,6 @@ screen URM_textrepl():
                                     use mod_iconButton('\ue55c', '{urm_notl}Before this{/urm_notl}', action=[Function(mod.TextRepl.changePos, movingOriginal, replacement['original']),SetLocalVariable('movingOriginal', None)])
                             else:
                                 use mod_iconButton('\ue89f', '{urm_notl}Move{/urm_notl}', action=SetLocalVariable('movingOriginal', replacement['original']))
-
     else:
         vbox:
             yoffset mod.scaleY(1.5)
@@ -127,7 +123,6 @@ screen URM_rename_character():
             draggable True
             mousewheel True
             scrollbars "vertical"
-
             vbox spacing 2:
                 for char in mod.Characters.all:
                     if char.match(str(charFilterInput)):
@@ -176,7 +171,6 @@ screen URM_add_textrepl(characterVar=None, defaultOriginal='', defaultReplacemen
                 hbox:
                     use mod_checkbox(checked=replacePartialWords, text='{urm_notl}Replace parts of words{/urm_notl}', action=ToggleScreenVariable('replacePartialWords', True, False))
                     textbutton "\ueb8b" style_suffix "icon_button" yalign .5 hovered mod.Tooltip("{urm_notl}Explain partial replacements{/urm_notl}") unhovered mod.Tooltip() action mod.Confirm("""When this option is enabled the original text will also match parts of words. Otherwise it will only match whole words\n\nExample:\nOriginal: {b}URM{/b}\nReplacement: {b}Universal Ren'Py Mod{/b}\n\nOption enabled:\n{b}URMod{/b} will become {b}Universal Ren'Py Modod{/b}\n(notice the extra {b}od{/b} because we only replaced the {b}URM{/b} part)\n\nOption disabled:\n{b}URMod{/b} will not be replace, because it doesn't match the original {b}URM{/b} as a whole word""", title='Partial replacements')
-
         hbox:
             yoffset mod.scalePxInt(15)
             align (1.0,1.0)

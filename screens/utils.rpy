@@ -14,8 +14,8 @@ screen URM_colorpicker(callback, onClose, defaultColor=None):
             text ''
 
         null height mod.scalePxInt(5)
-
-        hbox: # Color presents
+        # Color presents
+        hbox:
             spacing 3
             for preset in colorPresets:
                 imagebutton:
@@ -43,7 +43,6 @@ screen URM_colorpicker(callback, onClose, defaultColor=None):
                 text "{urm_notl}A{/urm_notl}" xalign .5 size 34 outlines [(2, '#222', 0, 0)]
                 vbar xoffset 4:
                     value FieldValue(colorPicker, 'a', 1.0, step=.1)
-
         hbox yoffset 10:
             textbutton '{urm_notl}Apply{/urm_notl}' action [Function(callback, colorPicker.hex), onClose]
             textbutton '{urm_notl}Cancel{/urm_notl}' action onClose

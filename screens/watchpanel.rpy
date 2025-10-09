@@ -41,7 +41,6 @@ screen URM_watchpanel():
         yfill True
         has vbox
         xfill True
-
         hbox:
             xfill True ysize mod.scalePx(46)
             text "{urm_notl}URM{/urm_notl}" style_suffix "header_text" yalign .5 xoffset mod.scalePx(3)
@@ -69,7 +68,6 @@ screen URM_watchpanel():
         use URM_watchPanelChoiceDetection(panelWidth)
         use URM_watchPanelPathDetection(panelWidth)
         use URM_watchPanelProgress(panelWidth)
-
         #
         # Watching
         #
@@ -108,7 +106,6 @@ screen URM_watchpanel():
                                                 textbutton '\ue55c' style_suffix 'icon_button' hovered mod.Tooltip('{urm_notl}Before this{/urm_notl}') unhovered mod.Tooltip() action [Function(mod.VarsStore.changePosWatched, movingVarName, varName),SetLocalVariable('movingVarName', None)]
                                         else:
                                             textbutton '\ue89f' style_suffix 'icon_button' hovered mod.Tooltip('{urm_notl}Move{/urm_notl}') unhovered mod.Tooltip() action SetLocalVariable('movingVarName', varName)
-                            
                             frame style_suffix "seperator" background mod.Theme.secondary
 
 screen URM_watchPanelFileLine(panelWidth):
@@ -128,7 +125,6 @@ screen URM_watchPanelFileLine(panelWidth):
                     text mod.scaleText(mod.currentFileNameLine(), 14, reverse=True) style_suffix 'button_text' substitute False
             hovered mod.Tooltip('{urm_notl}Show full name:line{/urm_notl}') unhovered mod.Tooltip()
             action mod.Confirm('Last executed line:\n{}'.format(mod.currentFilePathLine()), title='{urm_notl}Current file:line{/urm_notl}')
-
         frame style_suffix "seperator" background mod.Theme.secondary
 
 screen URM_watchPanelLabel(panelWidth):
@@ -144,7 +140,6 @@ screen URM_watchPanelLabel(panelWidth):
                     text mod.scaleText(mod.Search.lastLabel, 13) style_suffix 'button_text' substitute False
                 hovered mod.Tooltip('{urm_notl}Show label info{/urm_notl}') unhovered mod.Tooltip()
                 action Show('URM_replay_jump', jumpTo=mod.Search.lastLabel, dialogTitle='{urm_notl}Last seen label{/urm_notl}')
-
         else:
             frame:
                 style_suffix 'watchpanelItem'
@@ -157,7 +152,6 @@ screen URM_watchPanelLabel(panelWidth):
                         if not mod.LabelsStore.has(mod.Search.lastLabel):
                             textbutton "\ue609" style_suffix "icon_button" yalign 0.5 hovered mod.Tooltip('{urm_notl}Remember label{/urm_notl}') unhovered mod.Tooltip() action Show('URM_remember_var', varName=mod.Search.lastLabel, rememberType='label')
                         textbutton "\ue1c4" style_suffix "icon_button" yalign 0.5 hovered mod.Tooltip('{urm_notl}Replay label{/urm_notl}') unhovered mod.Tooltip() action Show('URM_replay', labelName=mod.Search.lastLabel)
-
         frame style_suffix "seperator" background mod.Theme.secondary
 
 screen URM_watchPanelChoiceDetection(panelWidth):
@@ -177,12 +171,10 @@ screen URM_watchPanelChoiceDetection(panelWidth):
                 if mod.Choices.isDisplayingChoice:
                     hovered mod.Tooltip('{urm_notl}Show choices{/urm_notl}') unhovered mod.Tooltip()
                     action Show('URM_choices')
-
         else:
             frame:
                 style_suffix 'watchpanelItem'
                 has vbox
-
                 label '{urm_notl}Displaying choice?{/urm_notl}'
                 if mod.Choices.isDisplayingChoice:
                     hbox:
@@ -191,7 +183,6 @@ screen URM_watchPanelChoiceDetection(panelWidth):
                         textbutton '\ue896' style_suffix 'icon_button' xalign 1.0 hovered mod.Tooltip('Show choices') unhovered mod.Tooltip() action Show('URM_choices')
                 else:
                     text '{urm_notl}No{/urm_notl}'
-
         frame style_suffix "seperator" background mod.Theme.secondary
 
 screen URM_watchPanelPathDetection(panelWidth):
@@ -211,12 +202,10 @@ screen URM_watchPanelPathDetection(panelWidth):
                 if mod.PathDetection.pathIsNext:
                     hovered mod.Tooltip('{urm_notl}Show paths{/urm_notl}') unhovered mod.Tooltip()
                     action Show('URM_paths')
-
         else:
             frame:
                 style_suffix 'watchpanelItem'
                 has vbox
-
                 label 'Detected path?'
                 if mod.PathDetection.pathIsNext:
                     hbox:
@@ -225,7 +214,6 @@ screen URM_watchPanelPathDetection(panelWidth):
                         textbutton '\uf184' style_suffix 'icon_button' xalign 1.0 hovered mod.Tooltip('Show options') unhovered mod.Tooltip() action Show('URM_paths')
                 else:
                     text '{urm_notl}No{/urm_notl}'
-
         frame style_suffix "seperator" background mod.Theme.secondary
 
 screen URM_watchPanelProgress(panelWidth):
@@ -244,7 +232,6 @@ screen URM_watchPanelProgress(panelWidth):
                     label 'Progress'
                     text '[mod.ProgressBar.percentage]% {size=-8}([mod.ProgressBar.seen]/[mod.ProgressBar.total]){/size}' style_suffix 'button_text'
             action ToggleField(mod.Settings, 'progressShown', True, False)
-
         frame style_suffix "seperator" background mod.Theme.secondary
 
 style mod_notification is mod_default:
@@ -267,7 +254,6 @@ screen URM_notifications():
         xalign If(mod.Settings.watchPanelPos == 'r', 1.0, 0.0)
         xoffset (If(mod.Settings.showWatchPanel and not mod.Settings.collapsedWatchPanel, mod.scaleX(15), 0) * If(mod.Settings.watchPanelPos == 'r', -1, 1)) # Offset notification when the panel is open, multiply by 1 or -1 for left or right panel
         spacing 2
-
         # ==========
         # END REPLAY
         # ==========
@@ -283,7 +269,6 @@ screen URM_notifications():
                         text '\uef71' style_suffix 'icon_button_text'
                         null width mod.scalePxInt(4)
                         text '{u}E{/u}nd replay' style_suffix 'notification_text' bold True
-
         # ====================
         # Choices notification
         # ====================
@@ -302,7 +287,6 @@ screen URM_notifications():
                         text '{u}C{/u}hoices detected' style_suffix 'notification_text' bold True
                     if mod.Choices.hiddenCount > 0:
                         text '[mod.Choices.hiddenCount] hidden' style_suffix 'notification_text'
-
         # ==================
         # Paths notification
         # ==================
@@ -316,14 +300,12 @@ screen URM_notifications():
                 style_suffix 'notification'
                 xminimum width
                 action Show('URM_paths')
-
                 vbox:
                     hbox:
                         text '\uf184' style_suffix 'icon_button_text'
                         null width mod.scalePxInt(4)
                         text 'P{u}a{/u}th detected' style_suffix 'notification_text' bold True
                     text '[mod.PathDetection.statementsCount] options' style_suffix 'notification_text'
-
         # ==================
         # TEMP NOTIFICATIONS
         # ==================
@@ -333,7 +315,6 @@ screen URM_notifications():
                 style_suffix 'notification'
                 xminimum width
                 action notif
-
                 vbox:
                     text mod.scaleText(notif.label, 260, style='URM_label_text', pixelTarget=True) style_suffix 'notification_text' bold True
                     if notif.text:
@@ -345,7 +326,6 @@ screen URM_notifications():
                 style_suffix 'notification'
                 xminimum width
                 action Function(mod.Notifications.clear)
-
                 hbox:
                     text '\ue92b' style_suffix 'icon_button_text' yalign .5
                     text '{urm_notl}Dismiss all{/urm_notl}' style_suffix 'notification_text'

@@ -147,7 +147,6 @@ screen URM_gamesaves_pagename():
             key_events True
             action pageNameInput.Enable()
             input value pageNameInput length 50
-
         hbox:
             yoffset mod.scalePxInt(15)
             align (1.0,1.0)

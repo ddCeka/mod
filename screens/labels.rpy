@@ -82,7 +82,6 @@ screen URM_labels():
                                         use mod_iconButton('\ue55c', '{urm_notl}Before this{/urm_notl}', action=[Function(mod.LabelsStore.changePos, movingLabelName, labelName),SetLocalVariable('movingLabelName', None)])
                                 else:
                                     use mod_iconButton('\ue89f', '{urm_notl}Move{/urm_notl}', action=SetLocalVariable('movingLabelName', labelName))
-
         # ===============
         # THUMBNAILS VIEW
         # ===============
@@ -211,7 +210,6 @@ screen URM_replay_jump(jumpTo, choiceName=None, dialogTitle='{urm_notl}Next labe
         hbox:
             label '[dialogTitle] '
             text jumpTo
-
         vbox:
             yoffset mod.scalePxInt(15)
             spacing mod.scalePxInt(15)
