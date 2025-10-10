@@ -38,6 +38,7 @@ init 3 python in mod:
                 if not key in newDict or oldDict[key] != newDict[key]:
                     changes[key] = oldDict[key]
             
+            
             for key in newDict:
                 if not key in oldDict:
                     changes[key] = None
@@ -74,6 +75,7 @@ init 3 python in mod:
                 if newName: 
                     if self.exists(newName):
                         return self.findDictChanges(self._m1_snapshots__snapshots[name], self._m1_snapshots__snapshots[newName], ignoreInternal=True)
+                
                 else: 
                     return self.findDictChanges(self._m1_snapshots__snapshots[name], None, ignoreInternal=True)
             

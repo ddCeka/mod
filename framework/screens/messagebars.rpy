@@ -18,5 +18,4 @@ screen mod_messagebar(kind, message, icon=None, substitute=True):
                 elif kind == 'success':
                     text '\ue86c' style_suffix 'icon' color getattr(mod.Theme.colors, '{}Text'.format(kind)) yalign .5
 
-
             text message substitute substitute color getattr(mod.Theme.colors, '{}Text'.format(kind))

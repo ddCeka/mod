@@ -31,6 +31,7 @@ screen URM_choices():
                             key 'alt_K_{}'.format(i+1) action ToggleScreenVariable('selectedIndex', i, None)
                         else:
                             text str(i+1)
+
                     hbox xsize colWidth[1] yalign .5:
                         hbox:
                             text mod.scaleText(choice.text, 14) substitute False  yalign .5
@@ -39,6 +40,7 @@ screen URM_choices():
                                 use mod_iconButton('\ue560', action=Show('URM_add_textrepl', defaultOriginal=choice.text, defaultReplacement=mod.TextRepl.store[choice.text]['replacement'], blockOriginal=True))
                             else:
                                 use mod_iconButton('\ue560', action=Show('URM_add_textrepl', defaultOriginal=choice.text, defaultReplacement=choice.text, blockOriginal=True))
+
                     hbox xsize colWidth[2] yalign .5:
                         if choice.isVisible:
                             use mod_messagebar('success', '{urm_notl}True{/urm_notl}')
@@ -51,6 +53,7 @@ screen URM_choices():
                                 key 'alt_K_c' action choice.OpenConditionView
                         elif selectedIndex==i:
                             key 'alt_K_c' action NullAction()
+
                     hbox xsize colWidth[3] yalign .5:
                         if choice.code:
                             use mod_iconButton('\ue86f', If(selectedIndex==i, '{u}S{/u}how', '{urm_notl}Show{/urm_notl}'), choice.OpenCodeView)
@@ -60,6 +63,7 @@ screen URM_choices():
                             text 'Not found'
                             if selectedIndex==i:
                                 key 'alt_K_s' action NullAction()
+
                     hbox xsize colWidth[4] yalign .5:
                         if choice.jumpTo:
                             use mod_iconButton('\ue163', If(selectedIndex==i, 'L{u}a{/u}bel', mod.scaleText(choice.jumpTo, 14, 'URM_button_text')), Show('URM_replay_jump', jumpTo=choice.jumpTo, choiceName=choice.text))
@@ -69,6 +73,7 @@ screen URM_choices():
                             text 'N/A'
                             if selectedIndex==i:
                                 key 'alt_K_a' action NullAction()
+
                     hbox xsize colWidth[5]:
                         use mod_iconButton('\ue86c', If(selectedIndex==i, '{b}S{u}e{/u}lect{/b}', '{urm_notl}Select{/urm_notl}'), [Hide('URM_choices'),Hide('URM_CodeView'),choice.Action], sensitive=True)
                         if selectedIndex==i:

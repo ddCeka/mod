@@ -47,8 +47,10 @@ screen URM_overlay():
                     textbutton "\ue5cc" style_suffix "icon_button" align (0.0, 0.0) action SetField(mod.Settings, 'collapsedWatchPanel', False)
         else:
             use URM_watchpanel
+
     # # Detection notifications
     use URM_notifications
+
     # Show the touch buttton
     if mod.Settings.touchEnabled or (renpy.variant("touch") and not mod.States.gestureInitialized):
         drag:
@@ -62,9 +64,11 @@ screen URM_overlay():
 
             idle_child Transform('mods/images/logo.png', alpha=.8, zoom=mod.getScaleFactor())
             hover_child Transform('mods/images/logo.png', zoom=mod.getScaleFactor())
+
     # Show progressbar
     if mod.Settings.progressShown:
         use URM_progress
+
 
 # ===========
 # MAIN SCREEN
@@ -88,6 +92,7 @@ screen URM_main():
         hbox:
             ysize mod.scalePxInt(42) xoffset mod.scalePxInt(3)
             add renpy.display.im.FactorScale('mods/images/logo.png', mod.getScaleFactor()*.95) yalign .5
+
         hbox:
             align (0.03, 0.0)
             spacing 2
@@ -105,11 +110,13 @@ screen URM_main():
 
         vbox:
             xfill True
+
             # Header
             vbox:
                 ysize mod.scalePxInt(46)
                 align (0.5, 0.0)
                 text "Universal Ren'Py Mod" style_suffix "header_text" yalign .5
+
             # File buttons
             hbox:
                 xalign 1.0 spacing 2
@@ -143,6 +150,7 @@ screen URM_main():
                     use URM_tabbutton('{urm_notl}Options{/urm_notl}', '\ue8b8', 'options')
                 frame style_suffix "vseperator"
                 null width mod.scalePxInt(10)
+
                 # Content
                 vbox:
                     null height mod.scalePxInt(10)

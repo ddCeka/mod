@@ -170,6 +170,7 @@ init 3 python in mod:
                 self._m1_vars__isExpandable = (self.varType in ['list', 'dict', 'store'] or self.varType.startswith('<class'))
             return self._m1_vars__isExpandable
         
+        
         @property
         def isSupported(self):
             if not hasattr(self, '__isSupported'):
@@ -196,6 +197,7 @@ init 3 python in mod:
         @property
         def value(self):
             try:
+                
                 currentValue = None
                 for index,currentPath in enumerate(self.namePath):
                     if index == 0:
@@ -268,6 +270,7 @@ init 3 python in mod:
         
         def delete(self):
             try:
+                
                 currentValue = None
                 namePath = self.namePath
                 lastIndex = len(namePath)-1
@@ -475,6 +478,8 @@ init 3 python in mod:
             finally:
                 if isFrozen: VarsStore.freeze(varName)
 
+
+
     class StoreMonitorClass(NonPicklable):
         def __init__(self):
             self.originalSetField = None
@@ -488,9 +493,11 @@ init 3 python in mod:
             try:
                 if self.isSupported and not self.isAttached:
                     renpy.config.python_callbacks.append(self._m1_vars__pythonCallback)
+                    
                     if self.originalSetField == None:
                         for method in self._m1_vars__setFieldMethods:
                             if hasattr(renpy.store, method):
+                                
                                 originalMethod = getattr(renpy.store, method)
                                 self.originalSetField = self._m1_vars__cloneMethod(originalMethod)
                                 originalMethod.__code__ = StoreMonitorClass._m1_vars__injectableSetField.__code__
@@ -523,6 +530,7 @@ init 3 python in mod:
                     Var(varName).setValue(oldVal) 
                 return False
             
+            
             elif VarsStore.isMonitored(varName):
                 if not renpy.get_screen('URM_modify_value') and oldVal != newVal: 
                     Notifications.add(label='Variable changed', text=varName, action=renpy.store.Show('URM_var_changed', varName=varName, prevVal=oldVal))
@@ -545,6 +553,7 @@ init 3 python in mod:
                 
                 for varName in changes:
                     oldVal = changes[varName]
+                    
                     
                     if isinstance(oldVal, renpy.python.StoreDeleted): return
                     

@@ -10,7 +10,7 @@ style mod_dialogContent is mod_frame:
 
 style mod_dialogButtons:
     yoffset mod.scalePxInt(-40)
-    xalign 1.0
+    xalign 0.13
 
 style mod_dialogButton is mod_button:
     background Solid(mod.Theme.colors.buttonBg)
@@ -60,6 +60,7 @@ screen mod_Dialog(title=None, closeAction=None, xsize=None, modal=False, icon=No
                             text icon style_suffix 'mod_dialogIcon' yalign .5
                         if title:
                             label title yalign .5
+
                 hbox:
                     style_suffix 'dialogButtons'
 
@@ -76,6 +77,7 @@ screen mod_Dialog(title=None, closeAction=None, xsize=None, modal=False, icon=No
                         else:
                             background None
                             text 'x' size mod.scalePxInt(24) yalign .5 color '#fff0'
+
                 button:
                     key_events True # We need this to still trigger key events defined inside of this button
                     action NullAction() # Prevent clicking through

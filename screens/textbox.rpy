@@ -33,7 +33,7 @@ screen URM_say(who, what):
                 background mod.TextBox.whoBackground
                 hbox xsize mod.TextBox.whoWidth xalign mod.TextBox.Settings.whoPosition:
                     text who id 'who'
-                    
+
         frame:
             if mod.TextBox.Settings.whatResizeBackground:
                 xsize mod.TextBox.textWidth
@@ -57,6 +57,7 @@ screen URM_say(who, what):
                 if mod.TextBox.Settings.sideImageShown and mod.TextBox.Settings.sideImagePos == 'right':
                     add mod.TextBox.sideImage
 
+
 screen URM_textboxCustomizations():
     style_prefix "mod"
     default colWidth = [mod.scaleX(20), mod.scaleX(60)]
@@ -79,8 +80,8 @@ screen URM_textboxCustomizations():
             hbox xalign 1.0 yalign .5:
                 text 'Customizations: {}'.format(len(mod.TextBox.Settings.store))
                 null width mod.scalePxInt(10)
-        # Headers
-        use URM_tableRow():
+
+        use URM_tableRow(): # Headers
             label "{urm_notl}Character{/urm_notl}" xsize colWidth[0]
 
         viewport:
@@ -89,6 +90,7 @@ screen URM_textboxCustomizations():
             mousewheel True
             draggable True
             scrollbars "vertical"
+
             # Results
             use URM_table():
                 for i,charVarName in enumerate(list(mod.TextBox.Settings.store.keys())[textboxPages.pageStartIndex:textboxPages.pageEndIndex]):
@@ -100,10 +102,12 @@ screen URM_textboxCustomizations():
                                 text mod.scaleText(mod.Characters.getByVarName(charVarName).fullName, 18)
                             else:
                                 text mod.scaleText(charVarName, 18)
+
                         hbox xsize colWidth[1]:
                             hbox spacing 2:
                                 use mod_iconButton('\ue3c9', '{urm_notl}Edit{/urm_notl}', action=Function(mod.TextBox.openCustomizer, charVarName=charVarName, beforeOpenAction=Hide('URM_main'), afterCloseAction=mod.Open()))
                                 use mod_iconButton('\ue872', '{urm_notl}Remove{/urm_notl}', mod.Confirm('Are you sure you want to remove this customization?', Function(mod.TextBox.Settings.remove, charVarName), title='Remove textbox customization'))
+    
     else:
         vbox:
             yoffset mod.scaleY(1.5)
@@ -112,6 +116,7 @@ screen URM_textboxCustomizations():
             null height mod.scalePxInt(15)
             text "Here you can customize the textbox for each or all characters" xalign .5
             text "Use the add button a the left top to start customizing" xalign .5
+
 
 screen URM_textboxCustomizer(charVarName=None):
     layer 'Overlay'
@@ -144,11 +149,13 @@ screen URM_textboxCustomizer(charVarName=None):
                             textbutton '\ue3c9' style_suffix 'icon_button' action Show('URM_textboxCharacterPicker')
                             textbutton '\ue872' style_suffix 'icon_button' action SetField(mod.TextBox, 'previewCharacter', None) sensitive (mod.TextBox.previewCharacter != mod.TextBox.demoCharacter)
                             textbutton '\ueb8b' style_suffix 'icon_button' action mod.Confirm('Select a character to apply the customization to.\n"Any" is applied to any character that doensn\'t have it\'s own customizations.', title='{urm_notl}Character selection{/urm_notl}')
+
                     vbox:
                         label 'Mode'
                         hbox:
                             textbutton If(mod.TextBox.Settings.customSayScreen, '{urm_notl}Full{/urm_notl}', '{urm_notl}Light{/urm_notl}') action ToggleField(mod.TextBox.Settings, 'customSayScreen', True, False)
                             textbutton '\ueb8b' style_suffix 'icon_button' action mod.Confirm('{b}Full{/b} = Use a fully customizable textbox\n{b}Light{/b} = Use the original textbox (some customization may not work)', title='{urm_notl}Textbox mode{/urm_notl}') yalign .5
+
                 # Namebox settings
                 vbox:
                     hbox:
@@ -197,6 +204,7 @@ screen URM_textboxCustomizer(charVarName=None):
                                             textbutton '\ue872' style_suffix 'icon_button' action SetField(mod.TextBox.Settings, 'whoFont', None) sensitive (mod.TextBox.Settings.whoFont != None) yalign .5
                                         if mod.TextBox.Settings.customSayScreen or mod.TextBox.Settings.whoFont != None:
                                             text (mod.TextBox.Settings.whoFont or list(mod.TextBoxSettings.fontOptions.keys())[0]) font mod.TextBox.whoFont yalign .5
+
                             vbox:
                                 text '{urm_notl}Border{/urm_notl}'
                                 frame style_suffix 'textboxConfigBox':
@@ -261,6 +269,7 @@ screen URM_textboxCustomizer(charVarName=None):
                                                 textbutton '\ue5c8' style_suffix 'icon_button' action SetField(mod.TextBox.Settings, 'whoPosition', mod.min(mod.TextBox.Settings.whoPosition+0.05, 1.0))
                                                 textbutton '\uf053' style_suffix 'icon_button' action SetField(mod.TextBox.Settings, 'whoPosition', mod.TextBoxSettings.defaultValues['whoPosition'])
                                         use mod_checkbox(checked=mod.TextBox.Settings.whoResizeBackground, text='{urm_notl}Resize background{/urm_notl}', action=ToggleField(mod.TextBox.Settings, 'whoResizeBackground', True, False))
+
                 # Textbox settings
                 vbox:
                     hbox:
@@ -310,6 +319,7 @@ screen URM_textboxCustomizer(charVarName=None):
                                         textbutton '\ue872' style_suffix 'icon_button' action SetField(mod.TextBox.Settings, 'whatFont', None) sensitive (mod.TextBox.Settings.whatFont != None) yalign .5
                                     if mod.TextBox.Settings.customSayScreen or mod.TextBox.Settings.whatFont != None:
                                         text (mod.TextBox.Settings.whatFont or list(mod.TextBoxSettings.fontOptions.keys())[0]) font mod.TextBox.whatFont yalign .5
+                        
                         vbox:
                             text '{urm_notl}Border{/urm_notl}'
                             frame style_suffix 'textboxConfigBox':
@@ -374,6 +384,7 @@ screen URM_textboxCustomizer(charVarName=None):
                                             textbutton '\ue5c8' style_suffix 'icon_button' action SetField(mod.TextBox.Settings, 'whatPosition', mod.min(mod.TextBox.Settings.whatPosition+0.05, 1.0))
                                             textbutton '\uf053' style_suffix 'icon_button' action SetField(mod.TextBox.Settings, 'whatPosition', mod.TextBoxSettings.defaultValues['whatPosition'])
                                     use mod_checkbox(checked=mod.TextBox.Settings.whatResizeBackground, text='{urm_notl}Resize background{/urm_notl}', action=ToggleField(mod.TextBox.Settings, 'whatResizeBackground', True, False))
+
                 # Sideimage settings
                 showif mod.TextBox.Settings.customSayScreen:
                     vbox at URM_textboxSettingFade:
@@ -388,6 +399,7 @@ screen URM_textboxCustomizer(charVarName=None):
                                 hbox:
                                     textbutton '\ue00d' style_suffix 'icon_button' action SetField(mod.TextBox.Settings, 'sideImagePos', 'left')
                                     textbutton '\ue010' style_suffix 'icon_button' action SetField(mod.TextBox.Settings, 'sideImagePos', 'right')
+
         hbox:
             xalign 1.0
             spacing mod.scalePxInt(10)
@@ -397,6 +409,7 @@ screen URM_textboxCustomizer(charVarName=None):
             use mod_iconButton('\ue8f4', '{urm_notl}Preview{/urm_notl}', Jump('URM_textboxCustomizer'))
             use mod_iconButton('\ue86c', '{urm_notl}Apply{/urm_notl}', Function(mod.TextBox.closeCustomizer, save=True))
             use mod_iconButton('\uf230', '{urm_notl}Cancel{/urm_notl}', Function(mod.TextBox.closeCustomizer))
+
 
 screen URM_textboxCustomizerHelp():
     layer 'Overlay'
@@ -422,6 +435,7 @@ screen URM_textboxCustomizerHelp():
             text '\ue835' style_suffix 'icon'
             text '{urm_notl}Disabled{/urm_notl}'
 
+
 screen URM_textboxCharacterPicker():
     layer 'Overlay'
     style_prefix "mod"
@@ -438,16 +452,19 @@ screen URM_textboxCharacterPicker():
                 key_events True
                 action charFilterInput.Enable()
                 input value charFilterInput
+
         viewport:
             ysize mod.scalePxInt(250)
             xsize mod.scalePxInt(450)
             draggable True
             mousewheel True
             scrollbars "vertical"
+
             vbox:
                 for char in mod.Characters.all:
                     if char.match(str(charFilterInput)):
                         textbutton char.fullName substitute False xfill True action [Hide('URM_textboxCharacterPicker'),SetField(mod.TextBox, 'previewCharacter', char.varName)]
+
 
 screen URM_textboxFontPicker(settingName, defaultSelected=None):
     layer 'Overlay'
@@ -462,6 +479,7 @@ screen URM_textboxFontPicker(settingName, defaultSelected=None):
                 for name,fontFile in mod.TextBoxSettings.fontOptions.items():
                     if renpy.loadable(fontFile):
                         textbutton name text_font fontFile action SetScreenVariable('selectedFont', name)
+
             vbox:
                 label '{urm_notl}Preview{/urm_notl}'
                 hbox:
@@ -472,11 +490,13 @@ screen URM_textboxFontPicker(settingName, defaultSelected=None):
                 text "Here's some example text to show you this font." font mod.TextBoxSettings.fontOptions[selectedFont] size fontSize
                 text "And also some bold text to show." bold True font mod.TextBoxSettings.fontOptions[selectedFont] size fontSize
                 text "Also some italic while we're at it" italic True font mod.TextBoxSettings.fontOptions[selectedFont] size fontSize
+
         hbox:
             spacing mod.scalePxInt(10)
             xalign 1.0
             use mod_iconButton('\ue86c', '{urm_notl}Select{/urm_notl}', action=[SetField(mod.TextBox.Settings, settingName, selectedFont),Hide('URM_textboxFontPicker')])
             use mod_iconButton('\uf230', '{urm_notl}Cancel{/urm_notl}', action=Hide('URM_textboxFontPicker'))
+
 
 label URM_textboxCustomizer(charVarName=None):
     show screen URM_textboxCustomizer (charVarName)

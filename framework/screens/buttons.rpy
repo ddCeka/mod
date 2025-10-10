@@ -63,7 +63,6 @@ style mod_icon_button_text is mod_button_text:
 ##############
 screen mod_iconButton(icon, text=None, action=None, xsize=None, sensitive=None, alternate=None):
     style_prefix 'mod'
-
     button:
         xsize xsize
         sensitive sensitive
@@ -80,7 +79,6 @@ screen mod_iconButton(icon, text=None, action=None, xsize=None, sensitive=None, 
 # We have this screen because in some cases updating the `icon` for `URM_iconbutton` won't work
 screen mod_checkbox(checked, text, action=None, xsize=None, sensitive=None):
     style_prefix 'mod'
-
     button:
         xsize xsize
         sensitive sensitive
@@ -97,7 +95,6 @@ screen mod_checkbox(checked, text, action=None, xsize=None, sensitive=None):
 # We have this screen because in some cases updating the `icon` for `URM_iconbutton` won't work
 screen mod_radiobutton(checked, text, action=None, xsize=None, sensitive=None):
     style_prefix 'mod'
-
     button:
         xsize xsize
         sensitive sensitive

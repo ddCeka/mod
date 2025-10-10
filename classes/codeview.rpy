@@ -98,6 +98,7 @@ init 2 python in mod:
             if evaluateConditions:
                 code = self.evaluateConditions(code)
             
+            
             tokens = []
             
             def replaceWithToken(subpattern=None):
@@ -115,6 +116,7 @@ init 2 python in mod:
                         code = renpy.re.sub(pattern[0], replaceWithToken(pattern[1]), code, flags=renpy.re.MULTILINE)
                     else:
                         code = renpy.re.sub(pattern, replaceWithToken(), code, flags=renpy.re.MULTILINE)
+            
             
             def insertToken(match):
                 return tokens[int(match.group(1))]
@@ -199,6 +201,7 @@ init 2 python in mod:
                     elif isinstance(node, renpy.ast.Translate):
                         if not output.endswith('# Some dialogue\n'):
                             output += createLine('# Some dialogue')
+                
                 
                 if not Settings.codeViewShowAll:
                     output = self.stripRenpyCode(output)

@@ -49,6 +49,7 @@ screen URM_variables():
                     textbutton "\ue16c" style_suffix "icon_button" hovered mod.Tooltip('Clear variables list') unhovered mod.Tooltip() action If(mod.VarsStore.store.unsaved, mod.Confirm('This will clear the list below, are you sure?', Function(mod.VarsStore.clear), title='Clear list'), Function(mod.VarsStore.clear))
                 else:
                     text "Load a file or add variables using the search option"
+
             hbox:
                 xalign 1.0
                 textbutton '\ue03c' style_suffix 'icon_button' hovered mod.Tooltip('{urm_notl}Create variable{/urm_notl}') unhovered mod.Tooltip() action Show('URM_createVar')
@@ -61,8 +62,8 @@ screen URM_variables():
             fixed ysize mod.scalePxInt(50):
                 hbox xalign .5 yoffset 4 spacing 2:
                     use URM_pages(varPages)
-            # Headers
-            use URM_tableRow():
+
+            use URM_tableRow(): # Headers
                 hbox xsize colWidth[0]:
                     hbox:
                         label "{urm_notl}Name{/urm_notl}"
@@ -101,12 +102,14 @@ screen URM_variables():
                     hbox:
                         label "{urm_notl}Ignore{/urm_notl}"
                         textbutton '{size=-6}\uf1c0{/size}' yoffset mod.scalePxInt(-8) style_suffix 'icon_textbutton' action mod.Confirm('Ignore this variable in path detection {font=mods/framework/MaterialIcons-Regular.ttf}\ueb80{/font} and/or codeview {font=mods/framework/MaterialIcons-Regular.ttf}\ue4f3{/font}', title='Ignore variable')
+
             viewport:
                 xfill True
                 yfill True
                 mousewheel True
                 draggable True
                 scrollbars "vertical"
+
                 # Results
                 use URM_table():
                     for i,(varName,props) in enumerate(list(mod.VarsStore.store.items())[varPages.pageStartIndex:varPages.pageEndIndex]):
@@ -116,6 +119,7 @@ screen URM_variables():
                                     text mod.scaleText(props['name'], 20) substitute False
                                 else:
                                     text mod.scaleText(varName, 20) substitute False
+
                             hbox xsize colWidth[1]:
                                 if mod.Var(varName).isExpandable:
                                     if len(mod.Var(varName).namePath) == 2: # A results we're seeing here could be a subitem/property
@@ -124,21 +128,25 @@ screen URM_variables():
                                         textbutton mod.Var(varName).getButtonValue(23) substitute False action SetLocalVariable('expandObjectVars', [mod.Var(varName)])
                                 else:
                                     textbutton mod.Var(varName).getButtonValue(19) action Show('URM_modify_value', var=mod.Var(varName)) substitute False
+
                             hbox xsize colWidth[2]: # Watch
                                 if mod.VarsStore.isWatched(varName):
                                     use mod_iconButton('\ue8f4', '{urm_notl}Yes{/urm_notl}', action=Function(mod.VarsStore.unwatch, varName))
                                 else:
                                     use mod_iconButton('\ue8f5', '{urm_notl}No{/urm_notl}', action=Show('URM_remember_var', varName=varName, rememberType='watchVar', defaultName=If('name' in props, props['name'], varName)))
+
                             hbox xsize colWidth[3]: # Freeze
                                 if mod.VarsStore.isFrozen(varName):
                                     use mod_iconButton('\ueb3b', '{urm_notl}Yes{/urm_notl}', action=Function(mod.VarsStore.unfreeze, varName), sensitive=If(mod.VarsStore.isFreezable(varName), None, False))
                                 else:
                                     use mod_iconButton('\ue798', '{urm_notl}No{/urm_notl}', action=Function(mod.VarsStore.freeze, varName), sensitive=If(mod.VarsStore.isFreezable(varName), None, False))
+
                             hbox xsize colWidth[4]: # Monitor
                                 if mod.VarsStore.isMonitored(varName):
                                     use mod_iconButton('\ue7f4', '{urm_notl}Yes{/urm_notl}', action=Function(mod.VarsStore.unmonitor, varName), sensitive=If(mod.VarsStore.isMonitorable(varName), None, False))
                                 else:
                                     use mod_iconButton('\ue7f6', '{urm_notl}No{/urm_notl}', action=Function(mod.VarsStore.monitor, varName), sensitive=If(mod.VarsStore.isMonitorable(varName), None, False))
+
                             hbox xsize colWidth[5]: # Ignore
                                 hbox spacing 2:
                                     if mod.VarsStore.isIgnored(varName, 'path'):
@@ -149,6 +157,7 @@ screen URM_variables():
                                         use mod_iconButton('\ue4f3', action=Function(mod.VarsStore.unignore, varName, 'code'))
                                     else:
                                         use mod_iconButton('\ue86f', action=Function(mod.VarsStore.ignore, varName, 'code'))
+
                             hbox spacing 2:
                                 use mod_iconButton('\ue3c9', '{urm_notl}Edit{/urm_notl}', action=Show('URM_remember_var', varName=varName, defaultName=If('name' in props, props['name'], varName)))
                                 use mod_iconButton('\ue872', '{urm_notl}Remove{/urm_notl}', action=mod.Confirm('Are you sure you want to remove this variable?', Function(mod.VarsStore.forget, varName), title='Remove variable'))
@@ -159,6 +168,7 @@ screen URM_variables():
                                         use mod_iconButton('\ue55c', '{urm_notl}Before this{/urm_notl}', action=[Function(mod.VarsStore.changePos, movingVarName, varName),SetLocalVariable('movingVarName', None)])
                                 else:
                                     use mod_iconButton('\ue89f', '{urm_notl}Move{/urm_notl}', action=SetLocalVariable('movingVarName', varName))
+
         else:
             vbox:
                 yoffset mod.scaleY(1.5)
@@ -202,6 +212,7 @@ screen URM_modify_value(var, allowRemember=False):
                         draggable True
                         mousewheel True
                         scrollbars "vertical"
+
                         button:
                             xminimum mod.scalePxInt(450)
                             key_events True
@@ -228,6 +239,7 @@ screen URM_modify_value(var, allowRemember=False):
                         use mod_iconButton('\ue8f5', '{urm_notl}Unwatch{/urm_notl}', Function(mod.VarsStore.unwatch, var.name))
                     else:
                         use mod_iconButton('\ue8f4', '{urm_notl}Watch{/urm_notl}', Show('URM_remember_var', varName=var.name, rememberType='watchVar'))
+
             hbox:
                 yoffset mod.scalePxInt(15)
                 align (1.0,1.0)
@@ -283,6 +295,7 @@ screen URM_add_item(parentVar):
                 action inputs.itemKey.Enable()
                 input value inputs.itemKey
             null height mod.scalePxInt(10)
+
         hbox:
             text "{urm_notl}Value type:{/urm_notl} " yalign .5
             textbutton valueTypes[valueTypeIndex] action SetScreenVariable('valueTypeIndex', (valueTypeIndex+1) % len(valueTypes))
@@ -299,6 +312,7 @@ screen URM_add_item(parentVar):
 
         if errorMessage != None:
             use mod_messagebar('error', errorMessage)
+
         hbox:
             yoffset mod.scalePxInt(15)
             align (1.0,1.0)
@@ -331,6 +345,7 @@ screen URM_remember_var(varName, rememberType='var', defaultName=None):
             key_events True
             action displayNameInput.Enable()
             input value displayNameInput
+
         hbox:
             yoffset mod.scalePxInt(15)
             align (1.0,1.0)
@@ -370,6 +385,7 @@ screen URM_save_file():
 
         if errorMessage != None:
             text errorMessage bold True color "#f42929"
+
         hbox:
             yoffset mod.scalePxInt(15)
             align (1.0,1.0)
@@ -403,6 +419,7 @@ screen URM_load_file():
                 mousewheel True
                 scrollbars "vertical"
                 spacing 2
+
                 vbox spacing 2:
                     for filename,file in mod.URMFiles.listFiles().items():
                         hbox spacing 2:
@@ -426,6 +443,7 @@ screen URM_load_file():
                                                 text '\ue0b7' style_suffix 'icon'
 
                             textbutton '\ue872' xoffset -mod.scalePxInt(45) style_suffix 'icon_button' action mod.Confirm('Are you sure you want to delete this file? This cannot be undone', mod.URMFiles.Delete(file), title='Confirm deletion')
+
             if errorMessage != None:
                 text errorMessage bold True color "#f42929"
 
@@ -457,6 +475,7 @@ screen URM_var_changed(varName, prevVal):
 
         if errorMessage != None:
             use mod_messagebar('error', errorMessage)
+
         hbox:
             yoffset mod.scalePxInt(15)
             align (1.0,1.0)
@@ -487,6 +506,7 @@ screen URM_objectVar(expandObjectVars):
         if expandObjectVars[-1].varType in ['dict','list']:
             use URM_tableRow():
                 use mod_iconButton('\ue146', '{urm_notl}Add item{/urm_notl}', Show('URM_add_item', parentVar=expandObjectVars[-1]))
+
         # Headers
         use URM_tableRow():
             hbox xsize colWidth[0]:
@@ -567,9 +587,11 @@ screen URM_createVar():
         null height 2
         use mod_checkbox(overwrite, 'Overwrite if exists', ToggleScreenVariable('overwrite', True, False))
         null height mod.scalePxInt(10)
+
         hbox:
             text "{urm_notl}Value type:{/urm_notl} " yalign .5
             textbutton valueTypes[valueTypeIndex] action SetScreenVariable('valueTypeIndex', (valueTypeIndex+1) % len(valueTypes))
+
         text "{urm_notl}Value:{/urm_notl}"
         if valueTypes[valueTypeIndex] == 'boolean':
             textbutton "[itemVal]" action ToggleScreenVariable('itemVal', True, False)
@@ -579,8 +601,10 @@ screen URM_createVar():
                 key_events True
                 action inputs.itemVal.Enable()
                 input value inputs.itemVal
+
         if errorMessage != None:
             use mod_messagebar('error', errorMessage)
+
         hbox:
             yoffset mod.scalePxInt(15)
             align (1.0,1.0)

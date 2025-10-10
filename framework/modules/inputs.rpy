@@ -47,6 +47,7 @@ init -999 python in mod:
             
             if renpy.variant('touch'): self.Disable()()
             
+            
             if self.onEnter:
                 actions = self.onEnter if isinstance(self.onEnter, list) else [self.onEnter]
                 for action in actions:
@@ -59,6 +60,7 @@ init -999 python in mod:
                 return self._m1_inputs__unmaskedText
             else:
                 return self._m1_inputs__text
+
 
     class InputGroup(NonPicklable):
         def __init__(self, inputs=None, focusFirst=False, onSubmit=None):
@@ -123,6 +125,7 @@ init -999 python in mod:
             
             if self._m1_inputs__inputs[self._m1_inputs__selectedIndex][1].editable:
                 self._m1_inputs__inputs[self._m1_inputs__selectedIndex][1].Enable()()
+
 
     class GetScreenInput(NonPicklable):
         """ Class that returns input value on a screen by calling it or by converting it to a string like `str(GetScreenInput('someInput', 'someOptionalInputGroup'))` """

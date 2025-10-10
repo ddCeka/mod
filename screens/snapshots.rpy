@@ -30,6 +30,7 @@ screen URM_snapshots():
     
     elif len(mod.Snapshots.snapshotNames) > 0:
         null height mod.scalePxInt(10)
+
         # PAGES
         fixed ysize mod.scalePxInt(50):
             hbox xalign .5 yoffset 4 spacing 2:
@@ -48,14 +49,17 @@ screen URM_snapshots():
             mousewheel True
             draggable True
             scrollbars "vertical"
+
             # Results
             use URM_table():
                 for i,name in enumerate(mod.Snapshots.snapshotNames[snapshotsPages.pageStartIndex:snapshotsPages.pageEndIndex]):
                     use URM_tableRow(i, True):
                         hbox xsize colWidth[0] yalign .5:
                             text mod.scaleText(name, 18) substitute False
+
                         hbox xsize colWidth[1] yalign .5:
                             text mod.Snapshots.getSnapshotTime(name)
+
                         hbox xsize colWidth[2]:
                             hbox spacing 2:
                                 if comparingSnapshotName: # Trying to compare?
@@ -67,6 +71,7 @@ screen URM_snapshots():
                                     use mod_iconButton('\ue8f2', '{urm_notl}Show changes{/urm_notl}', SetLocalVariable('comparing', [name]))
                                     use mod_iconButton('\ueb7d', '{urm_notl}Compare with...{/urm_notl}', sensitive=(len(mod.Snapshots.snapshotNames) > 1), action=SetLocalVariable('comparingSnapshotName', name))
                                     use mod_iconButton('\ue872', '{urm_notl}Remove{/urm_notl}', mod.Confirm('Are you sure you want to remove this snapshot?', Function(mod.Snapshots.delete, name), title='{urm_notl}Remove snapshot{/urm_notl}'))
+
     else:
         vbox:
             yoffset mod.scaleY(1.5)
@@ -76,6 +81,7 @@ screen URM_snapshots():
             text "Here you can create snapshots of all current variables and later use them to list all changed variables" xalign .5
             text "(snapshots can be compared to current variables or other snapshots)" xalign .5
             text "Note: Snapshots will be lost when closing the game" style_suffix 'text_small' xalign .5 yoffset mod.scalePxInt(10)
+
 
 screen URM_snapshots_comparison(old, new=None):
     style_prefix "mod"
@@ -93,6 +99,7 @@ screen URM_snapshots_comparison(old, new=None):
             text 'Comparing variable "{}"'.format(compareDict['old'].name) yalign .5
         frame style_suffix "seperator" ysize mod.scalePxInt(2) yoffset mod.scalePxInt(6)
         use URM_snapshots_dictCompare(compareDict)
+
     elif compareList:
         hbox yoffset mod.scalePxInt(6):
             spacing mod.scalePxInt(5)
@@ -100,8 +107,10 @@ screen URM_snapshots_comparison(old, new=None):
             text 'Comparing variable "{}"'.format(compareList['old'].name) yalign .5
         frame style_suffix "seperator" ysize mod.scalePxInt(2) yoffset mod.scalePxInt(6)
         use URM_snapshots_listCompare(compareList)
+
     elif len(changes) == 0:
         label "No changes were found" xalign 0.5 yoffset mod.scaleY(1.5)
+
     else:
         # PAGES
         fixed ysize mod.scalePxInt(50):
@@ -109,8 +118,8 @@ screen URM_snapshots_comparison(old, new=None):
                 use URM_pages(comparisonPages)
             hbox xalign 1.0 yalign .5:
                 text 'Changes: {}'.format(len(changes))
-        # Headers
-        use URM_tableRow():
+
+        use URM_tableRow(): # Headers
             label "{urm_notl}Name{/urm_notl}" xsize comparisonColWidth[0]
             label "{urm_notl}Previous{/urm_notl}" xsize comparisonColWidth[1]
             label "{urm_notl}New{/urm_notl}" xsize comparisonColWidth[2]
@@ -121,16 +130,20 @@ screen URM_snapshots_comparison(old, new=None):
             mousewheel True
             draggable True
             scrollbars "vertical"
+
             # Results
             use URM_table():
                 for var in changes[comparisonPages.pageStartIndex:comparisonPages.pageEndIndex]:
                     use URM_tableRow():
                         hbox xsize comparisonColWidth[0] yalign .5:
                             text mod.scaleText(var['old'].name, 18) substitute False
+
                         hbox xsize comparisonColWidth[1] yalign .5:
                             textbutton var['old'].getButtonValue(17) substitute False action Show('URM_modify_value', var=var['old'])
+
                         hbox xsize comparisonColWidth[2] yalign .5:
                             textbutton var['new'].getButtonValue(17) substitute False action Show('URM_modify_value', var=var['new'])
+
                         hbox:
                             hbox spacing 2:
                                 # Remember
@@ -167,8 +180,8 @@ screen URM_snapshots_dictCompare(compareVar):
             hbox xalign 1.0 yalign .5:
                 text 'Changes: {}'.format(len(dictChanges))
                 null width mod.scalePxInt(10)
-        # Headers
-        use URM_tableRow():
+
+        use URM_tableRow(): # Headers
             label "{urm_notl}Name{/urm_notl}" xsize dictComparisonColWidth[0]
             label "{urm_notl}Previous{/urm_notl}" xsize dictComparisonColWidth[1]
             label "{urm_notl}New{/urm_notl}" xsize dictComparisonColWidth[2]
@@ -180,14 +193,17 @@ screen URM_snapshots_dictCompare(compareVar):
             draggable True
             scrollbars "vertical"
             spacing mod.scalePxInt(10)
+
             # Results
             use URM_table():
                 for var in dictChanges[dictComparisonPages.pageStartIndex:dictComparisonPages.pageEndIndex]:
                     use URM_tableRow():
                         hbox xsize dictComparisonColWidth[0] yalign .5:
                             text mod.scaleText(var['old'].name, 18) substitute False
+
                         hbox xsize dictComparisonColWidth[1] yalign .5:
                             textbutton var['old'].getButtonValue(17) substitute False action Show('URM_modify_value', var=var['old'])
+
                         hbox xsize dictComparisonColWidth[2] yalign .5:
                             textbutton var['new'].getButtonValue(17) substitute False action NullAction()
 
@@ -208,8 +224,8 @@ screen URM_snapshots_listCompare(compareVar):
                 use URM_pages(listComparisonPages)
             hbox xalign 1.0 yalign .5:
                 text 'Changes: {}'.format(len(listChanges))
-        # Headers
-        use URM_tableRow():
+
+        use URM_tableRow(): # Headers
             label "{urm_notl}Added/Remove{/urm_notl}" xsize listComparisonColWidth[0]
             label "{urm_notl}Value{/urm_notl}" xsize listComparisonColWidth[1]
 
@@ -219,14 +235,17 @@ screen URM_snapshots_listCompare(compareVar):
             mousewheel True
             draggable True
             scrollbars "vertical"
+
             # Results
             use URM_table():
                 for change in listChanges[listComparisonPages.pageStartIndex:listComparisonPages.pageEndIndex]:
                     use URM_tableRow():
                         hbox xsize listComparisonColWidth[0]:
                             text change['type']
+
                         hbox xsize listComparisonColWidth[1]:
                             text mod.scaleText(str(change['val']), 68) substitute False
+
 
 screen URM_snapshot_create():
     layer 'Overlay'
@@ -242,9 +261,11 @@ screen URM_snapshot_create():
             key_events True
             action nameInput.Enable()
             input value nameInput
+
         hbox:
             yoffset mod.scalePxInt(15)
             align (1.0,1.0)
             textbutton "{urm_notl}Create{/urm_notl}" style_suffix "buttonPrimary" action [submitAction,Hide('URM_snapshot_create')]
             null width mod.scalePxInt(10)
             textbutton "{urm_notl}Cancel{/urm_notl}" action Hide('URM_snapshot_create')
+
