@@ -352,7 +352,6 @@ init 3 python in mod:
             self._m1_URMFiles__stores = {}
             selectedFile = self.lastModifiedPath
             
-            
             if selectedFile:
                 try:
                     with zipfile.ZipFile(selectedFile, 'r') as zf:

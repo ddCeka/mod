@@ -10,7 +10,7 @@ style mod_dialogContent is mod_frame:
 
 style mod_dialogButtons:
     yoffset mod.scalePxInt(-40)
-    xalign 0.13
+    xalign 0.0
 
 style mod_dialogButton is mod_button:
     background Solid(mod.Theme.colors.buttonBg)
@@ -63,12 +63,7 @@ screen mod_Dialog(title=None, closeAction=None, xsize=None, modal=False, icon=No
 
                 hbox:
                     style_suffix 'dialogButtons'
-
-                    if details:
-                        button:
-                            style_suffix 'dialogButton'
-                            text '?' size mod.scalePxInt(24) yalign .5
-                            action mod.Confirm(details, title=detailsTitle)
+                    
                     button:
                         style_suffix 'dialogCloseButton'
                         if closeAction:
@@ -77,6 +72,11 @@ screen mod_Dialog(title=None, closeAction=None, xsize=None, modal=False, icon=No
                         else:
                             background None
                             text 'x' size mod.scalePxInt(24) yalign .5 color '#fff0'
+                    if details:
+                        button:
+                            style_suffix 'dialogButton'
+                            text '?' size mod.scalePxInt(24) yalign .5
+                            action mod.Confirm(details, title=detailsTitle)
 
                 button:
                     key_events True # We need this to still trigger key events defined inside of this button

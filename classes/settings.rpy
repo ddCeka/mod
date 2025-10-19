@@ -54,9 +54,9 @@ init 3 python in mod:
             'quickmenuBtnSkip': False,
             'quickmenuBtnAuto': False,
             'quickmenuBtnQuicksave': False,
-            'quickmenuBtnSave': True,
+            'quickmenuBtnSave': False,
             'quickmenuBtnQuickload': False,
-            'quickmenuBtnLoad': True,
+            'quickmenuBtnLoad': False,
             'quickmenuBtnMenu': False,
             'quickmenuBtnMods': True,
             'quickmenuBtnUrm': True,
@@ -78,14 +78,12 @@ init 3 python in mod:
             else:
                 SettingsClass._m1_settings__saveDir = __main__.path_to_saves(renpy.config.gamedir, '.URM')
             
-            
             if self.saveDir and not renpy.os.path.isdir(self.saveDir):
                 try:
                     renpy.os.mkdir(self.saveDir)
                 except Exception as e:
                     print('info: Failed to create dir "{}". {}'.format(self.saveDir, e))
                     SettingsClass._m1_settings__saveDir = None
-            
             
             if self.saveDir:
                 try:
@@ -191,7 +189,6 @@ init 3 python in mod:
                         jsonStr = zf.read('json')
                         SettingsClass._m1_settings__id = zf.read('id')
                         urmVersion = zf.read('urmVersion')
-                    
                     
                     SettingsClass._m1_settings__globalSettings = json.loads(jsonStr)
                 except Exception as e:

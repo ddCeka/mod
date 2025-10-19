@@ -309,7 +309,7 @@ screen mods():
 
 
         hbox:
-            align (0.015, 0.007)
+            pos (0.015, 0.007)
             anchor (0.0, 0.0)
             spacing 70
             textbutton "Prefs" selected setting_current_tab == "home" text_style "mods_toolbar_textbutton" action [SetScreenVariable("setting_current_tab", "home"), SetScreenVariable("setting_column2", None), SetScreenVariable("setting_column2_name", "")]
@@ -441,7 +441,7 @@ screen mods():
 
         else:
             vbox:
-                align (0.03, 0.08)
+                pos (0.03, 0.08)
                 anchor (0.0, 0.0)
                 for i in getattr(store, setting_current_tab):
                     textbutton i[0] selected setting_column2_name == i[0] text_style "mods_column1_textbutton" action [SetScreenVariable("setting_column2", getattr(store, i[1])), SetScreenVariable("setting_column2_name", i[0])]
