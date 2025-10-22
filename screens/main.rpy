@@ -96,17 +96,17 @@ screen URM_main():
         hbox:
             align (0.03, 0.0)
             spacing 2
-            button: # Panel
-                style_suffix 'titleBarButton'
-                text If(mod.Settings.showWatchPanel, '\ue8f4', '\ue8f5') style_suffix 'icon_button_text' yalign .5
-                hovered mod.Tooltip("{urm_notl}Toggle watchpanel{/urm_notl}") unhovered mod.Tooltip()
-                action ToggleField(mod.Settings, 'showWatchPanel', True, False)
             button: # Close
                 style_suffix 'dialogCloseButton'
                 yoffset 0
                 hovered mod.Tooltip('{urm_notl}Close URM{/urm_notl}') unhovered mod.Tooltip()
                 text 'x' size mod.scalePxInt(24) yalign .5 color mod.Theme.colors.errorBg
                 action Hide('URM_main')
+            button: # Panel
+                style_suffix 'titleBarButton'
+                text If(mod.Settings.showWatchPanel, '\ue8f4', '\ue8f5') style_suffix 'icon_button_text' yalign .5
+                hovered mod.Tooltip("{urm_notl}Toggle watchpanel{/urm_notl}") unhovered mod.Tooltip()
+                action ToggleField(mod.Settings, 'showWatchPanel', True, False)
 
         vbox:
             xfill True

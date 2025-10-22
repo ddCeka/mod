@@ -140,15 +140,16 @@ init 99:
     define config.autosave_on_choice = True
     define config.save_on_mobile_background = True
     define config.autosave_frequency = 200
-    ## define config.autosave_slots = 12
+    # define config.autosave_slots = 12
     define config.allow_skipping = True
     define config.rollback_enabled = True
     define config.hard_rollback_limit = 100
-    ## define config.allow_underfull_grids = True
+    # define config.allow_underfull_grids = True
+    define config.default_text_cps = 198
     define config.default_music_volume = 0.5
     define config.default_sfx_volume = 0.5
     define config.default_voice_volume = 0.5
-    ## define mod = Character("Mod", color="#0f0")
+    # define mod = Character("Mod", color="#0f0")
     define mod_textbox = True
     default setting_current_tab = "home"
     default setting_column2 = None
@@ -240,11 +241,11 @@ init -2 python:
             if renpy.get_widget(self.screen_name,self.input_id):
                 return str(renpy.get_widget(self.screen_name,self.input_id).content)
 
-## IC Patch
+## Incest Wincest
 init 1 python:
     replaces = { 'step-': '', 'Step-': '' }
 
-    def change_to_incest(text):
+    def incest_wincest(text):
         replaced_text = text
 
         for key in replaces.keys():
@@ -252,7 +253,7 @@ init 1 python:
 
         return replaced_text
 
-    config.say_menu_text_filter = change_to_incest
+    config.say_menu_text_filter = incest_wincest
 
 #£ Classic gallery unlocker
 init 101 python:

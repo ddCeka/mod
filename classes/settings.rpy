@@ -6,7 +6,7 @@ init 3 python in mod:
         defaultValues = {
             'lastLoadedFile': None,
             'labelsView': 'thumbnails',
-            'searchRecursive': True,
+            'searchRecursive': False,
             'searchPersistent': True,
             'searchObjects': True,
             'showUnsupportedVariables': False,
