@@ -151,10 +151,6 @@ init 99:
     define config.default_voice_volume = 0.5
     # define mod = Character("Mod", color="#0f0")
     define mod_textbox = True
-    if renpy.version_only < "8.4.1":
-        default setting_current_tab = "home"
-        default setting_column2 = None
-        default setting_column2_name = ""
     default persistent.mod_textbox = True
     default persistent.modtext_size = gui.text_size
     default persistent.modtext_outline = 2
@@ -291,7 +287,9 @@ init python:
 
 
 screen mods():
-
+    default setting_current_tab = "home"
+    default setting_column2 = None
+    default setting_column2_name = ""
     zorder 1
 
     drag:
