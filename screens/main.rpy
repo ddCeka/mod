@@ -89,25 +89,6 @@ screen URM_main():
         xfill True yfill True
         xmargin mod.scalePxInt(-3) ymargin mod.scalePxInt(-3)
 
-        hbox:
-            ysize mod.scalePxInt(42) xoffset mod.scalePxInt(3)
-            add renpy.display.im.FactorScale('mods/images/logo.png', mod.getScaleFactor()*.95) yalign .5
-
-        hbox:
-            align (0.03, 0.0)
-            spacing 2
-            button: # Close
-                style_suffix 'dialogCloseButton'
-                yoffset 0
-                hovered mod.Tooltip('{urm_notl}Close URM{/urm_notl}') unhovered mod.Tooltip()
-                text 'x' size mod.scalePxInt(24) yalign .5 color mod.Theme.colors.errorBg
-                action Hide('URM_main')
-            button: # Panel
-                style_suffix 'titleBarButton'
-                text If(mod.Settings.showWatchPanel, '\ue8f4', '\ue8f5') style_suffix 'icon_button_text' yalign .5
-                hovered mod.Tooltip("{urm_notl}Toggle watchpanel{/urm_notl}") unhovered mod.Tooltip()
-                action ToggleField(mod.Settings, 'showWatchPanel', True, False)
-
         vbox:
             xfill True
 
@@ -119,7 +100,25 @@ screen URM_main():
 
             # File buttons
             hbox:
-                xalign 1.0 spacing 2
+                null width mod.scalePxInt(10)
+                xalign 0.0 spacing 2
+                button: # Close
+                    style_suffix 'dialogCloseButton'
+                    yoffset 0
+                    hovered mod.Tooltip('{urm_notl}Close URM{/urm_notl}') unhovered mod.Tooltip()
+                    text 'x' size mod.scalePxInt(24) yalign .5 color mod.Theme.colors.errorBg
+                    action Hide('URM_main')
+                button: # Panel
+                    style_suffix 'titleBarButton'
+                    yoffset 0
+                    hovered mod.Tooltip("{urm_notl}Toggle watchpanel{/urm_notl}") unhovered mod.Tooltip()
+                    text If(mod.Settings.showWatchPanel, '\ue8f4', '\ue8f5') style_suffix 'icon_button_text' yalign .5
+                    action ToggleField(mod.Settings, 'showWatchPanel', True, False)
+                null width mod.scalePxInt(10)
+                textbutton "\ue24d" style_suffix "icon_button" hovered mod.Tooltip('New (Ctrl+N)') unhovered mod.Tooltip() action mod.URMFiles.Clear() # New
+                textbutton "\ue2c7" style_suffix "icon_button" hovered mod.Tooltip('Open (Ctrl+O)') unhovered mod.Tooltip() action mod.URMFiles.Clear() # Open
+                textbutton "\ue161" style_suffix "icon_button" hovered mod.Tooltip('Save (Ctrl+S)') unhovered mod.Tooltip() action mod.URMFiles.Clear() # Save
+                null width mod.scalePxInt(10)
                 if mod.Tooltip.currentText:
                     text mod.Tooltip.currentText yalign 0.5
                 else:
@@ -129,11 +128,6 @@ screen URM_main():
                             label "*" yalign 0.5
                     elif mod.URMFiles.file.unsaved:
                         label "{urm_notl}Unsaved{/urm_notl}" yalign 0.5
-                null width mod.scalePxInt(10)
-                textbutton "\ue24d" style_suffix "icon_button" hovered mod.Tooltip('New (Ctrl+N)') unhovered mod.Tooltip() action mod.URMFiles.Clear() # New
-                textbutton "\ue2c7" style_suffix "icon_button" hovered mod.Tooltip('Open (Ctrl+O)') unhovered mod.Tooltip() action mod.URMFiles.Load() # Open
-                textbutton "\ue161" style_suffix "icon_button" hovered mod.Tooltip('Save (Ctrl+S)') unhovered mod.Tooltip() action mod.URMFiles.Save() # Save
-                null width mod.scalePxInt(10)
 
             null height mod.scalePxInt(10)
             frame style_suffix "seperator"
