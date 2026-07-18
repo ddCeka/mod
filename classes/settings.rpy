@@ -73,10 +73,10 @@ init 3 python in mod:
             import __main__
             
             if renpy.android:
-                if renpy.os.path.isdir('/sdcard/JoiPlay/games'):
-                    SettingsClass._m1_settings__saveDir = renpy.os.path.join(self._m1_settings__resolveSymlink('/sdcard'), 'JoiPlay', 'games', '.URM')
+                if renpy.os.path.isdir('/sdcard/JoiPlay'):
+                    SettingsClass._m1_settings__saveDir = renpy.os.path.join(self._m1_settings__resolveSymlink('/sdcard'), 'JoiPlay', 'URM')
             else:
-                SettingsClass._m1_settings__saveDir = __main__.path_to_saves(renpy.config.gamedir, '.URM')
+                SettingsClass._m1_settings__saveDir = __main__.path_to_saves(renpy.config.gamedir, 'URM')
             
             if self.saveDir and not renpy.os.path.isdir(self.saveDir):
                 try:

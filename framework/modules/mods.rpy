@@ -130,7 +130,7 @@ init python:
 
         config.statement_callbacks.append(crashdefender)
 
-## mods begin here
+# mods begin here
 init 99:
     default preferences.gl_powersave = False
     define config.console = True
@@ -174,6 +174,7 @@ init 99:
             outlines [ (absolute(persistent.modtext_outline), "#000", absolute(1), absolute(1)) ]
         
         style input:
+            background None
             font "DejaVuSans.ttf"
             size persistent.modtext_size
             color "#FFFFFF"
@@ -201,34 +202,12 @@ init 99:
                         key "K_KP" + str(n) action i.action
                         textbutton str(n) + ". " + i.caption action i.action
 
-        screen say(who, what):
-            style_prefix "say"
-
-            window:
-                background Transform(style.window.background, alpha=persistent.modtextbox_opacity)
-                
-                if who is not None:
-
-                    window:
-                        style "namebox"
-                        text who id "who":
-                            outlines [ (absolute(persistent.modtext_outline), "#000", absolute(0), absolute(0)) ]
-
-                text what id "what":
-                    color "#FFFFFF"
-                    size persistent.modtext_size
-                    outlines [ (absolute(persistent.modtext_outline), "#000", absolute(0), absolute(0)) ]
-
-            ## Sometimes using joiplay desktop mode in phone, side image don't have
-            ## enough spaces on phone, so better change the position or remove it
-            if not renpy.variant("small"):
-                add SideImage() xalign 0.0 yalign 1.0
 
 init 99 python:
     if not persistent.mod_textbox:
         persistent.modtextbox_opacity = 0.0
 
-## Keyboard input android sometimes messed up
+# Keyboard input android sometimes messed up
 init -2 python:
     class GetInput(Action):
         def __init__(self,screen_name,input_id):
@@ -238,7 +217,7 @@ init -2 python:
             if renpy.get_widget(self.screen_name,self.input_id):
                 return str(renpy.get_widget(self.screen_name,self.input_id).content)
 
-## Incest Wincest
+# Incest Wincest
 init 1 python:
     replaces = { 'step-': '', 'Step-': '' }
 
@@ -252,7 +231,7 @@ init 1 python:
 
     config.say_menu_text_filter = incest_wincest
 
-#£ Classic gallery unlocker
+# Classic gallery unlocker
 init 101 python:
     def _mark_label_as_seen(label):
 
@@ -277,7 +256,7 @@ init python:
     config.gestures["n_s_n"] = "performance"
     config.gestures["e_w_e"] = "fast_skip"
     config.gestures["n_w_s"] = "console"
-    ## part of walkthrough mods
+    # part of walkthrough mods
     gr = "{color=#00c000}"
     red = "{color=#f00}"
     blue = "{color=#00f}"
@@ -287,9 +266,9 @@ init python:
 
 
 screen mods():
-    default setting_current_tab = "home"
-    default setting_column2 = None
-    default setting_column2_name = ""
+    default mod_current_tab = "home"
+    default mod_column2 = None
+    default mod_column2_name = ""
     zorder 1
 
     drag:
@@ -298,10 +277,10 @@ screen mods():
         drag_handle (0, 0, 1.0, 53)
 
         has fixed:
-            xysize (800, 600)
+            xysize (600, 400)
             align (0.5, 0.5)
 
-        if setting_current_tab == "home" or setting_current_tab == "extra" or setting_current_tab == "gesture":
+        if mod_current_tab == "home" or mod_current_tab == "extra" or mod_current_tab == "gesture":
             add Solid("#000000e6")
         else:
             add Solid("#000000")
@@ -312,14 +291,14 @@ screen mods():
             pos (0.015, 0.007)
             anchor (0.0, 0.0)
             spacing 70
-            textbutton "Prefs" selected setting_current_tab == "home" text_style "mods_toolbar_textbutton" action [SetScreenVariable("setting_current_tab", "home"), SetScreenVariable("setting_column2", None), SetScreenVariable("setting_column2_name", "")]
-            textbutton "Extra" selected setting_current_tab == "extra" text_style "mods_toolbar_textbutton" action [SetScreenVariable("setting_current_tab", "extra"), SetScreenVariable("setting_column2", None), SetScreenVariable("setting_column2_name", "")]
+            textbutton "Prefs" selected mod_current_tab == "home" text_style "mods_toolbar_textbutton" action [SetScreenVariable("mod_current_tab", "home"), SetScreenVariable("mod_column2", None), SetScreenVariable("mod_column2_name", "")]
+            textbutton "Extra" selected mod_current_tab == "extra" text_style "mods_toolbar_textbutton" action [SetScreenVariable("mod_current_tab", "extra"), SetScreenVariable("mod_column2", None), SetScreenVariable("mod_column2_name", "")]
             if persistent.mod_textbox:
-                textbutton "Textbox" selected setting_current_tab == "textbox" text_style "mods_toolbar_textbutton" action [SetScreenVariable("setting_current_tab", "textbox"), SetScreenVariable("setting_column2", None), SetScreenVariable("setting_column2_name", "")]
-            textbutton "Gesture" selected setting_current_tab == "gesture" text_style "mods_toolbar_textbutton" action [SetScreenVariable("setting_current_tab", "gesture"), SetScreenVariable("setting_column2", None), SetScreenVariable("setting_column2_name", "")]
+                textbutton "Textbox" selected mod_current_tab == "textbox" text_style "mods_toolbar_textbutton" action [SetScreenVariable("mod_current_tab", "textbox"), SetScreenVariable("mod_column2", None), SetScreenVariable("mod_column2_name", "")]
+            textbutton "Gesture" selected mod_current_tab == "gesture" text_style "mods_toolbar_textbutton" action [SetScreenVariable("mod_current_tab", "gesture"), SetScreenVariable("mod_column2", None), SetScreenVariable("mod_column2_name", "")]
 
 
-        if setting_current_tab == "home":
+        if mod_current_tab == "home":
             text "Preferences" style "mods_home_title"
 
             frame:
@@ -350,7 +329,7 @@ screen mods():
                         textbutton _("Opendyslexic") action Preference("font transform", "opendyslexic")
 
 
-        elif setting_current_tab == "extra":
+        elif mod_current_tab == "extra":
             text "Extra" style "mods_home_title"
 
             frame:
@@ -385,7 +364,7 @@ screen mods():
                         textbutton "Aggressive" action [settings.Set("crashdefendersetting", 3), Function(crashdefender.set_mode, 3)]
 
 
-        elif setting_current_tab == "textbox":
+        elif mod_current_tab == "textbox":
             text "Customize Textbox" style "mods_home_title"
 
             frame:
@@ -416,7 +395,7 @@ screen mods():
                         textbutton _("Set to default") action InvertSelected(SetVariable("persistent.modtextbox_opacity", 0.0))
                             
                             
-        elif setting_current_tab == "gesture":
+        elif mod_current_tab == "gesture":
             text "Gestures" style "mods_home_title"
 
             frame:
@@ -443,16 +422,16 @@ screen mods():
             vbox:
                 pos (0.03, 0.08)
                 anchor (0.0, 0.0)
-                for i in getattr(store, setting_current_tab):
-                    textbutton i[0] selected setting_column2_name == i[0] text_style "mods_column1_textbutton" action [SetScreenVariable("setting_column2", getattr(store, i[1])), SetScreenVariable("setting_column2_name", i[0])]
+                for i in getattr(store, mod_current_tab):
+                    textbutton i[0] selected mod_column2_name == i[0] text_style "mods_column1_textbutton" action [SetScreenVariable("mod_column2", getattr(store, i[1])), SetScreenVariable("mod_column2_name", i[0])]
 
-            if setting_column2 is not None:
-                text setting_column2_name align (0.0, 0.078) style "mods_column2_header" xoffset 318
+            if mod_column2 is not None:
+                text mod_column2_name align (0.0, 0.078) style "mods_column2_header" xoffset 318
                 vbox:
                     pos (305, 99)
                     anchor (0.0, 0.0)
                     spacing 0
-                    for i in setting_column2:
+                    for i in mod_column2:
                         button:
                             xysize (495, 48)
                             idle_background mod.Theme.colorAlpha(mod.Theme.background, 0.4)
