@@ -58,7 +58,7 @@ screen URM_overlay():
             if mod.Settings.touchPosition:
                 pos mod.Settings.touchPosition
             else:
-                align (.5,.5)
+                align (.5,.6)
             clicked mod.Open()
             dragged mod.touchDragged
 
@@ -114,11 +114,15 @@ screen URM_main():
                     hovered mod.Tooltip("{urm_notl}Toggle watchpanel{/urm_notl}") unhovered mod.Tooltip()
                     text If(mod.Settings.showWatchPanel, '\ue8f4', '\ue8f5') style_suffix 'icon_button_text' yalign .5
                     action ToggleField(mod.Settings, 'showWatchPanel', True, False)
-                null width mod.scalePxInt(10)
+
+                null width mod.scalePxInt(20)
+
                 textbutton "\ue24d" style_suffix "icon_button" hovered mod.Tooltip('New (Ctrl+N)') unhovered mod.Tooltip() action mod.URMFiles.Clear() # New
-                textbutton "\ue2c7" style_suffix "icon_button" hovered mod.Tooltip('Open (Ctrl+O)') unhovered mod.Tooltip() action mod.URMFiles.Clear() # Open
-                textbutton "\ue161" style_suffix "icon_button" hovered mod.Tooltip('Save (Ctrl+S)') unhovered mod.Tooltip() action mod.URMFiles.Clear() # Save
+                textbutton "\ue2c7" style_suffix "icon_button" hovered mod.Tooltip('Open (Ctrl+O)') unhovered mod.Tooltip() action mod.URMFiles.Load() # Open
+                textbutton "\ue161" style_suffix "icon_button" hovered mod.Tooltip('Save (Ctrl+S)') unhovered mod.Tooltip() action mod.URMFiles.Save() # Save
+
                 null width mod.scalePxInt(10)
+
                 if mod.Tooltip.currentText:
                     text mod.Tooltip.currentText yalign 0.5
                 else:

@@ -134,22 +134,19 @@ init python:
 init 99:
     default preferences.gl_powersave = False
     define config.console = True
-    define config.hw_video = True
+    define config.hw_video = False
     define config.has_autosave = True
     define config.autosave_on_quit = True
     define config.autosave_on_choice = True
     define config.save_on_mobile_background = True
     define config.autosave_frequency = 200
-    # define config.autosave_slots = 12
     define config.allow_skipping = True
     define config.rollback_enabled = True
     define config.hard_rollback_limit = 100
-    # define config.allow_underfull_grids = True
     define config.default_text_cps = 198
     define config.default_music_volume = 0.5
     define config.default_sfx_volume = 0.5
     define config.default_voice_volume = 0.5
-    # define mod = Character("Mod", color="#0f0")
     define mod_textbox = True
     default persistent.mod_textbox = True
     default persistent.modtext_size = gui.text_size
